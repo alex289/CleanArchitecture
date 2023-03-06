@@ -1,0 +1,5 @@
+- Complete user endpoints
+- Add Readme
+- Add Tests
+- Remove warnings and apply suggestions
+- Make repo public
