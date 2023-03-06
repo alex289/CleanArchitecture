@@ -38,5 +38,8 @@ To run the tests, follow these steps:
 3. Open the Test Explorer window
 4. Run all the tests by clicking the Run All button in the Test Explorer.
 
+## Continuous Integration
+This project uses GitHub Actions to build and test the project on every commit to the main branch. The workflow consists of several steps, including restoring packages, building the project and running tests.
+
 ## Conclusion
 This project is a sample implementation of the Clean Architecture principles, Onion Architecture, MediatR, and Entity Framework. It demonstrates how to organize a .NET 7 API project into layers, how to use the MediatR library to implement the mediator pattern, and how to use Entity Framework to access data. It also includes unit tests for all layers and integration tests using xUnit.
