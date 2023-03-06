@@ -1,4 +1,6 @@
 using System;
+using System.Threading.Tasks;
+using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Domain.Notifications;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -9,8 +11,13 @@ namespace CleanArchitecture.Api.Controllers;
 [Route("[controller]")]
 public class UserController : ApiController
 {
-    public UserController(NotificationHandler<DomainNotification> notifications) : base(notifications)
+    private readonly IUserService _userService;
+
+    public UserController(
+        INotificationHandler<DomainNotification> notifications,
+        IUserService userService) : base(notifications)
     {
+        _userService = userService;
     }
 
     [HttpGet]
@@ -20,9 +27,10 @@ public class UserController : ApiController
     }
     
     [HttpGet("{id}")]
-    public string GetUserByIdAsync([FromRoute] Guid id)
+    public async Task<IActionResult> GetUserByIdAsync([FromRoute] Guid id)
     {
-        return "test";
+        var user = await _userService.GetUserByUserIdAsync(id);
+        return Response(user);
     }
     
     [HttpPost]

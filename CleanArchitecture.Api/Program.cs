@@ -1,9 +1,10 @@
+using CleanArchitecture.Application.Extensions;
 using CleanArchitecture.Infrastructure.Database;
+using CleanArchitecture.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,12 +12,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseLazyLoadingProxies();
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
-        b => b.MigrationsAssembly("netgo.centralhub.TenantService.Infrastructure"));
+        b => b.MigrationsAssembly("CleanArchitecture.Infrastructure"));
 });
+
+builder.Services.AddInfrastructure();
+builder.Services.AddQueryHandlers();
+builder.Services.AddServices();
 
 builder.Services.AddMediatR(cfg =>
 {
@@ -25,18 +32,22 @@ builder.Services.AddMediatR(cfg =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (IServiceScope scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    ApplicationDbContext appDbContext = services.GetRequiredService<ApplicationDbContext>();
+
+    appDbContext.EnsureMigrationsApplied();
+}
 
 app.Run();
 
