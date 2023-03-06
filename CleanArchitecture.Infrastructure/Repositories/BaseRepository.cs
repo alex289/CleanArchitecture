@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Entities;
-using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Domain.Interfaces.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -73,4 +72,18 @@ public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : Enti
     {
         return _dbSet.AnyAsync(entity => entity.Id == id);
     }
+    
+    public void Remove(TEntity entity, bool hardDelete = false)
+    {
+        if (hardDelete)
+        {
+            _dbSet.Remove(entity);
+        }
+        else
+        {
+            entity.Delete();
+            _dbSet.Update(entity);
+        }
+    }
+
 }

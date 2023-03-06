@@ -10,4 +10,9 @@
       <PackageReference Include="MediatR" Version="12.0.1" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Commands\Users\CreateUser" />
+      <Folder Include="Commands\Users\UpdateUser" />
+    </ItemGroup>
+
 </Project>

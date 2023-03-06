@@ -21,4 +21,5 @@ public interface IRepository<TEntity> : IDisposable where TEntity : Entity
     void Update(TEntity entity);
 
     Task<bool> ExistsAsync(Guid id);
+    public void Remove(TEntity entity, bool hardDelete = false);
 }

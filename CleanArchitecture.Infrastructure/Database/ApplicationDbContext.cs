@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Infrastructure.Database;
 
-public sealed class ApplicationDbContext : DbContext
+public class ApplicationDbContext : DbContext
 {
     public DbSet<User> Users { get; set; } = null!;
     

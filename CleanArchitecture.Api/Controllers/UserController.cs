@@ -21,9 +21,10 @@ public class UserController : ApiController
     }
 
     [HttpGet]
-    public string GetAllUsersAsync()
+    public async Task<IActionResult> GetAllUsersAsync()
     {
-        return "test";
+        var users = await _userService.GetAllUsersAsync();
+        return Response(users);
     }
     
     [HttpGet("{id}")]

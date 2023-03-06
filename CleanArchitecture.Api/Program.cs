@@ -1,4 +1,5 @@
 using CleanArchitecture.Application.Extensions;
+using CleanArchitecture.Domain.Extensions;
 using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -24,6 +25,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddInfrastructure();
 builder.Services.AddQueryHandlers();
 builder.Services.AddServices();
+builder.Services.AddCommandHandlers();
+builder.Services.AddNotificationHandlers();
 
 builder.Services.AddMediatR(cfg =>
 {
