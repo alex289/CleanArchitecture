@@ -26,8 +26,7 @@ public sealed class GetUserByIdQueryHandler :
     {
         var user = _userRepository
             .GetAllNoTracking()
-            .Where(x => x.Id == request.UserId)
-            .FirstOrDefault();
+            .FirstOrDefault(x => x.Id == request.UserId);
 
         if (user == null)
         {
