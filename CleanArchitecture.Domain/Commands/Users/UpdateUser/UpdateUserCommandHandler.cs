@@ -7,14 +7,14 @@ using CleanArchitecture.Domain.Interfaces.Repositories;
 using CleanArchitecture.Domain.Notifications;
 using MediatR;
 
-namespace CleanArchitecture.Domain.Commands.Users.DeleteUser;
+namespace CleanArchitecture.Domain.Commands.Users.UpdateUser;
 
-public sealed class DeleteUserCommandHandler : CommandHandlerBase,
-    IRequestHandler<DeleteUserCommand>
+public sealed class UpdateUserCommandHandler : CommandHandlerBase,
+    IRequestHandler<UpdateUserCommand>
 {
     private readonly IUserRepository _userRepository;
     
-    public DeleteUserCommandHandler(
+    public UpdateUserCommandHandler(
         IMediatorHandler bus,
         IUnitOfWork unitOfWork,
         INotificationHandler<DomainNotification> notifications,
@@ -23,7 +23,7 @@ public sealed class DeleteUserCommandHandler : CommandHandlerBase,
         _userRepository = userRepository;
     }
 
-    public async Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+    public async Task Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
         if (!await TestValidityAsync(request))
         {
@@ -31,23 +31,26 @@ public sealed class DeleteUserCommandHandler : CommandHandlerBase,
         }
 
         var user = await _userRepository.GetByIdAsync(request.UserId);
-        
+
         if (user == null)
         {
-            await NotifyAsync(
+            await _bus.RaiseEventAsync(
                 new DomainNotification(
                     request.MessageType,
                     $"There is no User with Id {request.UserId}",
                     ErrorCodes.ObjectNotFound));
-
             return;
         }
-
-        _userRepository.Remove(user);
-
+        
+        user.SetEmail(request.Email);
+        user.SetSurname(request.Surname);
+        user.SetGivenName(request.GivenName);
+        
+        _userRepository.Update(user);
+        
         if (await CommitAsync())
         {
-            await _bus.RaiseEventAsync(new UserDeletedEvent(request.UserId));
+            await _bus.RaiseEventAsync(new UserUpdatedEvent(user.Id));
         }
     }
 }

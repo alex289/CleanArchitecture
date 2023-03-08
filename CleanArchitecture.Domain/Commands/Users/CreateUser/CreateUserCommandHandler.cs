@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Domain.Events.User;
 using CleanArchitecture.Domain.Interfaces;
@@ -7,14 +8,14 @@ using CleanArchitecture.Domain.Interfaces.Repositories;
 using CleanArchitecture.Domain.Notifications;
 using MediatR;
 
-namespace CleanArchitecture.Domain.Commands.Users.DeleteUser;
+namespace CleanArchitecture.Domain.Commands.Users.CreateUser;
 
-public sealed class DeleteUserCommandHandler : CommandHandlerBase,
-    IRequestHandler<DeleteUserCommand>
+public sealed class CreateUserCommandHandler : CommandHandlerBase,
+    IRequestHandler<CreateUserCommand>
 {
     private readonly IUserRepository _userRepository;
     
-    public DeleteUserCommandHandler(
+    public CreateUserCommandHandler(
         IMediatorHandler bus,
         IUnitOfWork unitOfWork,
         INotificationHandler<DomainNotification> notifications,
@@ -23,31 +24,36 @@ public sealed class DeleteUserCommandHandler : CommandHandlerBase,
         _userRepository = userRepository;
     }
 
-    public async Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         if (!await TestValidityAsync(request))
         {
             return;
         }
 
-        var user = await _userRepository.GetByIdAsync(request.UserId);
-        
-        if (user == null)
+        var existingUser = await _userRepository.GetByIdAsync(request.UserId);
+
+        if (existingUser != null)
         {
-            await NotifyAsync(
+            await _bus.RaiseEventAsync(
                 new DomainNotification(
                     request.MessageType,
-                    $"There is no User with Id {request.UserId}",
-                    ErrorCodes.ObjectNotFound));
-
+                    $"There is already a User with Id {request.UserId}",
+                    DomainErrorCodes.UserAlreadyExists));
             return;
         }
 
-        _userRepository.Remove(user);
-
+        var user = new User(
+            request.UserId, 
+            request.Email,
+            request.Surname,
+            request.GivenName);
+        
+        _userRepository.Add(user);
+        
         if (await CommitAsync())
         {
-            await _bus.RaiseEventAsync(new UserDeletedEvent(request.UserId));
+            await _bus.RaiseEventAsync(new UserCreatedEvent(user.Id));
         }
     }
 }

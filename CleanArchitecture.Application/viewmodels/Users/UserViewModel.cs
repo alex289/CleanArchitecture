@@ -1,7 +1,7 @@
 ﻿using System;
 using CleanArchitecture.Domain.Entities;
 
-namespace CleanArchitecture.Application.ViewModels;
+namespace CleanArchitecture.Application.ViewModels.Users;
 
 public sealed class UserViewModel
 {

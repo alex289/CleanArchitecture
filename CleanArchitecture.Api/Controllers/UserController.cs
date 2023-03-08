@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using CleanArchitecture.Application.Interfaces;
+using CleanArchitecture.Application.ViewModels.Users;
 using CleanArchitecture.Domain.Notifications;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -35,20 +36,23 @@ public class UserController : ApiController
     }
     
     [HttpPost]
-    public string CreateUserAsync()
+    public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserViewModel viewModel)
     {
-        return "test";
+        await _userService.CreateUserAsync(viewModel);
+        return Response();
     }
     
     [HttpDelete("{id}")]
-    public string DeleteUserAsync([FromRoute] Guid id)
+    public async Task<IActionResult> DeleteUserAsync([FromRoute] Guid id)
     {
-        return "test";
+        await _userService.DeleteUserAsync(id);
+        return Response(id);
     }
     
     [HttpPut]
-    public string UpdateUserAsync()
+    public async Task<IActionResult> UpdateUserAsync([FromBody] UpdateUserViewModel viewModel)
     {
-        return "test";
+        await _userService.UpdateUserAsync(viewModel);
+        return Response(viewModel);
     }
 }

@@ -19,6 +19,6 @@ public sealed class GetAllUsersQueryHandlerTests
 
         result.Should().NotBeNull();
         result.Should().ContainSingle();
-        result.FirstOrDefault().Id.Should().Be(_fixture.ExistingUserId);
+        result.FirstOrDefault()!.Id.Should().Be(_fixture.ExistingUserId);
     }
 }

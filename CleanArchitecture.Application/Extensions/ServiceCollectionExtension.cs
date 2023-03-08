@@ -4,6 +4,7 @@ using CleanArchitecture.Application.Queries.Users.GetAll;
 using CleanArchitecture.Application.Queries.Users.GetUserById;
 using CleanArchitecture.Application.Services;
 using CleanArchitecture.Application.ViewModels;
+using CleanArchitecture.Application.ViewModels.Users;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 

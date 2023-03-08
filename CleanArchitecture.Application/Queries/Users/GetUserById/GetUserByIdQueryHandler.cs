@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using CleanArchitecture.Application.ViewModels;
+using CleanArchitecture.Application.ViewModels.Users;
 using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Domain.Interfaces.Repositories;
