@@ -14,8 +14,8 @@ public class User : Entity
     public User(
         Guid id,
         string email,
-        string givenName,
-        string surname) : base(id)
+        string surname,
+        string givenName) : base(id)
     {
         Email = email;
         GivenName = givenName;

@@ -31,13 +31,17 @@ public sealed class UserService : IUserService
         return await _bus.QueryAsync(new GetAllUsersQuery());
     }
     
-    public async Task CreateUserAsync(CreateUserViewModel user)
+    public async Task<Guid> CreateUserAsync(CreateUserViewModel user)
     {
+        var userId = Guid.NewGuid();
+
         await _bus.SendCommandAsync(new CreateUserCommand(
-            Guid.NewGuid(),
+            userId,
             user.Email,
             user.Surname,
             user.GivenName));
+
+        return userId;
     }
     
     public async Task UpdateUserAsync(UpdateUserViewModel user)

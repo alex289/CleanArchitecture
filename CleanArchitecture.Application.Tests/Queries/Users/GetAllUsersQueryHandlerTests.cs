@@ -11,6 +11,8 @@ public sealed class GetAllUsersQueryHandlerTests
     [Fact]
     public async Task Should_Get_All_Users()
     {
+        _fixture.SetupUserAsync();
+
         var result = await _fixture.Handler.Handle(
             new(),
             default);
@@ -21,4 +23,6 @@ public sealed class GetAllUsersQueryHandlerTests
         result.Should().ContainSingle();
         result.FirstOrDefault()!.Id.Should().Be(_fixture.ExistingUserId);
     }
+
+    // Add Test for deleted user
 }

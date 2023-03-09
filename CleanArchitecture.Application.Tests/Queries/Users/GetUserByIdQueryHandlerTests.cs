@@ -13,6 +13,8 @@ public sealed class GetUserByIdQueryHandlerTests
     [Fact]
     public async Task Should_Get_Existing_User()
     {
+        _fixture.SetupUserAsync();
+
         var result = await _fixture.Handler.Handle(
             new(_fixture.ExistingUserId),
             default);
@@ -26,6 +28,8 @@ public sealed class GetUserByIdQueryHandlerTests
     [Fact]
     public async Task Should_Raise_Notification_For_No_User()
     {
+        _fixture.SetupUserAsync();
+
         var request = new GetUserByIdQuery(Guid.NewGuid());
         var result = await _fixture.Handler.Handle(
             request,
@@ -38,4 +42,6 @@ public sealed class GetUserByIdQueryHandlerTests
 
         result.Should().BeNull();
     }
+
+    // Add Test for deleted user
 }

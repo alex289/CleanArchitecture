@@ -38,8 +38,8 @@ public class UserController : ApiController
     [HttpPost]
     public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserViewModel viewModel)
     {
-        await _userService.CreateUserAsync(viewModel);
-        return Response();
+        var userId = await _userService.CreateUserAsync(viewModel);
+        return Response(userId);
     }
     
     [HttpDelete("{id}")]

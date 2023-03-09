@@ -27,7 +27,7 @@ public sealed class GetUserByIdQueryHandler :
     {
         var user = _userRepository
             .GetAllNoTracking()
-            .FirstOrDefault(x => x.Id == request.UserId);
+            .FirstOrDefault(x => x.Id == request.UserId && !x.Deleted);
 
         if (user == null)
         {

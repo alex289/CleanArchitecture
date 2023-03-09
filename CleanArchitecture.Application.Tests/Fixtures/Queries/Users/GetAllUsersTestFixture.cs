@@ -16,12 +16,10 @@ public sealed class GetAllUsersTestFixture : QueryHandlerBaseFixture
     {
         UserRepository = new();
 
-        SetupUserRepositoryGetAllAsync();
-        
         Handler = new(UserRepository.Object);
     }
     
-    private void SetupUserRepositoryGetAllAsync()
+    public void SetupUserAsync()
     {
         var user = new Mock<User>(() =>
                 new User(

@@ -24,6 +24,7 @@ public sealed class GetAllUsersQueryHandler :
     {
         return await _userRepository
             .GetAllNoTracking()
+            .Where(x => !x.Deleted)
             .Select(x => UserViewModel.FromUser(x))
             .ToListAsync(cancellationToken);
     }
