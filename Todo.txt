@@ -1,6 +1,3 @@
-- Complete user endpoints
-- Add Tests
 - Remove warnings and apply suggestions
-- Add Docker support
 - Add gRPC support
-- Make repo public
+- Add authentication and authorization
