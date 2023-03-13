@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Application.ViewModels.Users;
 using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Domain.Interfaces;
@@ -27,7 +26,9 @@ public sealed class GetUserByIdQueryHandler :
     {
         var user = _userRepository
             .GetAllNoTracking()
-            .FirstOrDefault(x => x.Id == request.UserId && !x.Deleted);
+            .FirstOrDefault(x => 
+                x.Id == request.UserId &&
+                x.Deleted == request.IsDeleted);
 
         if (user == null)
         {

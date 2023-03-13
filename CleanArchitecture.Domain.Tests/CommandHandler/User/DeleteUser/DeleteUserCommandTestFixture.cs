@@ -1,3 +1,4 @@
+using System;
 using CleanArchitecture.Domain.Commands.Users.DeleteUser;
 using CleanArchitecture.Domain.Interfaces.Repositories;
 using Moq;

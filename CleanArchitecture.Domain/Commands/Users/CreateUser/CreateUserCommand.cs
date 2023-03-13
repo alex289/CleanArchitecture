@@ -4,7 +4,7 @@ namespace CleanArchitecture.Domain.Commands.Users.CreateUser;
 
 public sealed class CreateUserCommand : CommandBase
 {
-    private static readonly CreateUserCommandValidation _validation = new(); 
+    private readonly CreateUserCommandValidation _validation = new(); 
     
     public Guid UserId { get; }
     public string Email { get; }

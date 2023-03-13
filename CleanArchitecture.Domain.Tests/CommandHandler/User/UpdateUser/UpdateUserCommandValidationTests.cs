@@ -1,3 +1,4 @@
+using System;
 using CleanArchitecture.Domain.Commands.Users.UpdateUser;
 using CleanArchitecture.Domain.Errors;
 using Xunit;

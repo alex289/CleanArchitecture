@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Domain.Notifications;
+﻿using System;
+using CleanArchitecture.Domain.Notifications;
 using FluentAssertions;
 using Xunit;
 

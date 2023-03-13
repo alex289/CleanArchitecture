@@ -1,5 +1,6 @@
 using CleanArchitecture.Application.Extensions;
 using CleanArchitecture.Domain.Extensions;
+using CleanArchitecture.gRPC;
 using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddGrpc();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -43,6 +45,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapGrpcService<UsersApiImplementation>();
 
 using (IServiceScope scope = app.Services.CreateScope())
 {

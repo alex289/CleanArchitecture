@@ -1,4 +1,6 @@
-﻿namespace CleanArchitecture.IntegrationTests.Fixtures;
+﻿using System;
+
+namespace CleanArchitecture.IntegrationTests.Fixtures;
 
 public sealed class UserTestFixture : TestFixtureBase
 {

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CleanArchitecture.Infrastructure;
 
-public class UnitOfWork<TContext>  : IUnitOfWork where TContext : DbContext
+public sealed class UnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
 {
     private readonly TContext _context;
     private readonly ILogger<UnitOfWork<TContext>> _logger;
@@ -34,10 +34,11 @@ public class UnitOfWork<TContext>  : IUnitOfWork where TContext : DbContext
     public void Dispose()
     {
         Dispose(true);
+        // ReSharper disable once GCSuppressFinalizeForTypeWithoutDestructor
         GC.SuppressFinalize(this);
     }
 
-    protected virtual void Dispose(bool disposing)
+    private void Dispose(bool disposing)
     {
         if (disposing)
         {

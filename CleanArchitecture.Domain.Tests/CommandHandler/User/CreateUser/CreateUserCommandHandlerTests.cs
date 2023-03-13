@@ -1,3 +1,4 @@
+using System;
 using CleanArchitecture.Domain.Commands.Users.CreateUser;
 using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Domain.Events.User;

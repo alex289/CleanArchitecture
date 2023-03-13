@@ -1,4 +1,8 @@
-﻿using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Threading.Tasks;
 using CleanArchitecture.Application.ViewModels.Users;
 using CleanArchitecture.IntegrationTests.Extensions;
 using CleanArchitecture.IntegrationTests.Fixtures;
@@ -8,7 +12,7 @@ using Xunit.Priority;
 
 namespace CleanArchitecture.IntegrationTests.Controller;
 
-[Collection("Integrationtests")]
+[Collection("IntegrationTests")]
 [TestCaseOrderer(PriorityOrderer.Name, PriorityOrderer.Assembly)]
 public sealed class UserControllerTests : IClassFixture<UserTestFixture>
 {
@@ -122,7 +126,7 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
 
         message?.Data.Should().NotBeNull();
 
-        var content = message!.Data!;
+        var content = message!.Data!.ToList();
 
         content.Should().ContainSingle();
         content.First().Id.Should().Be(_fixture.CreatedUserId);
@@ -142,7 +146,7 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
 
         message?.Data.Should().NotBeEmpty();
 
-        var content = message!.Data!;
+        var content = message!.Data;
         content.Should().Be(_fixture.CreatedUserId);
     }
 

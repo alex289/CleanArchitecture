@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using CleanArchitecture.Application.Queries.Users.GetAll;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Interfaces.Repositories;
@@ -8,7 +10,7 @@ namespace CleanArchitecture.Application.Tests.Fixtures.Queries.Users;
 
 public sealed class GetAllUsersTestFixture : QueryHandlerBaseFixture
 {
-    public Mock<IUserRepository> UserRepository { get; }
+    private Mock<IUserRepository> UserRepository { get; }
     public GetAllUsersQueryHandler Handler { get; }
     public Guid ExistingUserId { get; } = Guid.NewGuid();
 

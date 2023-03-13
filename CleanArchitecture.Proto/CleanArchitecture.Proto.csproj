@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Remove="Users\Models.proto"/>
+        <None Remove="Users\UsersApi.proto"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Protobuf Include="Users\Models.proto" GrpcServices="Both"/>
+        <Protobuf Include="Users\UsersApi.proto" GrpcServices="Both"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Google.Protobuf" Version="3.22.1" />
+      <PackageReference Include="Google.Protobuf.Tools" Version="3.22.1" />
+      <PackageReference Include="Grpc.AspNetCore" Version="2.51.0" />
+    </ItemGroup>
+
+</Project>

@@ -1,3 +1,6 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.Infrastructure.Tests.Fixtures;
 using FluentAssertions;
@@ -37,7 +40,7 @@ public sealed class UnitOfWorkTests
 
         dbContextMock
             .Setup(x => x.SaveChangesAsync(CancellationToken.None))
-            .Throws(new DbUpdateException("Boom", new System.Exception("it broke")));
+            .Throws(new DbUpdateException("Boom", new Exception("it broke")));
 
         var unitOfWork = UnitOfWorkTestFixture.GetUnitOfWork(dbContextMock.Object, loggerMock.Object);
 
@@ -59,8 +62,8 @@ public sealed class UnitOfWorkTests
 
         var unitOfWork = UnitOfWorkTestFixture.GetUnitOfWork(dbContextMock.Object, loggerMock.Object);
 
-        Func<Task> knalltAction = async () => await unitOfWork.CommitAsync();
+        Func<Task> throwsAction = async () => await unitOfWork.CommitAsync();
 
-        await knalltAction.Should().ThrowAsync<Exception>();
+        await throwsAction.Should().ThrowAsync<Exception>();
     }
 }

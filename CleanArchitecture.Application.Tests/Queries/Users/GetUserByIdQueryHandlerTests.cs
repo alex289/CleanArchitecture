@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using CleanArchitecture.Application.Queries.Users.GetUserById;
 using CleanArchitecture.Application.Tests.Fixtures.Queries.Users;
 using CleanArchitecture.Domain.Errors;
@@ -16,7 +18,7 @@ public sealed class GetUserByIdQueryHandlerTests
         _fixture.SetupUserAsync();
 
         var result = await _fixture.Handler.Handle(
-            new(_fixture.ExistingUserId),
+            new(_fixture.ExistingUserId, false),
             default);
         
         _fixture.VerifyNoDomainNotification();
@@ -30,7 +32,7 @@ public sealed class GetUserByIdQueryHandlerTests
     {
         _fixture.SetupUserAsync();
 
-        var request = new GetUserByIdQuery(Guid.NewGuid());
+        var request = new GetUserByIdQuery(Guid.NewGuid(), false);
         var result = await _fixture.Handler.Handle(
             request,
             default);

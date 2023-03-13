@@ -1,0 +1,11 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "CleanArchitecture.Proto.Users";
+
+message GrpcUser {
+  string id = 1;
+  string firstName = 3;
+  string lastName = 4;
+  string email = 5;
+  bool isDeleted = 6;
+}

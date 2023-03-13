@@ -35,7 +35,7 @@ public sealed class DomainNotificationHandlerTests
 
         var domainNotification = new DomainNotification(key, value, code);
         var domainNotificationHandler = new DomainNotificationHandler();
-        domainNotificationHandler.Handle(domainNotification, default);
+        domainNotificationHandler.Handle(domainNotification);
         domainNotificationHandler.GetNotifications().Should().HaveCount(1);
     }
 

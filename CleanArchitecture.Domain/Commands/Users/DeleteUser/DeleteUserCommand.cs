@@ -4,7 +4,7 @@ namespace CleanArchitecture.Domain.Commands.Users.DeleteUser;
 
 public sealed class DeleteUserCommand : CommandBase
 {
-    private static readonly DeleteUserCommandValidation _validation = new(); 
+    private readonly DeleteUserCommandValidation _validation = new(); 
     
     public Guid UserId { get; }
     

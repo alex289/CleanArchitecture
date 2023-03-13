@@ -14,6 +14,6 @@ public sealed class UserRepository : BaseRepository<User>, IUserRepository
 
     public async Task<User?> GetByEmailAsync(string email)
     {
-        return await _dbSet.SingleOrDefaultAsync(user => user.Email == email);
+        return await DbSet.SingleOrDefaultAsync(user => user.Email == email);
     }
 }

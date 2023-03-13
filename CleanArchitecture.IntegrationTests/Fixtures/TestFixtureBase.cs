@@ -1,4 +1,7 @@
-﻿using CleanArchitecture.Infrastructure.Database;
+﻿using System;
+using System.IO;
+using System.Net.Http;
+using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.IntegrationTests.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 

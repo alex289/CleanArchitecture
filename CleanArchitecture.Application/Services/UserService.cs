@@ -21,9 +21,9 @@ public sealed class UserService : IUserService
         _bus = bus;
     }
 
-    public async Task<UserViewModel?> GetUserByUserIdAsync(Guid userId)
+    public async Task<UserViewModel?> GetUserByUserIdAsync(Guid userId, bool isDeleted)
     {
-        return await _bus.QueryAsync(new GetUserByIdQuery(userId));
+        return await _bus.QueryAsync(new GetUserByIdQuery(userId, isDeleted));
     }
 
     public async Task<IEnumerable<UserViewModel>> GetAllUsersAsync()

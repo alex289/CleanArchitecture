@@ -1,12 +1,14 @@
-﻿using System.Text;
+﻿using System.Net.Http;
+using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 using CleanArchitecture.Api.Models;
 
 namespace CleanArchitecture.IntegrationTests.Extensions;
 
-public static class HttpExensions
+public static class HttpExtensions
 {
-    public static JsonSerializerOptions JsonSerializerOptions = new()
+    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
     {
         PropertyNameCaseInsensitive = true,
     };

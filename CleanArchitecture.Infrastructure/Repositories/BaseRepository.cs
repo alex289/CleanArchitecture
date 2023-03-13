@@ -10,23 +10,23 @@ namespace CleanArchitecture.Infrastructure.Repositories;
 
 public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : Entity
 {
-    protected readonly DbContext _dbContext;
-    protected readonly DbSet<TEntity> _dbSet;
+    private readonly DbContext _dbContext;
+    protected readonly DbSet<TEntity> DbSet;
 
-    public BaseRepository(DbContext context)
+    protected BaseRepository(DbContext context)
     {
         _dbContext = context;
-        _dbSet = _dbContext.Set<TEntity>();
+        DbSet = _dbContext.Set<TEntity>();
     }
 
     public void Add(TEntity entity)
     {
-        _dbSet.Add(entity);
+        DbSet.Add(entity);
     }
 
     public void AddRange(IEnumerable<TEntity> entities)
     {
-        _dbSet.AddRange(entities);
+        DbSet.AddRange(entities);
     }
 
     public void Dispose()
@@ -37,17 +37,17 @@ public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : Enti
 
     public virtual IQueryable<TEntity> GetAll()
     {
-        return _dbSet;
+        return DbSet;
     }
 
     public virtual IQueryable<TEntity> GetAllNoTracking()
     {
-        return _dbSet.AsNoTracking();
+        return DbSet.AsNoTracking();
     }
 
     public virtual async Task<TEntity?> GetByIdAsync(Guid id)
     {
-        return await _dbSet.FindAsync(id);
+        return await DbSet.FindAsync(id);
     }
 
     public int SaveChanges()
@@ -65,24 +65,24 @@ public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : Enti
 
     public virtual void Update(TEntity entity)
     {
-        _dbSet.Update(entity);
+        DbSet.Update(entity);
     }
 
     public Task<bool> ExistsAsync(Guid id)
     {
-        return _dbSet.AnyAsync(entity => entity.Id == id);
+        return DbSet.AnyAsync(entity => entity.Id == id);
     }
     
     public void Remove(TEntity entity, bool hardDelete = false)
     {
         if (hardDelete)
         {
-            _dbSet.Remove(entity);
+            DbSet.Remove(entity);
         }
         else
         {
             entity.Delete();
-            _dbSet.Update(entity);
+            DbSet.Update(entity);
         }
     }
 

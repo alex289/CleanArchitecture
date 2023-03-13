@@ -56,7 +56,7 @@ public class ApiController : ControllerBase
         return GetErrorStatusCode();
     }
 
-    protected HttpStatusCode GetErrorStatusCode()
+    private HttpStatusCode GetErrorStatusCode()
     {
         if (_notifications.GetNotifications().Any(n => n.Code == ErrorCodes.ObjectNotFound))
         {

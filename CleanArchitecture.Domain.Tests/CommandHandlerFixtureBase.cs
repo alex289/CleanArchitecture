@@ -1,3 +1,4 @@
+using System;
 using System.Linq.Expressions;
 using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Domain.Notifications;
@@ -7,9 +8,9 @@ namespace CleanArchitecture.Domain.Tests;
 
 public class CommandHandlerFixtureBase
 {
-    public Mock<IMediatorHandler> Bus { get; protected set; }
-    public Mock<IUnitOfWork> UnitOfWork { get; protected set; }
-    public Mock<DomainNotificationHandler> NotificationHandler { get; protected set; }
+    protected Mock<IMediatorHandler> Bus { get; }
+    protected Mock<IUnitOfWork> UnitOfWork { get; }
+    protected Mock<DomainNotificationHandler> NotificationHandler { get; }
 
     protected CommandHandlerFixtureBase()
     {

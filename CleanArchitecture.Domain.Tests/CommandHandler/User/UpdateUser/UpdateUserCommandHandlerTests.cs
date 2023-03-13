@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using CleanArchitecture.Domain.Commands.Users.UpdateUser;
 using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Domain.Events.User;
@@ -31,7 +33,7 @@ public sealed class UpdateUserCommandHandlerTests
     [Fact]
     public async Task Should_Not_Update_Non_Existing_User()
     {
-        var user = _fixture.SetupUser();
+        _fixture.SetupUser();
         
         var command = new UpdateUserCommand(
             Guid.NewGuid(),

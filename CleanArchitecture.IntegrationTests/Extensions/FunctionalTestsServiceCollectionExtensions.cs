@@ -1,4 +1,7 @@
-﻿using System.Data.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +20,7 @@ public static class FunctionalTestsServiceCollectionExtensions
         services.AddScoped(p =>
         DbContextOptionsFactory<TContext>(
         p,
-        (sp, options) => options
+        (_, options) => options
             .ConfigureWarnings(b => b.Log(CoreEventId.ManyServiceProvidersCreatedWarning))
             .UseLazyLoadingProxies()
             .UseSqlite(connection)));
@@ -35,7 +38,7 @@ public static class FunctionalTestsServiceCollectionExtensions
 
         builder.UseApplicationServiceProvider(applicationServiceProvider);
 
-        optionsAction?.Invoke(applicationServiceProvider, builder);
+        optionsAction.Invoke(applicationServiceProvider, builder);
 
         return builder.Options;
     }

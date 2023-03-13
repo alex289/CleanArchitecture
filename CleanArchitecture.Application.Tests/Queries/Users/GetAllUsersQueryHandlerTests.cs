@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Threading.Tasks;
 using CleanArchitecture.Application.Tests.Fixtures.Queries.Users;
 using FluentAssertions;
 using Xunit;
@@ -18,7 +20,7 @@ public sealed class GetAllUsersQueryHandlerTests
             default);
         
         _fixture.VerifyNoDomainNotification();
-
+        
         result.Should().NotBeNull();
         result.Should().ContainSingle();
         result.FirstOrDefault()!.Id.Should().Be(_fixture.ExistingUserId);

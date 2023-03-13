@@ -29,9 +29,11 @@ public class UserController : ApiController
     }
     
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetUserByIdAsync([FromRoute] Guid id)
+    public async Task<IActionResult> GetUserByIdAsync(
+        [FromRoute] Guid id,
+        [FromQuery] bool isDeleted = false)
     {
-        var user = await _userService.GetUserByUserIdAsync(id);
+        var user = await _userService.GetUserByUserIdAsync(id, isDeleted);
         return Response(user);
     }
     

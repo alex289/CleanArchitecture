@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Infrastructure.Database;
+﻿using System;
+using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.Infrastructure.Extensions;
 using CleanArchitecture.IntegrationTests.Extensions;
 using Microsoft.AspNetCore.Hosting;

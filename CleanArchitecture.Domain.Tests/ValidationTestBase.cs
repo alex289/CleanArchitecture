@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using CleanArchitecture.Domain.Commands;
 using FluentAssertions;
 using FluentValidation;
@@ -8,7 +10,7 @@ public class ValidationTestBase<TCommand, TValidation>
     where TCommand : CommandBase
     where TValidation: AbstractValidator<TCommand>
 {
-    protected readonly TValidation _validation;
+    private readonly TValidation _validation;
 
     protected ValidationTestBase(TValidation validation)
     {
