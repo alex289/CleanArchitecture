@@ -31,8 +31,4 @@
       <ProjectReference Include="..\CleanArchitecture.Infrastructure\CleanArchitecture.Infrastructure.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="UtilityTests\" />
-    </ItemGroup>
-
 </Project>

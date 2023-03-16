@@ -36,4 +36,22 @@ public sealed class GetAllUsersTestFixture : QueryHandlerBaseFixture
             .Setup(x => x.GetAllNoTracking())
             .Returns(query);
     }
+
+    public void SetupDeletedUserAsync()
+    {
+        var user = new Mock<User>(() =>
+                new User(
+                    ExistingUserId,
+                    "max@mustermann.com",
+                    "Max",
+                    "Mustermann"));
+
+        user.Object.Delete();
+
+        var query = new[] { user.Object }.AsQueryable().BuildMock();
+
+        UserRepository
+            .Setup(x => x.GetAllNoTracking())
+            .Returns(query);
+    }
 }

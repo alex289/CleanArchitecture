@@ -26,5 +26,17 @@ public sealed class GetAllUsersQueryHandlerTests
         result.FirstOrDefault()!.Id.Should().Be(_fixture.ExistingUserId);
     }
 
-    // Add Test for deleted user
+    [Fact]
+    public async Task Should_Not_Get_Deleted_Users()
+    {
+        _fixture.SetupDeletedUserAsync();
+
+        var result = await _fixture.Handler.Handle(
+            new(),
+            default);
+
+        _fixture.VerifyNoDomainNotification();
+
+        result.Should().BeEmpty();
+    }
 }

@@ -45,5 +45,20 @@ public sealed class GetUserByIdQueryHandlerTests
         result.Should().BeNull();
     }
 
-    // Add Test for deleted user
+    [Fact]
+    public async Task Should_Not_Get_Deleted_User()
+    {
+        _fixture.SetupDeletedUserAsync();
+
+        var result = await _fixture.Handler.Handle(
+            new(_fixture.ExistingUserId, false),
+            default);
+
+        _fixture.VerifyExistingNotification(
+            nameof(GetUserByIdQuery),
+            ErrorCodes.ObjectNotFound,
+            $"User with id {_fixture.ExistingUserId} could not be found");
+
+        result.Should().BeNull();
+    }
 }

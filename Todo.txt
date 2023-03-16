@@ -1,4 +1,2 @@
 - Remove warnings and apply suggestions
 - Add authentication and authorization
-- Utility integration tests
-- Queryhandler tests for deleted users
