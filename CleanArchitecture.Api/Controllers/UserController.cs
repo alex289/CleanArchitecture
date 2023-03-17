@@ -4,6 +4,7 @@ using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Application.ViewModels.Users;
 using CleanArchitecture.Domain.Notifications;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitecture.Api.Controllers;
@@ -21,13 +22,15 @@ public class UserController : ApiController
         _userService = userService;
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAllUsersAsync()
     {
         var users = await _userService.GetAllUsersAsync();
         return Response(users);
     }
-    
+
+    [Authorize]
     [HttpGet("{id}")]
     public async Task<IActionResult> GetUserByIdAsync(
         [FromRoute] Guid id,
@@ -43,14 +46,16 @@ public class UserController : ApiController
         var userId = await _userService.CreateUserAsync(viewModel);
         return Response(userId);
     }
-    
+
+    [Authorize]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteUserAsync([FromRoute] Guid id)
     {
         await _userService.DeleteUserAsync(id);
         return Response(id);
     }
-    
+
+    [Authorize]
     [HttpPut]
     public async Task<IActionResult> UpdateUserAsync([FromBody] UpdateUserViewModel viewModel)
     {

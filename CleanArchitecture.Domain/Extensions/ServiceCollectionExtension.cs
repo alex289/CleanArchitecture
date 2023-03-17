@@ -3,6 +3,7 @@ using CleanArchitecture.Domain.Commands.Users.DeleteUser;
 using CleanArchitecture.Domain.Commands.Users.UpdateUser;
 using CleanArchitecture.Domain.EventHandler;
 using CleanArchitecture.Domain.Events.User;
+using CleanArchitecture.Domain.Interfaces;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -26,6 +27,14 @@ public static class ServiceCollectionExtension
         services.AddScoped<INotificationHandler<UserCreatedEvent>, UserEventHandler>();
         services.AddScoped<INotificationHandler<UserUpdatedEvent>, UserEventHandler>();
         services.AddScoped<INotificationHandler<UserDeletedEvent>, UserEventHandler>();
+        
+        return services;
+    }
+
+    public static IServiceCollection AddApiUser(this IServiceCollection services)
+    {
+        // User
+        services.AddScoped<IUser, ApiUser>();
         
         return services;
     }

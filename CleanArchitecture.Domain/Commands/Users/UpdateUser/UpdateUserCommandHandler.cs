@@ -1,5 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
+using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Domain.Events.User;
 using CleanArchitecture.Domain.Interfaces;
@@ -13,14 +15,17 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
     IRequestHandler<UpdateUserCommand>
 {
     private readonly IUserRepository _userRepository;
-    
+    private readonly IUser _user;
+
     public UpdateUserCommandHandler(
         IMediatorHandler bus,
         IUnitOfWork unitOfWork,
         INotificationHandler<DomainNotification> notifications,
-        IUserRepository userRepository) : base(bus, unitOfWork, notifications)
+        IUserRepository userRepository,
+        IUser user) : base(bus, unitOfWork, notifications)
     {
         _userRepository = userRepository;
+        _user = user;
     }
 
     public async Task Handle(UpdateUserCommand request, CancellationToken cancellationToken)
@@ -41,11 +46,21 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
                     ErrorCodes.ObjectNotFound));
             return;
         }
-        
+
+        if (_user.GetUserId() != request.UserId || _user.GetUserRole() != UserRole.Admin)
+        {
+            return;
+        }
+
+        if (_user.GetUserRole() == UserRole.Admin)
+        {
+            user.SetRole(request.Role);
+        }
+
         user.SetEmail(request.Email);
         user.SetSurname(request.Surname);
         user.SetGivenName(request.GivenName);
-        
+
         _userRepository.Update(user);
         
         if (await CommitAsync())

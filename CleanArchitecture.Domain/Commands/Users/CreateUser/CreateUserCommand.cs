@@ -10,17 +10,20 @@ public sealed class CreateUserCommand : CommandBase
     public string Email { get; }
     public string Surname { get; }
     public string GivenName { get; }
-    
+    public string Password { get; }
+
     public CreateUserCommand(
         Guid userId,
         string email,
         string surname,
-        string givenName) : base(userId)
+        string givenName,
+        string password) : base(userId)
     {
         UserId = userId;
         Email = email;
         Surname = surname;
         GivenName = givenName;
+        Password = password;
     }
 
     public override bool IsValid()

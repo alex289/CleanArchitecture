@@ -1,12 +1,16 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using CleanArchitecture.Application.Extensions;
 using CleanArchitecture.Domain.Extensions;
 using CleanArchitecture.gRPC;
 using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.Infrastructure.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,11 +28,23 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         b => b.MigrationsAssembly("CleanArchitecture.Infrastructure"));
 });
 
+builder.Services.AddAuthentication(
+        options =>
+        {
+            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+    .AddJwtBearer(
+        jwtOptions =>
+        {
+            jwtOptions.TokenValidationParameters = CreateTokenValidationParameters();
+        });
+
 builder.Services.AddInfrastructure();
 builder.Services.AddQueryHandlers();
 builder.Services.AddServices();
 builder.Services.AddCommandHandlers();
 builder.Services.AddNotificationHandlers();
+builder.Services.AddApiUser();
 
 builder.Services.AddMediatR(cfg =>
 {
@@ -42,6 +58,7 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
@@ -56,6 +73,25 @@ using (IServiceScope scope = app.Services.CreateScope())
 }
 
 app.Run();
+
+TokenValidationParameters CreateTokenValidationParameters()
+{
+    var result = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Auth:Issuer"],
+        ValidAudience = builder.Configuration["Auth:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(
+                        builder.Configuration["Auth:Secret"]!)),
+        RequireSignedTokens = false
+    };
+
+    return result;
+}
 
 // Needed for integration tests webapplication factory
 public partial class Program { }

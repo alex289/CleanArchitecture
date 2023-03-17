@@ -1,4 +1,5 @@
 using System;
+using CleanArchitecture.Domain.Enums;
 
 namespace CleanArchitecture.Domain.Commands.Users.UpdateUser;
 
@@ -10,17 +11,20 @@ public sealed class UpdateUserCommand : CommandBase
     public string Email { get; }
     public string Surname { get; }
     public string GivenName { get; }
-    
+    public UserRole Role { get; }
+
     public UpdateUserCommand(
         Guid userId,
         string email,
         string surname,
-        string givenName) : base(userId)
+        string givenName,
+        UserRole role) : base(userId)
     {
         UserId = userId;
         Email = email;
         Surname = surname;
         GivenName = givenName;
+        Role = role;
     }
 
     public override bool IsValid()

@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using CleanArchitecture.Domain.Enums;
 
 namespace CleanArchitecture.Domain.Entities;
 
@@ -8,20 +9,26 @@ public class User : Entity
     public string Email { get; private set; }
     public string GivenName { get; private set; }
     public string Surname { get; private set; }
+    public string Password { get; private set; }
+    public UserRole Role { get; private set; }
     
     public string FullName => $"{Surname}, {GivenName}";
-    
+
     public User(
         Guid id,
         string email,
         string surname,
-        string givenName) : base(id)
+        string givenName,
+        string password,
+        UserRole role) : base(id)
     {
         Email = email;
         GivenName = givenName;
         Surname = surname;
+        Password = password;
+        Role = role;
     }
-    
+
     [MemberNotNull(nameof(Email))]
     public void SetEmail(string email)
     {
@@ -71,5 +78,27 @@ public class User : Entity
         }
 
         Surname = surname;
+    }
+
+    [MemberNotNull(nameof(Password))]
+    public void SetPassword(string password)
+    {
+        if (password == null)
+        {
+            throw new ArgumentNullException(nameof(password));
+        }
+
+        if (password.Length > 100)
+        {
+            throw new ArgumentException(
+                "Password may not be longer than 100 characters");
+        }
+
+        Password = password;
+    }
+
+    public void SetRole(UserRole role)
+    {
+        Role = role;
     }
 }

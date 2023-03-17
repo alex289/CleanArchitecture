@@ -3,9 +3,11 @@
     <PropertyGroup>
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
+        <UserSecretsId>64377c40-44d6-4989-9662-5d778f8b3b92</UserSecretsId>
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.4" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.4" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="7.0.4" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />

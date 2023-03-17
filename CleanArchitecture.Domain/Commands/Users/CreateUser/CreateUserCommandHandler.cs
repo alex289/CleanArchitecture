@@ -1,12 +1,14 @@
 using System.Threading;
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Domain.Events.User;
 using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Domain.Interfaces.Repositories;
 using CleanArchitecture.Domain.Notifications;
 using MediatR;
+using BC = BCrypt.Net.BCrypt;
 
 namespace CleanArchitecture.Domain.Commands.Users.CreateUser;
 
@@ -43,11 +45,15 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
             return;
         }
 
+        var passwordHash = BC.HashPassword(request.Password);
+
         var user = new User(
             request.UserId, 
             request.Email,
             request.Surname,
-            request.GivenName);
+            request.GivenName,
+            passwordHash,
+            UserRole.User);
         
         _userRepository.Add(user);
         
