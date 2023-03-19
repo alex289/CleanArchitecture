@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Interfaces.Repositories;
 using MockQueryable.Moq;
 using Moq;
@@ -20,9 +21,27 @@ public sealed class UserTestsFixture
     {
         ExistingUsers = new List<User>()
         {
-            new (Guid.NewGuid(), "test@test.de", "Test First Name", "Test Last Name"),
-            new (Guid.NewGuid(), "email@Email.de", "Email First Name", "Email Last Name"),
-            new (Guid.NewGuid(), "user@user.de", "User First Name", "User Last Name"),
+            new (
+                Guid.NewGuid(), 
+                "test@test.de", 
+                "Test First Name", 
+                "Test Last Name",
+                "Test Password",
+                UserRole.User),
+            new (
+                Guid.NewGuid(), 
+                "email@Email.de", 
+                "Email First Name", 
+                "Email Last Name",
+                "Email Password",
+                UserRole.Admin),
+            new (
+                Guid.NewGuid(), 
+                "user@user.de", 
+                "User First Name", 
+                "User Last Name",
+                "User Password",
+                UserRole.User),
         };
 
         var queryable = ExistingUsers.AsQueryable().BuildMock();

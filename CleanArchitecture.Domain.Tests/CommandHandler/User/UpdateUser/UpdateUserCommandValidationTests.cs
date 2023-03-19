@@ -1,5 +1,6 @@
 using System;
 using CleanArchitecture.Domain.Commands.Users.UpdateUser;
+using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Errors;
 using Xunit;
 
@@ -112,10 +113,12 @@ public sealed class UpdateUserCommandValidationTests :
         Guid? userId = null,
         string? email = null,
         string? surName = null,
-        string? givenName = null) => 
+        string? givenName = null,
+        UserRole? role = null) => 
         new (
             userId ?? Guid.NewGuid(),
             email ?? "test@email.com",
             surName ?? "test",
-            givenName ?? "email");
+            givenName ?? "email",
+            role ?? UserRole.User);
 }

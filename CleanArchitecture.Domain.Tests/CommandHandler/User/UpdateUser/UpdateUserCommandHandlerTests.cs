@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Commands.Users.UpdateUser;
+using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Domain.Events.User;
 using Xunit;
@@ -20,7 +21,8 @@ public sealed class UpdateUserCommandHandlerTests
             user.Id,
             "test@email.com",
             "Test",
-            "Email");
+            "Email",
+            UserRole.User);
         
         await _fixture.CommandHandler.Handle(command, default);
 
@@ -39,7 +41,8 @@ public sealed class UpdateUserCommandHandlerTests
             Guid.NewGuid(),
             "test@email.com",
             "Test",
-            "Email");
+            "Email",
+            UserRole.User);
         
         await _fixture.CommandHandler.Handle(command, default);
 

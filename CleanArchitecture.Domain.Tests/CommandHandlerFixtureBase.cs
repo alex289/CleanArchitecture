@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Domain.Notifications;
 using Moq;
@@ -11,12 +12,17 @@ public class CommandHandlerFixtureBase
     protected Mock<IMediatorHandler> Bus { get; }
     protected Mock<IUnitOfWork> UnitOfWork { get; }
     protected Mock<DomainNotificationHandler> NotificationHandler { get; }
+    protected Mock<IUser> User { get; }
 
     protected CommandHandlerFixtureBase()
     {
         Bus = new Mock<IMediatorHandler>();
         UnitOfWork = new Mock<IUnitOfWork>();
         NotificationHandler = new Mock<DomainNotificationHandler>();
+        User = new Mock<IUser>();
+        
+        User.Setup(x => x.GetUserId()).Returns(Guid.NewGuid());
+        User.Setup(x => x.GetUserRole()).Returns(UserRole.Admin);
 
         UnitOfWork.Setup(unit => unit.CommitAsync()).ReturnsAsync(true);
     }

@@ -19,7 +19,8 @@ public sealed class CreateUserCommandHandlerTests
             Guid.NewGuid(),
             "test@email.com",
             "Test",
-            "Email");
+            "Email",
+            "SomePassword");
         
         _fixture.CommandHandler.Handle(command, default).Wait();
 
@@ -38,7 +39,8 @@ public sealed class CreateUserCommandHandlerTests
             user.Id,
             "test@email.com",
             "Test",
-            "Email");
+            "Email",
+            "SomePassword");
         
         _fixture.CommandHandler.Handle(command, default).Wait();
 

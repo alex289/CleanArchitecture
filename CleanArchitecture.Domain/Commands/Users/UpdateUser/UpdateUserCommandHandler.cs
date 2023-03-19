@@ -47,8 +47,14 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
             return;
         }
 
-        if (_user.GetUserId() != request.UserId || _user.GetUserRole() != UserRole.Admin)
+        if (_user.GetUserId() != request.UserId && _user.GetUserRole() != UserRole.Admin)
         {
+            await NotifyAsync(
+                new DomainNotification(
+                    request.MessageType,
+                    $"No permission to update user {request.UserId}",
+                    ErrorCodes.Unauthorized));
+            
             return;
         }
 

@@ -1,5 +1,6 @@
 using System;
 using CleanArchitecture.Domain.Commands.Users.DeleteUser;
+using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Interfaces.Repositories;
 using Moq;
 
@@ -18,7 +19,8 @@ public sealed class DeleteUserCommandTestFixture : CommandHandlerFixtureBase
             Bus.Object,
             UnitOfWork.Object,
             NotificationHandler.Object,
-            UserRepository.Object);
+            UserRepository.Object,
+            User.Object);
     }
 
     public Entities.User SetupUser()
@@ -27,7 +29,9 @@ public sealed class DeleteUserCommandTestFixture : CommandHandlerFixtureBase
             Guid.NewGuid(),
             "max@mustermann.com",
             "Max",
-            "Mustermann");
+            "Mustermann",
+            "Password",
+            UserRole.User);
 
         UserRepository
             .Setup(x => x.GetByIdAsync(It.Is<Guid>(y => y == user.Id)))

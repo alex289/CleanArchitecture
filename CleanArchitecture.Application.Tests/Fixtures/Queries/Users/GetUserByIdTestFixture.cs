@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using CleanArchitecture.Application.Queries.Users.GetUserById;
 using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Interfaces.Repositories;
 using MockQueryable.Moq;
 using Moq;
@@ -28,7 +29,9 @@ public sealed class GetUserByIdTestFixture : QueryHandlerBaseFixture
                 ExistingUserId, 
                 "max@mustermann.com", 
                 "Max", 
-                "Mustermann"));
+                "Mustermann",
+                "Password",
+                UserRole.User));
 
         var query = new[] { user.Object }.AsQueryable().BuildMock();
         
@@ -44,7 +47,9 @@ public sealed class GetUserByIdTestFixture : QueryHandlerBaseFixture
                 ExistingUserId,
                 "max@mustermann.com",
                 "Max",
-                "Mustermann"));
+                "Mustermann",
+                "Password",
+                UserRole.User));
 
         user.Object.Delete();
 

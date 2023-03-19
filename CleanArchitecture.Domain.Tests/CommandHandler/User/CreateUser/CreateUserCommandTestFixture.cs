@@ -1,5 +1,6 @@
 using System;
 using CleanArchitecture.Domain.Commands.Users.CreateUser;
+using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Interfaces.Repositories;
 using Moq;
 
@@ -27,7 +28,9 @@ public sealed class CreateUserCommandTestFixture : CommandHandlerFixtureBase
             Guid.NewGuid(),
             "max@mustermann.com",
             "Max",
-            "Mustermann");
+            "Mustermann",
+            "Password",
+            UserRole.User);
 
         UserRepository
             .Setup(x => x.GetByIdAsync(It.Is<Guid>(y => y == user.Id)))

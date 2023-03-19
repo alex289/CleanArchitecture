@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using CleanArchitecture.Application.ViewModels.Users;
+using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.IntegrationTests.Extensions;
 using CleanArchitecture.IntegrationTests.Fixtures;
 using FluentAssertions;
@@ -42,7 +43,11 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
     [Fact, Priority(5)]
     public async Task Should_Create_User()
     {
-        var user = new CreateUserViewModel("test@email.com", "Test", "Email");
+        var user = new CreateUserViewModel(
+            "test@email.com", 
+            "Test", 
+            "Email",
+            "Password");
 
         var response = await _fixture.ServerClient.PostAsJsonAsync("user", user);
 
@@ -81,7 +86,8 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
             _fixture.CreatedUserId,
             "newtest@email.com",
             "NewTest",
-            "NewEmail");
+            "NewEmail",
+            UserRole.User);
 
         var response = await _fixture.ServerClient.PutAsJsonAsync("user", user);
 

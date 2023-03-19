@@ -112,10 +112,12 @@ public sealed class CreateUserCommandValidationTests :
         Guid? userId = null,
         string? email = null,
         string? surName = null,
-        string? givenName = null) => 
+        string? givenName = null,
+        string? password = null) => 
         new (
             userId ?? Guid.NewGuid(),
             email ?? "test@email.com",
             surName ?? "test",
-            givenName ?? "email");
+            givenName ?? "email",
+            password ?? "some password");
 }
