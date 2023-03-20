@@ -10,6 +10,8 @@
       <PackageReference Include="FluentValidation" Version="11.5.1" />
       <PackageReference Include="MediatR" Version="12.0.1" />
       <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+      <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
+      <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.27.0" />
     </ItemGroup>
 
 </Project>

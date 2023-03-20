@@ -1,26 +1,31 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Api", "CleanArchitecture.Api\CleanArchitecture.Api.csproj", "{CD720672-0ED9-4FDD-AD69-A416CB394318}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33502.453
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Api", "CleanArchitecture.Api\CleanArchitecture.Api.csproj", "{CD720672-0ED9-4FDD-AD69-A416CB394318}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Application", "CleanArchitecture.Application\CleanArchitecture.Application.csproj", "{859B50AF-9C8D-4489-B64A-EEBDF756A012}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Application", "CleanArchitecture.Application\CleanArchitecture.Application.csproj", "{859B50AF-9C8D-4489-B64A-EEBDF756A012}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Domain", "CleanArchitecture.Domain\CleanArchitecture.Domain.csproj", "{12C5BEEF-9BFD-450A-8627-6205702CA32B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Domain", "CleanArchitecture.Domain\CleanArchitecture.Domain.csproj", "{12C5BEEF-9BFD-450A-8627-6205702CA32B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Infrastructure", "CleanArchitecture.Infrastructure\CleanArchitecture.Infrastructure.csproj", "{B6D046D8-D84A-4B7E-B05B-310B85EC8F1C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Infrastructure", "CleanArchitecture.Infrastructure\CleanArchitecture.Infrastructure.csproj", "{B6D046D8-D84A-4B7E-B05B-310B85EC8F1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Application.Tests", "CleanArchitecture.Application.Tests\CleanArchitecture.Application.Tests.csproj", "{6794B922-2AFD-4187-944D-7984B9973259}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Application.Tests", "CleanArchitecture.Application.Tests\CleanArchitecture.Application.Tests.csproj", "{6794B922-2AFD-4187-944D-7984B9973259}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Domain.Tests", "CleanArchitecture.Domain.Tests\CleanArchitecture.Domain.Tests.csproj", "{E1F25916-EBBE-4CBD-99A2-1EB2F604D55C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Domain.Tests", "CleanArchitecture.Domain.Tests\CleanArchitecture.Domain.Tests.csproj", "{E1F25916-EBBE-4CBD-99A2-1EB2F604D55C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Infrastructure.Tests", "CleanArchitecture.Infrastructure.Tests\CleanArchitecture.Infrastructure.Tests.csproj", "{EC8122EB-C5E0-452F-B1CE-DA47DAEBC8F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Infrastructure.Tests", "CleanArchitecture.Infrastructure.Tests\CleanArchitecture.Infrastructure.Tests.csproj", "{EC8122EB-C5E0-452F-B1CE-DA47DAEBC8F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.IntegrationTests", "CleanArchitecture.IntegrationTests\CleanArchitecture.IntegrationTests.csproj", "{39732BD4-909F-410C-8737-1F9FE3E269A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.IntegrationTests", "CleanArchitecture.IntegrationTests\CleanArchitecture.IntegrationTests.csproj", "{39732BD4-909F-410C-8737-1F9FE3E269A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.gRPC", "CleanArchitecture.gRPC\CleanArchitecture.gRPC.csproj", "{7A6353A9-B60C-4B13-A849-D21B315047EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.gRPC", "CleanArchitecture.gRPC\CleanArchitecture.gRPC.csproj", "{7A6353A9-B60C-4B13-A849-D21B315047EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.Proto", "CleanArchitecture.Proto\CleanArchitecture.Proto.csproj", "{5F978903-7A7A-45C2-ABE0-C2906ECD326B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.Proto", "CleanArchitecture.Proto\CleanArchitecture.Proto.csproj", "{5F978903-7A7A-45C2-ABE0-C2906ECD326B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CleanArchitecture.gRPC.Tests", "CleanArchitecture.gRPC.Tests\CleanArchitecture.gRPC.Tests.csproj", "{E3A836DD-85DB-44FD-BC19-DDFE111D9EB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CleanArchitecture.gRPC.Tests", "CleanArchitecture.gRPC.Tests\CleanArchitecture.gRPC.Tests.csproj", "{E3A836DD-85DB-44FD-BC19-DDFE111D9EB0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D3DF9DF5-BD7D-48BC-8BE6-DBD0FABB8B45}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -72,5 +77,15 @@ Global
 		{E3A836DD-85DB-44FD-BC19-DDFE111D9EB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3A836DD-85DB-44FD-BC19-DDFE111D9EB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3A836DD-85DB-44FD-BC19-DDFE111D9EB0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6794B922-2AFD-4187-944D-7984B9973259} = {D3DF9DF5-BD7D-48BC-8BE6-DBD0FABB8B45}
+		{E1F25916-EBBE-4CBD-99A2-1EB2F604D55C} = {D3DF9DF5-BD7D-48BC-8BE6-DBD0FABB8B45}
+		{EC8122EB-C5E0-452F-B1CE-DA47DAEBC8F2} = {D3DF9DF5-BD7D-48BC-8BE6-DBD0FABB8B45}
+		{39732BD4-909F-410C-8737-1F9FE3E269A7} = {D3DF9DF5-BD7D-48BC-8BE6-DBD0FABB8B45}
+		{E3A836DD-85DB-44FD-BC19-DDFE111D9EB0} = {D3DF9DF5-BD7D-48BC-8BE6-DBD0FABB8B45}
 	EndGlobalSection
 EndGlobal

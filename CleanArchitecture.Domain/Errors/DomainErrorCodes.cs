@@ -22,4 +22,5 @@ public static class DomainErrorCodes
     
     // User
     public const string UserAlreadyExists = "USER_ALREADY_EXISTS";
+    public const string UserPasswordIncorrect = "USER_PASSWORD_INCORRECT";
 }

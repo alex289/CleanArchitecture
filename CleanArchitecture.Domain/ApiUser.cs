@@ -29,6 +29,19 @@ public sealed class ApiUser : IUser
         throw new ArgumentException("Could not parse user id to guid");
     }
 
+    public string GetUserEmail()
+    {
+        var claim = _httpContextAccessor.HttpContext?.User.Claims
+            .FirstOrDefault(x => string.Equals(x.Type, ClaimTypes.Email));
+
+        if (!string.IsNullOrWhiteSpace(claim?.Value))
+        {
+            return claim?.Value!;
+        }
+
+        throw new ArgumentException("Could not parse user email");
+    }
+
     public UserRole GetUserRole()
     {
         var claim = _httpContextAccessor.HttpContext?.User.Claims
