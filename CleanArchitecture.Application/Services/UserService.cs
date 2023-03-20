@@ -15,15 +15,22 @@ namespace CleanArchitecture.Application.Services;
 public sealed class UserService : IUserService
 {
     private readonly IMediatorHandler _bus;
+    private readonly IUser _user;
 
-    public UserService(IMediatorHandler bus)
+    public UserService(IMediatorHandler bus, IUser user)
     {
         _bus = bus;
+        _user = user;
     }
 
     public async Task<UserViewModel?> GetUserByUserIdAsync(Guid userId, bool isDeleted)
     {
         return await _bus.QueryAsync(new GetUserByIdQuery(userId, isDeleted));
+    }
+    
+    public async Task<UserViewModel?> GetCurrentUserAsync()
+    {
+        return await _bus.QueryAsync(new GetUserByIdQuery(_user.GetUserId(), false));
     }
 
     public async Task<IEnumerable<UserViewModel>> GetAllUsersAsync()

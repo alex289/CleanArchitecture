@@ -53,7 +53,7 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
                 new DomainNotification(
                     request.MessageType,
                     $"No permission to update user {request.UserId}",
-                    ErrorCodes.Unauthorized));
+                    ErrorCodes.InsufficientPermissions));
             
             return;
         }

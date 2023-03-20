@@ -1,7 +1,7 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using CleanArchitecture.Application.Extensions;
 using CleanArchitecture.Domain.Extensions;
+using CleanArchitecture.Domain.Settings;
 using CleanArchitecture.gRPC;
 using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.Infrastructure.Extensions;
@@ -45,6 +45,11 @@ builder.Services.AddServices();
 builder.Services.AddCommandHandlers();
 builder.Services.AddNotificationHandlers();
 builder.Services.AddApiUser();
+
+builder.Services
+    .AddOptions<TokenSettings>()
+    .Bind(builder.Configuration.GetSection("Auth"))
+    .ValidateOnStart();
 
 builder.Services.AddMediatR(cfg =>
 {

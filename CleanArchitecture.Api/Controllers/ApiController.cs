@@ -62,6 +62,11 @@ public class ApiController : ControllerBase
         {
             return HttpStatusCode.NotFound;
         }
+        
+        if (_notifications.GetNotifications().Any(n => n.Code == ErrorCodes.InsufficientPermissions))
+        {
+            return HttpStatusCode.Forbidden;
+        }
 
         return HttpStatusCode.BadRequest;
     }

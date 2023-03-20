@@ -40,6 +40,14 @@ public class UserController : ApiController
         return Response(user);
     }
     
+    [Authorize]
+    [HttpGet("me")]
+    public async Task<IActionResult> GetCurrentUserAsync()
+    {
+        var user = await _userService.GetCurrentUserAsync();
+        return Response(user);
+    }
+    
     [HttpPost]
     public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserViewModel viewModel)
     {

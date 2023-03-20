@@ -1,4 +1,5 @@
 using CleanArchitecture.Domain.Errors;
+using CleanArchitecture.Domain.Extensions.Validation;
 using FluentValidation;
 
 namespace CleanArchitecture.Domain.Commands.Users.CreateUser;
@@ -11,6 +12,7 @@ public sealed class CreateUserCommandValidation : AbstractValidator<CreateUserCo
         AddRuleForEmail();
         AddRuleForSurname();
         AddRuleForGivenName();
+        AddRuleForPassword();
     }
 
     private void AddRuleForId()
@@ -52,5 +54,11 @@ public sealed class CreateUserCommandValidation : AbstractValidator<CreateUserCo
             .MaximumLength(100)
             .WithErrorCode(DomainErrorCodes.UserGivenNameExceedsMaxLength)
             .WithMessage("Given name may not be longer than 100 characters");
+    }
+    
+    private void AddRuleForPassword()
+    {
+        RuleFor(cmd => cmd.Password)
+            .Password();
     }
 }

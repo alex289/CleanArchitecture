@@ -44,6 +44,18 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
                     DomainErrorCodes.UserAlreadyExists));
             return;
         }
+        
+        existingUser = await _userRepository.GetByEmailAsync(request.Email);
+        
+        if (existingUser != null)
+        {
+            await _bus.RaiseEventAsync(
+                new DomainNotification(
+                    request.MessageType,
+                    $"There is already a User with Email {request.Email}",
+                    DomainErrorCodes.UserAlreadyExists));
+            return;
+        }
 
         var passwordHash = BC.HashPassword(request.Password);
 

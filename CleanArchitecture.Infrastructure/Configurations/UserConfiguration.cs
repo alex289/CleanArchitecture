@@ -1,4 +1,6 @@
+using System;
 using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,5 +24,19 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .Property(user => user.Surname)
             .IsRequired()
             .HasMaxLength(100);
+        
+        builder
+            .Property(user => user.Password)
+            .IsRequired()
+            .HasMaxLength(128);
+
+        builder.HasData(new User(
+            Guid.NewGuid(),
+            "admin@email.com",
+            "Admin",
+            "User",
+            // !Password123#
+            "$2a$12$Blal/uiFIJdYsCLTMUik/egLbfg3XhbnxBC6Sb5IKz2ZYhiU/MzL2",
+            UserRole.Admin));
     }
 }

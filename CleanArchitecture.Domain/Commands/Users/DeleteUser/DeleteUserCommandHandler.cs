@@ -53,7 +53,7 @@ public sealed class DeleteUserCommandHandler : CommandHandlerBase,
                 new DomainNotification(
                     request.MessageType,
                     $"No permission to delete user {request.UserId}",
-                    ErrorCodes.Unauthorized));
+                    ErrorCodes.InsufficientPermissions));
             
             return;
         }
