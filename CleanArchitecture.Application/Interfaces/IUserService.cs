@@ -13,4 +13,6 @@ public interface IUserService
     public Task<Guid> CreateUserAsync(CreateUserViewModel user);
     public Task UpdateUserAsync(UpdateUserViewModel user);
     public Task DeleteUserAsync(Guid userId);
+    public Task ChangePasswordAsync(ChangePasswordViewModel viewModel);
+    public Task<string> LoginUserAsync(LoginUserViewModel viewModel);
 }

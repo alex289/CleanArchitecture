@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Errors;
+using CleanArchitecture.Domain.Events.User;
 using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Domain.Interfaces.Repositories;
 using CleanArchitecture.Domain.Notifications;
@@ -64,7 +65,7 @@ public sealed class ChangePasswordCommandHandler : CommandHandlerBase,
 
         if (await CommitAsync())
         {
-            await _bus.RaiseEventAsync(new User(user.Id));
+            await _bus.RaiseEventAsync(new PasswordChangedEvent(user.Id));
         }
     }
 }

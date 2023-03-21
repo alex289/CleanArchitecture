@@ -70,4 +70,19 @@ public class UserController : ApiController
         await _userService.UpdateUserAsync(viewModel);
         return Response(viewModel);
     }
+
+    [Authorize]
+    [HttpPost("changePassword")]
+    public async Task<IActionResult> ChangePasswordAsync([FromBody] ChangePasswordViewModel viewModel)
+    {
+        await _userService.ChangePasswordAsync(viewModel);
+        return Response(viewModel);
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> LoginUserAsync([FromBody] LoginUserViewModel viewModel)
+    {
+        var token = await _userService.LoginUserAsync(viewModel);
+        return Response(token);
+    }
 }

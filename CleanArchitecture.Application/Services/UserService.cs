@@ -5,8 +5,10 @@ using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Application.Queries.Users.GetAll;
 using CleanArchitecture.Application.Queries.Users.GetUserById;
 using CleanArchitecture.Application.ViewModels.Users;
+using CleanArchitecture.Domain.Commands.Users.ChangePassword;
 using CleanArchitecture.Domain.Commands.Users.CreateUser;
 using CleanArchitecture.Domain.Commands.Users.DeleteUser;
+using CleanArchitecture.Domain.Commands.Users.LoginUser;
 using CleanArchitecture.Domain.Commands.Users.UpdateUser;
 using CleanArchitecture.Domain.Interfaces;
 
@@ -65,5 +67,16 @@ public sealed class UserService : IUserService
     public async Task DeleteUserAsync(Guid userId)
     {
         await _bus.SendCommandAsync(new DeleteUserCommand(userId));
+    }
+
+    public async Task ChangePasswordAsync(ChangePasswordViewModel viewModel)
+    {
+        await _bus.SendCommandAsync(new ChangePasswordCommand(viewModel.Password, viewModel.NewPassword));
+    }
+
+    public async Task<string> LoginUserAsync(LoginUserViewModel viewModel)
+    {
+
+        return await _bus.QueryAsync(new LoginUserCommand(viewModel.Email, viewModel.Password));
     }
 }

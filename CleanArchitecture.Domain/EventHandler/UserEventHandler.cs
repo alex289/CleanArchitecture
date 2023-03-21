@@ -8,7 +8,8 @@ namespace CleanArchitecture.Domain.EventHandler;
 public sealed class UserEventHandler :
     INotificationHandler<UserDeletedEvent>,
     INotificationHandler<UserCreatedEvent>,
-    INotificationHandler<UserUpdatedEvent>
+    INotificationHandler<UserUpdatedEvent>,
+    INotificationHandler<PasswordChangedEvent>
 {
     public Task Handle(UserDeletedEvent notification, CancellationToken cancellationToken)
     {
@@ -21,6 +22,11 @@ public sealed class UserEventHandler :
     }
     
     public Task Handle(UserUpdatedEvent notification, CancellationToken cancellationToken)
+    {
+        return Task.CompletedTask;
+    }
+
+    public Task Handle(PasswordChangedEvent notification, CancellationToken cancellationToken)
     {
         return Task.CompletedTask;
     }
