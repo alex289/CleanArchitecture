@@ -1,2 +1,0 @@
-- Remove warnings and apply suggestions
-- Add authentication and authorization

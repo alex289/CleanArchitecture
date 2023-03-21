@@ -109,7 +109,7 @@ public sealed class UpdateUserCommandValidationTests :
             "Given name may not be longer than 100 characters");
     }
     
-    private UpdateUserCommand CreateTestCommand(
+    private static UpdateUserCommand CreateTestCommand(
         Guid? userId = null,
         string? email = null,
         string? surName = null,

@@ -119,5 +119,5 @@ public sealed class CreateUserCommandValidationTests :
             email ?? "test@email.com",
             surName ?? "test",
             givenName ?? "email",
-            password ?? "some password");
+            password ?? "Po=PF]PC6t.?8?ks)A6W");
 }

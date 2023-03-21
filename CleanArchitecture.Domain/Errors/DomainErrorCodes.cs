@@ -10,7 +10,8 @@ public static class DomainErrorCodes
     public const string UserSurnameExceedsMaxLength = "USER_SURNAME_EXCEEDS_MAX_LENGTH";
     public const string UserGivenNameExceedsMaxLength = "USER_GIVEN_NAME_EXCEEDS_MAX_LENGTH";
     public const string UserInvalidEmail = "USER_INVALID_EMAIL";
-    
+    public const string UserInvalidRole = "USER_INVALID_ROLE";
+
     // User Password Validation
     public const string UserEmptyPassword = "USER_PASSWORD_MAY_NOT_BE_EMPTY";
     public const string UserShortPassword = "USER_PASSWORD_MAY_NOT_BE_SHORTER_THAN_6_CHARACTERS";

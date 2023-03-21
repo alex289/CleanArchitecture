@@ -20,7 +20,7 @@ public sealed class CreateUserCommandHandlerTests
             "test@email.com",
             "Test",
             "Email",
-            "SomePassword");
+            "Po=PF]PC6t.?8?ks)A6W");
         
         _fixture.CommandHandler.Handle(command, default).Wait();
 
@@ -40,7 +40,7 @@ public sealed class CreateUserCommandHandlerTests
             "test@email.com",
             "Test",
             "Email",
-            "SomePassword");
+            "Po=PF]PC6t.?8?ks)A6W");
         
         _fixture.CommandHandler.Handle(command, default).Wait();
 
