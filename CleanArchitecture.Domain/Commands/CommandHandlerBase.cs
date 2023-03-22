@@ -9,7 +9,7 @@ namespace CleanArchitecture.Domain.Commands;
 
 public abstract class CommandHandlerBase
 {
-    protected readonly IMediatorHandler _bus;
+    protected readonly IMediatorHandler Bus;
     private readonly DomainNotificationHandler _notifications;
     private readonly IUnitOfWork _unitOfWork;
 
@@ -18,12 +18,12 @@ public abstract class CommandHandlerBase
         IUnitOfWork unitOfWork,
         INotificationHandler<DomainNotification> notifications)
     {
-        _bus = bus;
+        Bus = bus;
         _unitOfWork = unitOfWork;
         _notifications = (DomainNotificationHandler)notifications;
     }
 
-    public async Task<bool> CommitAsync()
+    protected async Task<bool> CommitAsync()
     {
         if (_notifications.HasNotifications())
         {
@@ -35,7 +35,7 @@ public abstract class CommandHandlerBase
             return true;
         }
 
-        await _bus.RaiseEventAsync(
+        await Bus.RaiseEventAsync(
             new DomainNotification(
                 "Commit",
                 "Problem occured while saving the data. Please try again.",
@@ -46,13 +46,13 @@ public abstract class CommandHandlerBase
 
     protected async Task NotifyAsync(string key, string message, string code)
     {
-        await _bus.RaiseEventAsync(
+        await Bus.RaiseEventAsync(
             new DomainNotification(key, message, code));
     }
 
     protected async Task NotifyAsync(DomainNotification notification)
     {
-        await _bus.RaiseEventAsync(notification);
+        await Bus.RaiseEventAsync(notification);
     }
 
     protected async ValueTask<bool> TestValidityAsync(CommandBase command)

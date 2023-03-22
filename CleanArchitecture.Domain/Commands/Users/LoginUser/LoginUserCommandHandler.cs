@@ -76,7 +76,7 @@ public sealed class LoginUserCommandHandler : CommandHandlerBase,
             _tokenSettings);
     }
 
-    public static string BuildToken(string email, UserRole role, Guid id, TokenSettings tokenSettings)
+    private static string BuildToken(string email, UserRole role, Guid id, TokenSettings tokenSettings)
     {
         var claims = new[]
         {

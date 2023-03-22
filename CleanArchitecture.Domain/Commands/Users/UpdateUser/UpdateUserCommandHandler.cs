@@ -38,7 +38,7 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
 
         if (user == null)
         {
-            await _bus.RaiseEventAsync(
+            await Bus.RaiseEventAsync(
                 new DomainNotification(
                     request.MessageType,
                     $"There is no User with Id {request.UserId}",
@@ -70,7 +70,7 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
 
         if (await CommitAsync())
         {
-            await _bus.RaiseEventAsync(new UserUpdatedEvent(user.Id));
+            await Bus.RaiseEventAsync(new UserUpdatedEvent(user.Id));
         }
     }
 }

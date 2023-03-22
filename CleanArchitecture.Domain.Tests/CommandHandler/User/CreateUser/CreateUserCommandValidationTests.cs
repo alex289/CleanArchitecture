@@ -176,7 +176,7 @@ public sealed class CreateUserCommandValidationTests :
         ShouldHaveSingleError(command, DomainErrorCodes.UserLongPassword);
     }
 
-    private CreateUserCommand CreateTestCommand(
+    private static CreateUserCommand CreateTestCommand(
         Guid? userId = null,
         string? email = null,
         string? surName = null,

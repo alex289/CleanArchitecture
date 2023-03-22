@@ -16,9 +16,9 @@ public sealed class DomainNotificationHandlerTests
     [Fact]
     public void Should_Handle_DomainNotification()
     {
-        var key = "Key";
-        var value = "Value";
-        var code = "Code";
+        const string key = "Key";
+        const string value = "Value";
+        const string code = "Code";
 
         var domainNotification = new DomainNotification(key, value, code);
         var domainNotificationHandler = new DomainNotificationHandler();
@@ -29,9 +29,9 @@ public sealed class DomainNotificationHandlerTests
     [Fact]
     public void Should_Handle_DomainNotification_Overload()
     {
-        var key = "Key";
-        var value = "Value";
-        var code = "Code";
+        const string key = "Key";
+        const string value = "Value";
+        const string code = "Code";
 
         var domainNotification = new DomainNotification(key, value, code);
         var domainNotificationHandler = new DomainNotificationHandler();
@@ -42,9 +42,9 @@ public sealed class DomainNotificationHandlerTests
     [Fact]
     public void DomainNotification_HasNotifications_After_Handling_One()
     {
-        var key = "Key";
-        var value = "Value";
-        var code = "Code";
+        const string key = "Key";
+        const string value = "Value";
+        const string code = "Code";
 
         var domainNotification = new DomainNotification(key, value, code);
         var domainNotificationHandler = new DomainNotificationHandler();

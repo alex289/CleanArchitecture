@@ -51,7 +51,7 @@ public sealed class ApiUser : IUser
 
         if (!string.IsNullOrWhiteSpace(claim?.Value))
         {
-            return claim?.Value!;
+            return claim.Value;
         }
 
         throw new ArgumentException("Could not parse user email");

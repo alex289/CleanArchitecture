@@ -19,9 +19,9 @@ public sealed class InMemoryBusTests
 
         var inMemoryBus = new InMemoryBus(mediator.Object);
 
-        var key = "Key";
-        var value = "Value";
-        var code = "Code";
+        const string key = "Key";
+        const string value = "Value";
+        const string code = "Code";
 
         var domainEvent = new DomainNotification(key, value, code);
 

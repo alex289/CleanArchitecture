@@ -21,8 +21,8 @@ public sealed class ChangePasswordCommandTestFixture : CommandHandlerFixtureBase
             User.Object);
     }
 
-    public ChangePasswordCommandHandler CommandHandler { get; set; }
-    public Mock<IUserRepository> UserRepository { get; set; }
+    public ChangePasswordCommandHandler CommandHandler { get; }
+    private Mock<IUserRepository> UserRepository { get; }
 
     public Entities.User SetupUser()
     {

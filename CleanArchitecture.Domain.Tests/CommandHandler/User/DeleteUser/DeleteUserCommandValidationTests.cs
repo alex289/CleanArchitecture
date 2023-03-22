@@ -31,7 +31,7 @@ public sealed class DeleteUserCommandValidationTests :
             "User id may not be empty");
     }
 
-    private DeleteUserCommand CreateTestCommand(Guid? userId = null)
+    private static DeleteUserCommand CreateTestCommand(Guid? userId = null)
     {
         return new(userId ?? Guid.NewGuid());
     }

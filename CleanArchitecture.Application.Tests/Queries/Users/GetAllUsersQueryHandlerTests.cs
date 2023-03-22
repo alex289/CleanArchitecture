@@ -22,9 +22,10 @@ public sealed class GetAllUsersQueryHandlerTests
 
         _fixture.VerifyNoDomainNotification();
 
-        result.Should().NotBeNull();
-        result.Should().ContainSingle();
-        result.FirstOrDefault()!.Id.Should().Be(_fixture.ExistingUserId);
+        var userViewModels = result.ToArray();
+        userViewModels.Should().NotBeNull();
+        userViewModels.Should().ContainSingle();
+        userViewModels.FirstOrDefault()!.Id.Should().Be(_fixture.ExistingUserId);
     }
 
     [Fact]

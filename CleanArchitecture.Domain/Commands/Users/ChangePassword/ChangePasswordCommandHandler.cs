@@ -65,7 +65,7 @@ public sealed class ChangePasswordCommandHandler : CommandHandlerBase,
 
         if (await CommitAsync())
         {
-            await _bus.RaiseEventAsync(new PasswordChangedEvent(user.Id));
+            await Bus.RaiseEventAsync(new PasswordChangedEvent(user.Id));
         }
     }
 }

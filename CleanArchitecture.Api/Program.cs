@@ -135,7 +135,7 @@ TokenValidationParameters CreateTokenValidationParameters()
     return result;
 }
 
-// Needed for integration tests webapplication factory
+// Needed for integration tests web application factory
 public partial class Program
 {
 }

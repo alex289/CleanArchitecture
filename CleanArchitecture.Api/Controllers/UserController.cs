@@ -36,7 +36,7 @@ public class UserController : ApiController
     }
 
     [Authorize]
-    [HttpGet("{id}")]
+    [HttpGet("{id:guid}")]
     [SwaggerOperation("Get a user by id")]
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<UserViewModel>))]
     public async Task<IActionResult> GetUserByIdAsync(
@@ -67,7 +67,7 @@ public class UserController : ApiController
     }
 
     [Authorize]
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:guid}")]
     [SwaggerOperation("Delete a user")]
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<Guid>))]
     public async Task<IActionResult> DeleteUserAsync([FromRoute] Guid id)

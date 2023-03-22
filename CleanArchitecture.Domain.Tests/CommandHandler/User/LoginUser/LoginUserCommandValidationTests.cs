@@ -120,7 +120,7 @@ public sealed class LoginUserCommandValidationTests :
         ShouldHaveSingleError(command, DomainErrorCodes.UserLongPassword);
     }
 
-    private LoginUserCommand CreateTestCommand(
+    private static LoginUserCommand CreateTestCommand(
         string? email = null,
         string? password = null)
     {

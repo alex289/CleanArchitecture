@@ -37,7 +37,7 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
 
         if (existingUser != null)
         {
-            await _bus.RaiseEventAsync(
+            await Bus.RaiseEventAsync(
                 new DomainNotification(
                     request.MessageType,
                     $"There is already a User with Id {request.UserId}",
@@ -49,7 +49,7 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
 
         if (existingUser != null)
         {
-            await _bus.RaiseEventAsync(
+            await Bus.RaiseEventAsync(
                 new DomainNotification(
                     request.MessageType,
                     $"There is already a User with Email {request.Email}",
@@ -71,7 +71,7 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
 
         if (await CommitAsync())
         {
-            await _bus.RaiseEventAsync(new UserCreatedEvent(user.Id));
+            await Bus.RaiseEventAsync(new UserCreatedEvent(user.Id));
         }
     }
 }

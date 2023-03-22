@@ -87,7 +87,7 @@ public sealed class ChangePasswordCommandValidationTests :
         ShouldHaveSingleError(command, DomainErrorCodes.UserLongPassword);
     }
 
-    private ChangePasswordCommand CreateTestCommand(
+    private static ChangePasswordCommand CreateTestCommand(
         string? password = null, string? newPassword = null)
     {
         return new(
