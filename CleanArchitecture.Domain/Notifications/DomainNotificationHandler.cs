@@ -15,18 +15,18 @@ public class DomainNotificationHandler : INotificationHandler<DomainNotification
         _notifications = new List<DomainNotification>();
     }
 
-    public virtual List<DomainNotification> GetNotifications()
-    {
-        return _notifications;
-    }
-    
     public Task Handle(DomainNotification notification, CancellationToken cancellationToken = default)
     {
         _notifications.Add(notification);
 
         return Task.CompletedTask;
     }
-    
+
+    public virtual List<DomainNotification> GetNotifications()
+    {
+        return _notifications;
+    }
+
     public virtual bool HasNotifications()
     {
         return GetNotifications().Any();

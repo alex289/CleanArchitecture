@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Threading.Tasks;
+using CleanArchitecture.Application.Queries.Users.GetAll;
 using CleanArchitecture.Application.Tests.Fixtures.Queries.Users;
 using FluentAssertions;
 using Xunit;
@@ -16,14 +17,15 @@ public sealed class GetAllUsersQueryHandlerTests
         _fixture.SetupUserAsync();
 
         var result = await _fixture.Handler.Handle(
-            new(),
+            new GetAllUsersQuery(),
             default);
-        
+
         _fixture.VerifyNoDomainNotification();
-        
-        result.Should().NotBeNull();
-        result.Should().ContainSingle();
-        result.FirstOrDefault()!.Id.Should().Be(_fixture.ExistingUserId);
+
+        var userViewModels = result.ToArray();
+        userViewModels.Should().NotBeNull();
+        userViewModels.Should().ContainSingle();
+        userViewModels.FirstOrDefault()!.Id.Should().Be(_fixture.ExistingUserId);
     }
 
     [Fact]
@@ -32,7 +34,7 @@ public sealed class GetAllUsersQueryHandlerTests
         _fixture.SetupDeletedUserAsync();
 
         var result = await _fixture.Handler.Handle(
-            new(),
+            new GetAllUsersQuery(),
             default);
 
         _fixture.VerifyNoDomainNotification();

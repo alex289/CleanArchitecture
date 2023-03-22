@@ -9,18 +9,19 @@ namespace CleanArchitecture.Domain.Tests.CommandHandler.User.CreateUser;
 public sealed class CreateUserCommandHandlerTests
 {
     private readonly CreateUserCommandTestFixture _fixture = new();
-    
+
     [Fact]
     public void Should_Create_User()
     {
         _fixture.SetupUser();
-        
+
         var command = new CreateUserCommand(
             Guid.NewGuid(),
             "test@email.com",
             "Test",
-            "Email");
-        
+            "Email",
+            "Po=PF]PC6t.?8?ks)A6W");
+
         _fixture.CommandHandler.Handle(command, default).Wait();
 
         _fixture
@@ -28,18 +29,19 @@ public sealed class CreateUserCommandHandlerTests
             .VerifyCommit()
             .VerifyRaisedEvent<UserCreatedEvent>(x => x.UserId == command.UserId);
     }
-    
+
     [Fact]
     public void Should_Not_Create_Already_Existing_User()
     {
         var user = _fixture.SetupUser();
-        
+
         var command = new CreateUserCommand(
             user.Id,
             "test@email.com",
             "Test",
-            "Email");
-        
+            "Email",
+            "Po=PF]PC6t.?8?ks)A6W");
+
         _fixture.CommandHandler.Handle(command, default).Wait();
 
         _fixture

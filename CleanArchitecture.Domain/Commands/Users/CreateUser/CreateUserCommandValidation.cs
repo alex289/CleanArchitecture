@@ -1,4 +1,5 @@
 using CleanArchitecture.Domain.Errors;
+using CleanArchitecture.Domain.Extensions.Validation;
 using FluentValidation;
 
 namespace CleanArchitecture.Domain.Commands.Users.CreateUser;
@@ -11,6 +12,7 @@ public sealed class CreateUserCommandValidation : AbstractValidator<CreateUserCo
         AddRuleForEmail();
         AddRuleForSurname();
         AddRuleForGivenName();
+        AddRuleForPassword();
     }
 
     private void AddRuleForId()
@@ -20,7 +22,7 @@ public sealed class CreateUserCommandValidation : AbstractValidator<CreateUserCo
             .WithErrorCode(DomainErrorCodes.UserEmptyId)
             .WithMessage("User id may not be empty");
     }
-    
+
     private void AddRuleForEmail()
     {
         RuleFor(cmd => cmd.Email)
@@ -31,7 +33,7 @@ public sealed class CreateUserCommandValidation : AbstractValidator<CreateUserCo
             .WithErrorCode(DomainErrorCodes.UserEmailExceedsMaxLength)
             .WithMessage("Email may not be longer than 320 characters");
     }
-    
+
     private void AddRuleForSurname()
     {
         RuleFor(cmd => cmd.Surname)
@@ -42,7 +44,7 @@ public sealed class CreateUserCommandValidation : AbstractValidator<CreateUserCo
             .WithErrorCode(DomainErrorCodes.UserSurnameExceedsMaxLength)
             .WithMessage("Surname may not be longer than 100 characters");
     }
-    
+
     private void AddRuleForGivenName()
     {
         RuleFor(cmd => cmd.GivenName)
@@ -52,5 +54,11 @@ public sealed class CreateUserCommandValidation : AbstractValidator<CreateUserCo
             .MaximumLength(100)
             .WithErrorCode(DomainErrorCodes.UserGivenNameExceedsMaxLength)
             .WithMessage("Given name may not be longer than 100 characters");
+    }
+
+    private void AddRuleForPassword()
+    {
+        RuleFor(cmd => cmd.Password)
+            .Password();
     }
 }

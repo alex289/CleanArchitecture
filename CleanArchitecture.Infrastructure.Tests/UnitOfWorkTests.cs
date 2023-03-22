@@ -19,18 +19,18 @@ public sealed class UnitOfWorkTests
         var options = new DbContextOptionsBuilder<ApplicationDbContext>();
         var dbContextMock = new Mock<ApplicationDbContext>(options.Options);
         var loggerMock = new Mock<ILogger<UnitOfWork<ApplicationDbContext>>>();
-        
+
         dbContextMock
             .Setup(x => x.SaveChangesAsync(CancellationToken.None))
             .Returns(Task.FromResult(1));
-        
+
         var unitOfWork = UnitOfWorkTestFixture.GetUnitOfWork(dbContextMock.Object, loggerMock.Object);
-        
+
         var result = await unitOfWork.CommitAsync();
 
         result.Should().BeTrue();
     }
-    
+
     [Fact]
     public async Task Should_Commit_Async_Returns_False()
     {
@@ -45,7 +45,7 @@ public sealed class UnitOfWorkTests
         var unitOfWork = UnitOfWorkTestFixture.GetUnitOfWork(dbContextMock.Object, loggerMock.Object);
 
         var result = await unitOfWork.CommitAsync();
-            
+
         result.Should().BeFalse();
     }
 

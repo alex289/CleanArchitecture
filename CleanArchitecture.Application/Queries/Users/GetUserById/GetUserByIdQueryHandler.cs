@@ -13,8 +13,8 @@ namespace CleanArchitecture.Application.Queries.Users.GetUserById;
 public sealed class GetUserByIdQueryHandler :
     IRequestHandler<GetUserByIdQuery, UserViewModel?>
 {
-    private readonly IUserRepository _userRepository;
     private readonly IMediatorHandler _bus;
+    private readonly IUserRepository _userRepository;
 
     public GetUserByIdQueryHandler(IUserRepository userRepository, IMediatorHandler bus)
     {
@@ -26,7 +26,7 @@ public sealed class GetUserByIdQueryHandler :
     {
         var user = _userRepository
             .GetAllNoTracking()
-            .FirstOrDefault(x => 
+            .FirstOrDefault(x =>
                 x.Id == request.UserId &&
                 x.Deleted == request.IsDeleted);
 

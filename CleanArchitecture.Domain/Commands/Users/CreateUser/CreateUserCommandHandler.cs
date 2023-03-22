@@ -1,12 +1,14 @@
 using System.Threading;
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Domain.Events.User;
 using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Domain.Interfaces.Repositories;
 using CleanArchitecture.Domain.Notifications;
 using MediatR;
+using BC = BCrypt.Net.BCrypt;
 
 namespace CleanArchitecture.Domain.Commands.Users.CreateUser;
 
@@ -14,7 +16,7 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
     IRequestHandler<CreateUserCommand>
 {
     private readonly IUserRepository _userRepository;
-    
+
     public CreateUserCommandHandler(
         IMediatorHandler bus,
         IUnitOfWork unitOfWork,
@@ -35,7 +37,7 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
 
         if (existingUser != null)
         {
-            await _bus.RaiseEventAsync(
+            await Bus.RaiseEventAsync(
                 new DomainNotification(
                     request.MessageType,
                     $"There is already a User with Id {request.UserId}",
@@ -43,17 +45,33 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
             return;
         }
 
+        existingUser = await _userRepository.GetByEmailAsync(request.Email);
+
+        if (existingUser != null)
+        {
+            await Bus.RaiseEventAsync(
+                new DomainNotification(
+                    request.MessageType,
+                    $"There is already a User with Email {request.Email}",
+                    DomainErrorCodes.UserAlreadyExists));
+            return;
+        }
+
+        var passwordHash = BC.HashPassword(request.Password);
+
         var user = new User(
-            request.UserId, 
+            request.UserId,
             request.Email,
             request.Surname,
-            request.GivenName);
-        
+            request.GivenName,
+            passwordHash,
+            UserRole.User);
+
         _userRepository.Add(user);
-        
+
         if (await CommitAsync())
         {
-            await _bus.RaiseEventAsync(new UserCreatedEvent(user.Id));
+            await Bus.RaiseEventAsync(new UserCreatedEvent(user.Id));
         }
     }
 }

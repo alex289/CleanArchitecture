@@ -14,15 +14,15 @@ public static class ServiceCollectionExtension
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IUserService, UserService>();
-        
+
         return services;
     }
-    
+
     public static IServiceCollection AddQueryHandlers(this IServiceCollection services)
     {
         services.AddScoped<IRequestHandler<GetUserByIdQuery, UserViewModel?>, GetUserByIdQueryHandler>();
         services.AddScoped<IRequestHandler<GetAllUsersQuery, IEnumerable<UserViewModel>>, GetAllUsersQueryHandler>();
-        
+
         return services;
     }
 }

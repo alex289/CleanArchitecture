@@ -10,9 +10,9 @@ public sealed class DomainNotificationTests
     [Fact]
     public void Should_Create_DomainNotification_Instance()
     {
-        string key = "Key";
-        string value = "Value";
-        string code = "Code";
+        const string key = "Key";
+        const string value = "Value";
+        const string code = "Code";
 
         var domainNotification = new DomainNotification(
             key, value, code);
@@ -26,9 +26,9 @@ public sealed class DomainNotificationTests
     [Fact]
     public void Should_Create_DomainNotification_Overload_Instance()
     {
-        string key = "Key";
-        string value = "Value";
-        string code = "Code";
+        const string key = "Key";
+        const string value = "Value";
+        const string code = "Code";
 
         var domainNotification = new DomainNotification(
             key, value, code);

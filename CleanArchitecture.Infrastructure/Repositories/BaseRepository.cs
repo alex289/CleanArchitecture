@@ -50,19 +50,6 @@ public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : Enti
         return await DbSet.FindAsync(id);
     }
 
-    public int SaveChanges()
-    {
-        return _dbContext.SaveChanges();
-    }
-
-    protected virtual void Dispose(bool disposing)
-    {
-        if (disposing)
-        {
-            _dbContext.Dispose();
-        }
-    }
-
     public virtual void Update(TEntity entity)
     {
         DbSet.Update(entity);
@@ -72,7 +59,7 @@ public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : Enti
     {
         return DbSet.AnyAsync(entity => entity.Id == id);
     }
-    
+
     public void Remove(TEntity entity, bool hardDelete = false)
     {
         if (hardDelete)
@@ -86,4 +73,16 @@ public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : Enti
         }
     }
 
+    public int SaveChanges()
+    {
+        return _dbContext.SaveChanges();
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposing)
+        {
+            _dbContext.Dispose();
+        }
+    }
 }

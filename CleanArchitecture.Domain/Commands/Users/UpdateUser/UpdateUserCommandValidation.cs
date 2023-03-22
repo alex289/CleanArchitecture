@@ -11,6 +11,7 @@ public sealed class UpdateUserCommandValidation : AbstractValidator<UpdateUserCo
         AddRuleForEmail();
         AddRuleForSurname();
         AddRuleForGivenName();
+        AddRuleForRole();
     }
 
     private void AddRuleForId()
@@ -20,7 +21,7 @@ public sealed class UpdateUserCommandValidation : AbstractValidator<UpdateUserCo
             .WithErrorCode(DomainErrorCodes.UserEmptyId)
             .WithMessage("User id may not be empty");
     }
-    
+
     private void AddRuleForEmail()
     {
         RuleFor(cmd => cmd.Email)
@@ -31,7 +32,7 @@ public sealed class UpdateUserCommandValidation : AbstractValidator<UpdateUserCo
             .WithErrorCode(DomainErrorCodes.UserEmailExceedsMaxLength)
             .WithMessage("Email may not be longer than 320 characters");
     }
-    
+
     private void AddRuleForSurname()
     {
         RuleFor(cmd => cmd.Surname)
@@ -42,7 +43,7 @@ public sealed class UpdateUserCommandValidation : AbstractValidator<UpdateUserCo
             .WithErrorCode(DomainErrorCodes.UserSurnameExceedsMaxLength)
             .WithMessage("Surname may not be longer than 100 characters");
     }
-    
+
     private void AddRuleForGivenName()
     {
         RuleFor(cmd => cmd.GivenName)
@@ -52,5 +53,13 @@ public sealed class UpdateUserCommandValidation : AbstractValidator<UpdateUserCo
             .MaximumLength(100)
             .WithErrorCode(DomainErrorCodes.UserGivenNameExceedsMaxLength)
             .WithMessage("Given name may not be longer than 100 characters");
+    }
+
+    private void AddRuleForRole()
+    {
+        RuleFor(cmd => cmd.Role)
+            .IsInEnum()
+            .WithErrorCode(DomainErrorCodes.UserInvalidRole)
+            .WithMessage("Role is not a valid role");
     }
 }

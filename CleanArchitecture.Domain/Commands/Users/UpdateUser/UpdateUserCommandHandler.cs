@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Domain.Events.User;
 using CleanArchitecture.Domain.Interfaces;
@@ -12,15 +13,18 @@ namespace CleanArchitecture.Domain.Commands.Users.UpdateUser;
 public sealed class UpdateUserCommandHandler : CommandHandlerBase,
     IRequestHandler<UpdateUserCommand>
 {
+    private readonly IUser _user;
     private readonly IUserRepository _userRepository;
-    
+
     public UpdateUserCommandHandler(
         IMediatorHandler bus,
         IUnitOfWork unitOfWork,
         INotificationHandler<DomainNotification> notifications,
-        IUserRepository userRepository) : base(bus, unitOfWork, notifications)
+        IUserRepository userRepository,
+        IUser user) : base(bus, unitOfWork, notifications)
     {
         _userRepository = userRepository;
+        _user = user;
     }
 
     public async Task Handle(UpdateUserCommand request, CancellationToken cancellationToken)
@@ -34,23 +38,39 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
 
         if (user == null)
         {
-            await _bus.RaiseEventAsync(
+            await Bus.RaiseEventAsync(
                 new DomainNotification(
                     request.MessageType,
                     $"There is no User with Id {request.UserId}",
                     ErrorCodes.ObjectNotFound));
             return;
         }
-        
+
+        if (_user.GetUserId() != request.UserId && _user.GetUserRole() != UserRole.Admin)
+        {
+            await NotifyAsync(
+                new DomainNotification(
+                    request.MessageType,
+                    $"No permission to update user {request.UserId}",
+                    ErrorCodes.InsufficientPermissions));
+
+            return;
+        }
+
+        if (_user.GetUserRole() == UserRole.Admin)
+        {
+            user.SetRole(request.Role);
+        }
+
         user.SetEmail(request.Email);
         user.SetSurname(request.Surname);
         user.SetGivenName(request.GivenName);
-        
+
         _userRepository.Update(user);
-        
+
         if (await CommitAsync())
         {
-            await _bus.RaiseEventAsync(new UserUpdatedEvent(user.Id));
+            await Bus.RaiseEventAsync(new UserUpdatedEvent(user.Id));
         }
     }
 }

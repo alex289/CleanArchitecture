@@ -31,31 +31,4 @@ public abstract class Entity
     {
         Deleted = false;
     }
-
-    public override bool Equals(object? obj)
-    {
-        var compareTo = obj as Entity;
-
-        if (ReferenceEquals(this, compareTo))
-        {
-            return true;
-        }
-
-        if (compareTo is null)
-        {
-            return false;
-        }
-
-        return Id == compareTo.Id;
-    }
-
-    public override int GetHashCode()
-    {
-        return GetType().GetHashCode() * 907 + Id.GetHashCode();
-    }
-
-    public override string ToString()
-    {
-        return GetType().Name + " [Id=" + Id + "]";
-    }
 }

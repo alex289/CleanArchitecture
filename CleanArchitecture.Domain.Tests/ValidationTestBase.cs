@@ -8,7 +8,7 @@ namespace CleanArchitecture.Domain.Tests;
 
 public class ValidationTestBase<TCommand, TValidation>
     where TCommand : CommandBase
-    where TValidation: AbstractValidator<TCommand>
+    where TValidation : AbstractValidator<TCommand>
 {
     private readonly TValidation _validation;
 
@@ -54,7 +54,7 @@ public class ValidationTestBase<TCommand, TValidation>
     }
 
     protected void ShouldHaveExpectedErrors(
-        TCommand command, 
+        TCommand command,
         params KeyValuePair<string, string>[] expectedErrors)
     {
         var result = _validation.Validate(command);
@@ -66,6 +66,24 @@ public class ValidationTestBase<TCommand, TValidation>
         {
             result.Errors
                 .Count(validation => validation.ErrorCode == error.Key && validation.ErrorMessage == error.Value)
+                .Should()
+                .Be(1);
+        }
+    }
+
+    protected void ShouldHaveExpectedErrors(
+        TCommand command,
+        params string[] expectedErrors)
+    {
+        var result = _validation.Validate(command);
+
+        result.IsValid.Should().BeFalse();
+        result.Errors.Count.Should().Be(expectedErrors.Length);
+
+        foreach (var error in expectedErrors)
+        {
+            result.Errors
+                .Count(validation => validation.ErrorCode == error)
                 .Should()
                 .Be(1);
         }

@@ -7,7 +7,7 @@ namespace CleanArchitecture.Application.Tests.Fixtures.Queries;
 public class QueryHandlerBaseFixture
 {
     public Mock<IMediatorHandler> Bus { get; } = new();
-    
+
     public QueryHandlerBaseFixture VerifyExistingNotification(string key, string errorCode, string message)
     {
         Bus.Verify(

@@ -4,11 +4,6 @@ namespace CleanArchitecture.Domain.Notifications;
 
 public sealed class DomainNotification : DomainEvent
 {
-    public string Key { get; private set; }
-    public string Value { get; private set; }
-    public string Code { get; private set; }
-    public object? Data { get; set; }
-
     public DomainNotification(
         string key,
         string value,
@@ -23,4 +18,9 @@ public sealed class DomainNotification : DomainEvent
 
         Data = data;
     }
+
+    public string Key { get; }
+    public string Value { get; }
+    public string Code { get; }
+    public object? Data { get; set; }
 }
