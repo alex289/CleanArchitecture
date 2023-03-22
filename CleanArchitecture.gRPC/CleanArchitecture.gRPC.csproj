@@ -6,12 +6,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CleanArchitecture.Domain\CleanArchitecture.Domain.csproj" />
-      <ProjectReference Include="..\CleanArchitecture.Proto\CleanArchitecture.Proto.csproj" />
+        <ProjectReference Include="..\CleanArchitecture.Domain\CleanArchitecture.Domain.csproj"/>
+        <ProjectReference Include="..\CleanArchitecture.Proto\CleanArchitecture.Proto.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.4"/>
     </ItemGroup>
 
 </Project>

@@ -16,7 +16,7 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
     IRequestHandler<CreateUserCommand>
 {
     private readonly IUserRepository _userRepository;
-    
+
     public CreateUserCommandHandler(
         IMediatorHandler bus,
         IUnitOfWork unitOfWork,
@@ -44,9 +44,9 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
                     DomainErrorCodes.UserAlreadyExists));
             return;
         }
-        
+
         existingUser = await _userRepository.GetByEmailAsync(request.Email);
-        
+
         if (existingUser != null)
         {
             await _bus.RaiseEventAsync(
@@ -60,15 +60,15 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
         var passwordHash = BC.HashPassword(request.Password);
 
         var user = new User(
-            request.UserId, 
+            request.UserId,
             request.Email,
             request.Surname,
             request.GivenName,
             passwordHash,
             UserRole.User);
-        
+
         _userRepository.Add(user);
-        
+
         if (await CommitAsync())
         {
             await _bus.RaiseEventAsync(new UserCreatedEvent(user.Id));

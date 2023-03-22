@@ -8,20 +8,20 @@ namespace CleanArchitecture.Domain.Tests.CommandHandler.User.DeleteUser;
 
 public sealed class DeleteUserCommandTestFixture : CommandHandlerFixtureBase
 {
-    public DeleteUserCommandHandler CommandHandler { get; }
-    private Mock<IUserRepository> UserRepository { get; }
-    
     public DeleteUserCommandTestFixture()
     {
         UserRepository = new Mock<IUserRepository>();
-        
-        CommandHandler = new (
+
+        CommandHandler = new DeleteUserCommandHandler(
             Bus.Object,
             UnitOfWork.Object,
             NotificationHandler.Object,
             UserRepository.Object,
             User.Object);
     }
+
+    public DeleteUserCommandHandler CommandHandler { get; }
+    private Mock<IUserRepository> UserRepository { get; }
 
     public Entities.User SetupUser()
     {

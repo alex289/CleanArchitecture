@@ -28,37 +28,36 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title = "CleanArchitecture",
         Version = "v1",
-        Description = "A clean architecture API",
+        Description = "A clean architecture API"
     });
 
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme. " +
-                "Use the /auth/azureLogin endpoint to generate a token (use the id_token here), " +
-                "or create a personal access token in centralhub.",
+                      "Use the /api/v1/user/login endpoint to generate a token",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.Http,
         Scheme = "bearer"
     });
 
-    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
             {
+                Reference = new OpenApiReference
                 {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        },
-                        Scheme = "oauth2",
-                        Name = "Bearer",
-                        In = ParameterLocation.Header,
-                    },
-                    new List<string>()
-                }
-            });
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                },
+                Scheme = "oauth2",
+                Name = "Bearer",
+                In = ParameterLocation.Header
+            },
+            new List<string>()
+        }
+    });
 });
 
 builder.Services.AddHealthChecks();
@@ -72,15 +71,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 builder.Services.AddAuthentication(
-        options =>
-        {
-            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
+        options => { options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme; })
     .AddJwtBearer(
-        jwtOptions =>
-        {
-            jwtOptions.TokenValidationParameters = CreateTokenValidationParameters();
-        });
+        jwtOptions => { jwtOptions.TokenValidationParameters = CreateTokenValidationParameters(); });
 
 builder.Services.AddInfrastructure();
 builder.Services.AddQueryHandlers();
@@ -94,10 +87,7 @@ builder.Services
     .Bind(builder.Configuration.GetSection("Auth"))
     .ValidateOnStart();
 
-builder.Services.AddMediatR(cfg =>
-{
-    cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly);
-});
+builder.Services.AddMediatR(cfg => { cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly); });
 
 var app = builder.Build();
 
@@ -116,10 +106,10 @@ app.MapControllers();
 app.MapHealthChecks("/health");
 app.MapGrpcService<UsersApiImplementation>();
 
-using (IServiceScope scope = app.Services.CreateScope())
+using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    ApplicationDbContext appDbContext = services.GetRequiredService<ApplicationDbContext>();
+    var appDbContext = services.GetRequiredService<ApplicationDbContext>();
 
     appDbContext.EnsureMigrationsApplied();
 }
@@ -137,8 +127,8 @@ TokenValidationParameters CreateTokenValidationParameters()
         ValidIssuer = builder.Configuration["Auth:Issuer"],
         ValidAudience = builder.Configuration["Auth:Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(
-                        builder.Configuration["Auth:Secret"]!)),
+            Encoding.UTF8.GetBytes(
+                builder.Configuration["Auth:Secret"]!)),
         RequireSignedTokens = false
     };
 
@@ -146,4 +136,6 @@ TokenValidationParameters CreateTokenValidationParameters()
 }
 
 // Needed for integration tests webapplication factory
-public partial class Program { }
+public partial class Program
+{
+}

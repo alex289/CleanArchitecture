@@ -20,7 +20,7 @@ public static class DomainErrorCodes
     public const string UserLowercaseLetterPassword = "USER_PASSWORD_MUST_CONTAIN_A_LOWERCASE_LETTER";
     public const string UserNumberPassword = "USER_PASSWORD_MUST_CONTAIN_A_NUMBER";
     public const string UserSpecialCharPassword = "USER_PASSWORD_MUST_CONTAIN_A_SPECIAL_CHARACTER";
-    
+
     // User
     public const string UserAlreadyExists = "USER_ALREADY_EXISTS";
     public const string UserPasswordIncorrect = "USER_PASSWORD_INCORRECT";

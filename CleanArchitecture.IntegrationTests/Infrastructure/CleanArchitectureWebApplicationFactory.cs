@@ -18,11 +18,11 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
         ServiceProvider serviceProvider,
         IServiceProvider scopedServices);
 
-    private readonly SqliteConnection _connection = new($"DataSource=:memory:");
-
     private readonly AddCustomSeedDataHandler? _addCustomSeedDataHandler;
-    private readonly RegisterCustomServicesHandler? _registerCustomServicesHandler;
+
+    private readonly SqliteConnection _connection = new("DataSource=:memory:");
     private readonly string? _environment;
+    private readonly RegisterCustomServicesHandler? _registerCustomServicesHandler;
 
     public CleanArchitectureWebApplicationFactory(
         AddCustomSeedDataHandler? addCustomSeedDataHandler,
@@ -51,7 +51,7 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
 
             var sp = services.BuildServiceProvider();
 
-            using IServiceScope scope = sp.CreateScope();
+            using var scope = sp.CreateScope();
             var scopedServices = scope.ServiceProvider;
 
             var applicationDbContext = scopedServices.GetRequiredService<ApplicationDbContext>();

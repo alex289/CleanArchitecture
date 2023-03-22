@@ -9,8 +9,6 @@ namespace CleanArchitecture.IntegrationTests.Fixtures;
 
 public class TestFixtureBase
 {
-    public HttpClient ServerClient { get; }
-
     public TestFixtureBase()
     {
         var projectDir = Directory.GetCurrentDirectory();
@@ -24,6 +22,8 @@ public class TestFixtureBase
         ServerClient = factory.CreateClient();
         ServerClient.Timeout = TimeSpan.FromMinutes(5);
     }
+
+    public HttpClient ServerClient { get; }
 
     protected virtual void SeedTestData(ApplicationDbContext context)
     {

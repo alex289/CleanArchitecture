@@ -46,7 +46,7 @@ public class UserController : ApiController
         var user = await _userService.GetUserByUserIdAsync(id, isDeleted);
         return Response(user);
     }
-    
+
     [Authorize]
     [HttpGet("me")]
     [SwaggerOperation("Get the current active user")]
@@ -56,7 +56,7 @@ public class UserController : ApiController
         var user = await _userService.GetCurrentUserAsync();
         return Response(user);
     }
-    
+
     [HttpPost]
     [SwaggerOperation("Create a new user")]
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<Guid>))]

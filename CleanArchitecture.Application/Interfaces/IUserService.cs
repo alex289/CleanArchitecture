@@ -1,6 +1,6 @@
-using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using CleanArchitecture.Application.ViewModels.Users;
 
 namespace CleanArchitecture.Application.Interfaces;

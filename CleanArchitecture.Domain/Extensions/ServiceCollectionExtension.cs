@@ -25,7 +25,7 @@ public static class ServiceCollectionExtension
 
         return services;
     }
-    
+
     public static IServiceCollection AddNotificationHandlers(this IServiceCollection services)
     {
         // User
@@ -41,7 +41,7 @@ public static class ServiceCollectionExtension
     {
         // User
         services.AddScoped<IUser, ApiUser>();
-        
+
         return services;
     }
 }

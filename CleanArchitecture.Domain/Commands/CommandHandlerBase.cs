@@ -10,8 +10,8 @@ namespace CleanArchitecture.Domain.Commands;
 public abstract class CommandHandlerBase
 {
     protected readonly IMediatorHandler _bus;
-    private readonly IUnitOfWork _unitOfWork;
     private readonly DomainNotificationHandler _notifications;
+    private readonly IUnitOfWork _unitOfWork;
 
     protected CommandHandlerBase(
         IMediatorHandler bus,
@@ -22,7 +22,7 @@ public abstract class CommandHandlerBase
         _unitOfWork = unitOfWork;
         _notifications = (DomainNotificationHandler)notifications;
     }
-    
+
     public async Task<bool> CommitAsync()
     {
         if (_notifications.HasNotifications())
@@ -43,7 +43,7 @@ public abstract class CommandHandlerBase
 
         return false;
     }
-    
+
     protected async Task NotifyAsync(string key, string message, string code)
     {
         await _bus.RaiseEventAsync(
@@ -54,7 +54,7 @@ public abstract class CommandHandlerBase
     {
         await _bus.RaiseEventAsync(notification);
     }
-    
+
     protected async ValueTask<bool> TestValidityAsync(CommandBase command)
     {
         if (command.IsValid())
@@ -71,8 +71,8 @@ public abstract class CommandHandlerBase
         {
             await NotifyAsync(
                 new DomainNotification(
-                    command.MessageType, 
-                    error.ErrorMessage, 
+                    command.MessageType,
+                    error.ErrorMessage,
                     error.ErrorCode,
                     error.FormattedMessagePlaceholderValues));
         }

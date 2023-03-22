@@ -24,12 +24,13 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         _fixture = fixture;
     }
 
-    [Fact, Priority(0)]
+    [Fact]
+    [Priority(0)]
     public async Task Should_Create_User()
     {
         var user = new CreateUserViewModel(
-            _fixture.CreatedUserEmail, 
-            "Test", 
+            _fixture.CreatedUserEmail,
+            "Test",
             "Email",
             _fixture.CreatedUserPassword);
 
@@ -43,12 +44,13 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
 
         _fixture.CreatedUserId = message!.Data;
     }
-    
-    [Fact, Priority(5)]
+
+    [Fact]
+    [Priority(5)]
     public async Task Should_Login_User()
     {
         var user = new LoginUserViewModel(
-            _fixture.CreatedUserEmail, 
+            _fixture.CreatedUserEmail,
             _fixture.CreatedUserPassword);
 
         var response = await _fixture.ServerClient.PostAsJsonAsync("/api/v1/user/login", user);
@@ -63,7 +65,8 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         _fixture.EnableAuthentication();
     }
 
-    [Fact, Priority(10)]
+    [Fact]
+    [Priority(10)]
     public async Task Should_Get_Created_Users()
     {
         var response = await _fixture.ServerClient.GetAsync("/api/v1/user/" + _fixture.CreatedUserId);
@@ -81,8 +84,9 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         content.Surname.Should().Be("Test");
         content.GivenName.Should().Be("Email");
     }
-    
-    [Fact, Priority(10)]
+
+    [Fact]
+    [Priority(10)]
     public async Task Should_Get_The_Current_Active_Users()
     {
         var response = await _fixture.ServerClient.GetAsync("/api/v1/user/me");
@@ -101,7 +105,8 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         content.GivenName.Should().Be("Email");
     }
 
-    [Fact, Priority(15)]
+    [Fact]
+    [Priority(15)]
     public async Task Should_Update_User()
     {
         var user = new UpdateUserViewModel(
@@ -124,7 +129,8 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         content.Should().BeEquivalentTo(user);
     }
 
-    [Fact, Priority(20)]
+    [Fact]
+    [Priority(20)]
     public async Task Should_Get_Updated_Users()
     {
         var response = await _fixture.ServerClient.GetAsync("/api/v1/user/" + _fixture.CreatedUserId);
@@ -141,11 +147,12 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         content.Email.Should().Be("newtest@email.com");
         content.Surname.Should().Be("NewTest");
         content.GivenName.Should().Be("NewEmail");
-        
+
         _fixture.CreatedUserEmail = content.Email;
     }
-    
-    [Fact, Priority(25)]
+
+    [Fact]
+    [Priority(25)]
     public async Task Should_Change_User_Password()
     {
         var user = new ChangePasswordViewModel(
@@ -163,10 +170,10 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         var content = message!.Data;
 
         content.Should().BeEquivalentTo(user);
-        
+
         // Verify the user can login with the new password
         var login = new LoginUserViewModel(
-            _fixture.CreatedUserEmail, 
+            _fixture.CreatedUserEmail,
             _fixture.CreatedUserPassword + "1");
 
         var loginResponse = await _fixture.ServerClient.PostAsJsonAsync("/api/v1/user/login", login);
@@ -178,7 +185,8 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         loginMessage?.Data.Should().NotBeEmpty();
     }
 
-    [Fact, Priority(30)]
+    [Fact]
+    [Priority(30)]
     public async Task Should_Get_All_User()
     {
         var response = await _fixture.ServerClient.GetAsync("/api/v1/user");
@@ -192,23 +200,24 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         var content = message!.Data!.ToList();
 
         content.Count.Should().Be(2);
-        
+
         var currentUser = content.First(x => x.Id == _fixture.CreatedUserId);
-        
+
         currentUser.Id.Should().Be(_fixture.CreatedUserId);
         currentUser.Role.Should().Be(UserRole.User);
         currentUser.Email.Should().Be("newtest@email.com");
         currentUser.Surname.Should().Be("NewTest");
         currentUser.GivenName.Should().Be("NewEmail");
-        
+
         var adminUser = content.First(x => x.Role == UserRole.Admin);
-        
+
         adminUser.Email.Should().Be("admin@email.com");
         adminUser.Surname.Should().Be("Admin");
         adminUser.GivenName.Should().Be("User");
     }
 
-    [Fact, Priority(35)]
+    [Fact]
+    [Priority(35)]
     public async Task Should_Delete_User()
     {
         var response = await _fixture.ServerClient.DeleteAsync("/api/v1/user/" + _fixture.CreatedUserId);

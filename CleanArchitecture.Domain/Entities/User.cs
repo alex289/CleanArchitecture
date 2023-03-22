@@ -6,14 +6,6 @@ namespace CleanArchitecture.Domain.Entities;
 
 public class User : Entity
 {
-    public string Email { get; private set; }
-    public string GivenName { get; private set; }
-    public string Surname { get; private set; }
-    public string Password { get; private set; }
-    public UserRole Role { get; private set; }
-    
-    public string FullName => $"{Surname}, {GivenName}";
-
     public User(
         Guid id,
         string email,
@@ -28,6 +20,14 @@ public class User : Entity
         Password = password;
         Role = role;
     }
+
+    public string Email { get; private set; }
+    public string GivenName { get; private set; }
+    public string Surname { get; private set; }
+    public string Password { get; private set; }
+    public UserRole Role { get; private set; }
+
+    public string FullName => $"{Surname}, {GivenName}";
 
     [MemberNotNull(nameof(Email))]
     public void SetEmail(string email)
@@ -45,7 +45,7 @@ public class User : Entity
 
         Email = email;
     }
-    
+
     [MemberNotNull(nameof(GivenName))]
     public void SetGivenName(string givenName)
     {
@@ -62,7 +62,7 @@ public class User : Entity
 
         GivenName = givenName;
     }
-    
+
     [MemberNotNull(nameof(Surname))]
     public void SetSurname(string surname)
     {

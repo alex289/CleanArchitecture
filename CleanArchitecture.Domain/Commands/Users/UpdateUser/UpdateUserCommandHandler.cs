@@ -1,6 +1,5 @@
 using System.Threading;
 using System.Threading.Tasks;
-using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Domain.Events.User;
@@ -14,8 +13,8 @@ namespace CleanArchitecture.Domain.Commands.Users.UpdateUser;
 public sealed class UpdateUserCommandHandler : CommandHandlerBase,
     IRequestHandler<UpdateUserCommand>
 {
-    private readonly IUserRepository _userRepository;
     private readonly IUser _user;
+    private readonly IUserRepository _userRepository;
 
     public UpdateUserCommandHandler(
         IMediatorHandler bus,
@@ -54,7 +53,7 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
                     request.MessageType,
                     $"No permission to update user {request.UserId}",
                     ErrorCodes.InsufficientPermissions));
-            
+
             return;
         }
 
@@ -68,7 +67,7 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
         user.SetGivenName(request.GivenName);
 
         _userRepository.Update(user);
-        
+
         if (await CommitAsync())
         {
             await _bus.RaiseEventAsync(new UserUpdatedEvent(user.Id));

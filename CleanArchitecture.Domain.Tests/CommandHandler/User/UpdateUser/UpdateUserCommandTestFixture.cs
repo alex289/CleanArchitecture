@@ -8,21 +8,21 @@ namespace CleanArchitecture.Domain.Tests.CommandHandler.User.UpdateUser;
 
 public sealed class UpdateUserCommandTestFixture : CommandHandlerFixtureBase
 {
-    public UpdateUserCommandHandler CommandHandler { get; }
-    private Mock<IUserRepository> UserRepository { get; }
-
     public UpdateUserCommandTestFixture()
     {
         UserRepository = new Mock<IUserRepository>();
-        
-        CommandHandler = new(
+
+        CommandHandler = new UpdateUserCommandHandler(
             Bus.Object,
             UnitOfWork.Object,
             NotificationHandler.Object,
             UserRepository.Object,
             User.Object);
     }
-    
+
+    public UpdateUserCommandHandler CommandHandler { get; }
+    private Mock<IUserRepository> UserRepository { get; }
+
     public Entities.User SetupUser()
     {
         var user = new Entities.User(

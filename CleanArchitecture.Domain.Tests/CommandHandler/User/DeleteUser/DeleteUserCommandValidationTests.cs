@@ -16,21 +16,23 @@ public sealed class DeleteUserCommandValidationTests :
     public void Should_Be_Valid()
     {
         var command = CreateTestCommand();
-        
+
         ShouldBeValid(command);
     }
-    
+
     [Fact]
     public void Should_Be_Invalid_For_Empty_User_Id()
     {
-        var command = CreateTestCommand(userId: Guid.Empty);
-        
+        var command = CreateTestCommand(Guid.Empty);
+
         ShouldHaveSingleError(
-            command, 
+            command,
             DomainErrorCodes.UserEmptyId,
             "User id may not be empty");
     }
-    
-    private DeleteUserCommand CreateTestCommand(Guid? userId = null) => 
-        new (userId ?? Guid.NewGuid());
+
+    private DeleteUserCommand CreateTestCommand(Guid? userId = null)
+    {
+        return new(userId ?? Guid.NewGuid());
+    }
 }

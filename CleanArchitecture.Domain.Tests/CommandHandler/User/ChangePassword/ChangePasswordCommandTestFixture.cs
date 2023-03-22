@@ -9,20 +9,20 @@ namespace CleanArchitecture.Domain.Tests.CommandHandler.User.ChangePassword;
 
 public sealed class ChangePasswordCommandTestFixture : CommandHandlerFixtureBase
 {
-    public ChangePasswordCommandHandler CommandHandler { get; set; }
-    public Mock<IUserRepository> UserRepository { get; set; }
-
     public ChangePasswordCommandTestFixture()
     {
         UserRepository = new Mock<IUserRepository>();
 
-        CommandHandler = new(
+        CommandHandler = new ChangePasswordCommandHandler(
             Bus.Object,
             UnitOfWork.Object,
             NotificationHandler.Object,
             UserRepository.Object,
             User.Object);
     }
+
+    public ChangePasswordCommandHandler CommandHandler { get; set; }
+    public Mock<IUserRepository> UserRepository { get; set; }
 
     public Entities.User SetupUser()
     {

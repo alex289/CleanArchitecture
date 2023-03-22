@@ -1,6 +1,7 @@
-﻿using System.Security.Claims;
+﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Enums;
@@ -10,10 +11,9 @@ using CleanArchitecture.Domain.Interfaces.Repositories;
 using CleanArchitecture.Domain.Notifications;
 using CleanArchitecture.Domain.Settings;
 using MediatR;
-using BC = BCrypt.Net.BCrypt;
-using System.IdentityModel.Tokens.Jwt;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using BC = BCrypt.Net.BCrypt;
 
 namespace CleanArchitecture.Domain.Commands.Users.LoginUser;
 
@@ -21,9 +21,9 @@ public sealed class LoginUserCommandHandler : CommandHandlerBase,
     IRequestHandler<LoginUserCommand, string>
 {
     private const double ExpiryDurationMinutes = 30;
+    private readonly TokenSettings _tokenSettings;
 
     private readonly IUserRepository _userRepository;
-    private readonly TokenSettings _tokenSettings;
 
     public LoginUserCommandHandler(
         IMediatorHandler bus,
@@ -80,10 +80,10 @@ public sealed class LoginUserCommandHandler : CommandHandlerBase,
     {
         var claims = new[]
         {
-                new Claim(ClaimTypes.Email, email),
-                new Claim(ClaimTypes.Role, role.ToString()),
-                new Claim(ClaimTypes.NameIdentifier, id.ToString())
-            };
+            new Claim(ClaimTypes.Email, email),
+            new Claim(ClaimTypes.Role, role.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, id.ToString())
+        };
 
         var securityKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(tokenSettings.Secret));

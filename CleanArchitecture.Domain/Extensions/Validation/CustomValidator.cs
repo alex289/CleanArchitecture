@@ -17,7 +17,10 @@ public static class CustomValidator
         return base64.Length % 4 == 0 && Regex.IsMatch(base64, @"^[a-zA-Z0-9\+/]*={0,3}$", RegexOptions.None);
     }
 
-    public static IRuleBuilder<T, string> Password<T>(this IRuleBuilder<T, string> ruleBuilder, int minLength = 8, int maxLength = 50)
+    public static IRuleBuilder<T, string> Password<T>(
+        this IRuleBuilder<T, string> ruleBuilder,
+        int minLength = 8,
+        int maxLength = 50)
     {
         var options = ruleBuilder
             .NotEmpty().WithErrorCode(DomainErrorCodes.UserEmptyPassword)

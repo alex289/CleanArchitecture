@@ -29,7 +29,7 @@ public sealed class UserService : IUserService
     {
         return await _bus.QueryAsync(new GetUserByIdQuery(userId, isDeleted));
     }
-    
+
     public async Task<UserViewModel?> GetCurrentUserAsync()
     {
         return await _bus.QueryAsync(new GetUserByIdQuery(_user.GetUserId(), false));
@@ -39,7 +39,7 @@ public sealed class UserService : IUserService
     {
         return await _bus.QueryAsync(new GetAllUsersQuery());
     }
-    
+
     public async Task<Guid> CreateUserAsync(CreateUserViewModel user)
     {
         var userId = Guid.NewGuid();
@@ -53,7 +53,7 @@ public sealed class UserService : IUserService
 
         return userId;
     }
-    
+
     public async Task UpdateUserAsync(UpdateUserViewModel user)
     {
         await _bus.SendCommandAsync(new UpdateUserCommand(
@@ -63,7 +63,7 @@ public sealed class UserService : IUserService
             user.GivenName,
             user.Role));
     }
-    
+
     public async Task DeleteUserAsync(Guid userId)
     {
         await _bus.SendCommandAsync(new DeleteUserCommand(userId));

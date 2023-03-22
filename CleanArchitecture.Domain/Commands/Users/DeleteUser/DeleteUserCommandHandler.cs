@@ -13,8 +13,8 @@ namespace CleanArchitecture.Domain.Commands.Users.DeleteUser;
 public sealed class DeleteUserCommandHandler : CommandHandlerBase,
     IRequestHandler<DeleteUserCommand>
 {
-    private readonly IUserRepository _userRepository;
     private readonly IUser _user;
+    private readonly IUserRepository _userRepository;
 
     public DeleteUserCommandHandler(
         IMediatorHandler bus,
@@ -35,7 +35,7 @@ public sealed class DeleteUserCommandHandler : CommandHandlerBase,
         }
 
         var user = await _userRepository.GetByIdAsync(request.UserId);
-        
+
         if (user == null)
         {
             await NotifyAsync(
@@ -54,7 +54,7 @@ public sealed class DeleteUserCommandHandler : CommandHandlerBase,
                     request.MessageType,
                     $"No permission to delete user {request.UserId}",
                     ErrorCodes.InsufficientPermissions));
-            
+
             return;
         }
 

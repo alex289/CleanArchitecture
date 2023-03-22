@@ -6,12 +6,6 @@ namespace CleanArchitecture.Domain.Commands.Users.UpdateUser;
 public sealed class UpdateUserCommand : CommandBase
 {
     private readonly UpdateUserCommandValidation _validation = new();
-    
-    public Guid UserId { get; }
-    public string Email { get; }
-    public string Surname { get; }
-    public string GivenName { get; }
-    public UserRole Role { get; }
 
     public UpdateUserCommand(
         Guid userId,
@@ -26,6 +20,12 @@ public sealed class UpdateUserCommand : CommandBase
         GivenName = givenName;
         Role = role;
     }
+
+    public Guid UserId { get; }
+    public string Email { get; }
+    public string Surname { get; }
+    public string GivenName { get; }
+    public UserRole Role { get; }
 
     public override bool IsValid()
     {

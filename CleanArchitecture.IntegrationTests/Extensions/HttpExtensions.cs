@@ -10,7 +10,7 @@ public static class HttpExtensions
 {
     private static readonly JsonSerializerOptions JsonSerializerOptions = new()
     {
-        PropertyNameCaseInsensitive = true,
+        PropertyNameCaseInsensitive = true
     };
 
     private static T? Deserialize<T>(string json)

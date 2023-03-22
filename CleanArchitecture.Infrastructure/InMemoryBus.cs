@@ -14,7 +14,7 @@ public sealed class InMemoryBus : IMediatorHandler
     {
         _mediator = mediator;
     }
-    
+
     public Task<TResponse> QueryAsync<TResponse>(IRequest<TResponse> query)
     {
         return _mediator.Send(query);

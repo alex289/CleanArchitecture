@@ -11,37 +11,31 @@ namespace CleanArchitecture.gRPC.Tests.Fixtures;
 
 public sealed class UserTestsFixture
 {
-    private Mock<IUserRepository> UserRepository { get; } = new ();
-
-    public UsersApiImplementation UsersApiImplementation { get; }
-
-    public IEnumerable<User> ExistingUsers { get; }
-
     public UserTestsFixture()
     {
-        ExistingUsers = new List<User>()
+        ExistingUsers = new List<User>
         {
-            new (
-                Guid.NewGuid(), 
-                "test@test.de", 
-                "Test First Name", 
+            new(
+                Guid.NewGuid(),
+                "test@test.de",
+                "Test First Name",
                 "Test Last Name",
                 "Test Password",
                 UserRole.User),
-            new (
-                Guid.NewGuid(), 
-                "email@Email.de", 
-                "Email First Name", 
+            new(
+                Guid.NewGuid(),
+                "email@Email.de",
+                "Email First Name",
                 "Email Last Name",
                 "Email Password",
                 UserRole.Admin),
-            new (
-                Guid.NewGuid(), 
-                "user@user.de", 
-                "User First Name", 
+            new(
+                Guid.NewGuid(),
+                "user@user.de",
+                "User First Name",
                 "User Last Name",
                 "User Password",
-                UserRole.User),
+                UserRole.User)
         };
 
         var queryable = ExistingUsers.AsQueryable().BuildMock();
@@ -52,4 +46,10 @@ public sealed class UserTestsFixture
 
         UsersApiImplementation = new UsersApiImplementation(UserRepository.Object);
     }
+
+    private Mock<IUserRepository> UserRepository { get; } = new();
+
+    public UsersApiImplementation UsersApiImplementation { get; }
+
+    public IEnumerable<User> ExistingUsers { get; }
 }

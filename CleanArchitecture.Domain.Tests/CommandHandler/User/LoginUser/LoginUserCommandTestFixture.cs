@@ -1,20 +1,16 @@
-﻿using CleanArchitecture.Domain.Commands.Users.LoginUser;
+﻿using System;
+using CleanArchitecture.Domain.Commands.Users.LoginUser;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Interfaces.Repositories;
 using CleanArchitecture.Domain.Settings;
 using Microsoft.Extensions.Options;
 using Moq;
-using System;
 using BC = BCrypt.Net.BCrypt;
 
 namespace CleanArchitecture.Domain.Tests.CommandHandler.User.LoginUser;
 
 public sealed class LoginUserCommandTestFixture : CommandHandlerFixtureBase
 {
-    public LoginUserCommandHandler CommandHandler { get; set; }
-    public Mock<IUserRepository> UserRepository { get; set; }
-    public IOptions<TokenSettings> TokenSettings { get; set; }
-
     public LoginUserCommandTestFixture()
     {
         UserRepository = new Mock<IUserRepository>();
@@ -26,13 +22,17 @@ public sealed class LoginUserCommandTestFixture : CommandHandlerFixtureBase
             Secret = "asjdlkasjd87439284)@#(*"
         });
 
-        CommandHandler = new(
+        CommandHandler = new LoginUserCommandHandler(
             Bus.Object,
             UnitOfWork.Object,
             NotificationHandler.Object,
             UserRepository.Object,
             TokenSettings);
     }
+
+    public LoginUserCommandHandler CommandHandler { get; set; }
+    public Mock<IUserRepository> UserRepository { get; set; }
+    public IOptions<TokenSettings> TokenSettings { get; set; }
 
     public Entities.User SetupUser()
     {

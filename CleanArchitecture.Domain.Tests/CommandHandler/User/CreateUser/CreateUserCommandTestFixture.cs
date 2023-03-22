@@ -8,20 +8,20 @@ namespace CleanArchitecture.Domain.Tests.CommandHandler.User.CreateUser;
 
 public sealed class CreateUserCommandTestFixture : CommandHandlerFixtureBase
 {
-    public CreateUserCommandHandler CommandHandler { get; }
-    private Mock<IUserRepository> UserRepository { get; } 
-    
     public CreateUserCommandTestFixture()
     {
         UserRepository = new Mock<IUserRepository>();
-        
-        CommandHandler = new(
+
+        CommandHandler = new CreateUserCommandHandler(
             Bus.Object,
             UnitOfWork.Object,
             NotificationHandler.Object,
             UserRepository.Object);
     }
-    
+
+    public CreateUserCommandHandler CommandHandler { get; }
+    private Mock<IUserRepository> UserRepository { get; }
+
     public Entities.User SetupUser()
     {
         var user = new Entities.User(

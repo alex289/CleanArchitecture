@@ -13,8 +13,8 @@ namespace CleanArchitecture.Domain.Commands.Users.ChangePassword;
 public sealed class ChangePasswordCommandHandler : CommandHandlerBase,
     IRequestHandler<ChangePasswordCommand>
 {
-    private readonly IUserRepository _userRepository;
     private readonly IUser _user;
+    private readonly IUserRepository _userRepository;
 
     public ChangePasswordCommandHandler(
         IMediatorHandler bus,

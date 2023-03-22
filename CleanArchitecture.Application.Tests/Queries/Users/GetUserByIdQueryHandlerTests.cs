@@ -18,15 +18,15 @@ public sealed class GetUserByIdQueryHandlerTests
         _fixture.SetupUserAsync();
 
         var result = await _fixture.Handler.Handle(
-            new(_fixture.ExistingUserId, false),
+            new GetUserByIdQuery(_fixture.ExistingUserId, false),
             default);
-        
+
         _fixture.VerifyNoDomainNotification();
 
         result.Should().NotBeNull();
         result!.Id.Should().Be(_fixture.ExistingUserId);
     }
-    
+
     [Fact]
     public async Task Should_Raise_Notification_For_No_User()
     {
@@ -36,7 +36,7 @@ public sealed class GetUserByIdQueryHandlerTests
         var result = await _fixture.Handler.Handle(
             request,
             default);
-        
+
         _fixture.VerifyExistingNotification(
             nameof(GetUserByIdQuery),
             ErrorCodes.ObjectNotFound,
@@ -51,7 +51,7 @@ public sealed class GetUserByIdQueryHandlerTests
         _fixture.SetupDeletedUserAsync();
 
         var result = await _fixture.Handler.Handle(
-            new(_fixture.ExistingUserId, false),
+            new GetUserByIdQuery(_fixture.ExistingUserId, false),
             default);
 
         _fixture.VerifyExistingNotification(

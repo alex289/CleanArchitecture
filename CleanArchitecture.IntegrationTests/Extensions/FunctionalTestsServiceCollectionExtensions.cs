@@ -2,28 +2,29 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanArchitecture.IntegrationTests.Extensions;
 
 public static class FunctionalTestsServiceCollectionExtensions
 {
-    public static IServiceCollection SetupTestDatabase<TContext>(this IServiceCollection services, DbConnection connection) where TContext : DbContext
+    public static IServiceCollection SetupTestDatabase<TContext>(this IServiceCollection services,
+        DbConnection connection) where TContext : DbContext
     {
         var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<TContext>));
         if (descriptor != null)
             services.Remove(descriptor);
 
         services.AddScoped(p =>
-        DbContextOptionsFactory<TContext>(
-        p,
-        (_, options) => options
-            .ConfigureWarnings(b => b.Log(CoreEventId.ManyServiceProvidersCreatedWarning))
-            .UseLazyLoadingProxies()
-            .UseSqlite(connection)));
+            DbContextOptionsFactory<TContext>(
+                p,
+                (_, options) => options
+                    .ConfigureWarnings(b => b.Log(CoreEventId.ManyServiceProvidersCreatedWarning))
+                    .UseLazyLoadingProxies()
+                    .UseSqlite(connection)));
 
         return services;
     }

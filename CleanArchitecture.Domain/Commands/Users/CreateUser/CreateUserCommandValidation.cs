@@ -22,7 +22,7 @@ public sealed class CreateUserCommandValidation : AbstractValidator<CreateUserCo
             .WithErrorCode(DomainErrorCodes.UserEmptyId)
             .WithMessage("User id may not be empty");
     }
-    
+
     private void AddRuleForEmail()
     {
         RuleFor(cmd => cmd.Email)
@@ -33,7 +33,7 @@ public sealed class CreateUserCommandValidation : AbstractValidator<CreateUserCo
             .WithErrorCode(DomainErrorCodes.UserEmailExceedsMaxLength)
             .WithMessage("Email may not be longer than 320 characters");
     }
-    
+
     private void AddRuleForSurname()
     {
         RuleFor(cmd => cmd.Surname)
@@ -44,7 +44,7 @@ public sealed class CreateUserCommandValidation : AbstractValidator<CreateUserCo
             .WithErrorCode(DomainErrorCodes.UserSurnameExceedsMaxLength)
             .WithMessage("Surname may not be longer than 100 characters");
     }
-    
+
     private void AddRuleForGivenName()
     {
         RuleFor(cmd => cmd.GivenName)
@@ -55,7 +55,7 @@ public sealed class CreateUserCommandValidation : AbstractValidator<CreateUserCo
             .WithErrorCode(DomainErrorCodes.UserGivenNameExceedsMaxLength)
             .WithMessage("Given name may not be longer than 100 characters");
     }
-    
+
     private void AddRuleForPassword()
     {
         RuleFor(cmd => cmd.Password)

@@ -5,8 +5,7 @@ namespace CleanArchitecture.Domain.Interfaces;
 
 public interface IUser
 {
+    string Name { get; }
     Guid GetUserId();
     UserRole GetUserRole();
-
-    string Name { get; }
 }
