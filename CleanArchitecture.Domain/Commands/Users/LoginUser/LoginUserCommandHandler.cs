@@ -20,7 +20,7 @@ namespace CleanArchitecture.Domain.Commands.Users.LoginUser;
 public sealed class LoginUserCommandHandler : CommandHandlerBase,
     IRequestHandler<LoginUserCommand, string>
 {
-    private const double EXPIRY_DURATION_MINUTES = 30;
+    private const double ExpiryDurationMinutes = 30;
 
     private readonly IUserRepository _userRepository;
     private readonly TokenSettings _tokenSettings;
@@ -76,13 +76,13 @@ public sealed class LoginUserCommandHandler : CommandHandlerBase,
             _tokenSettings);
     }
 
-    public static string BuildToken(string email, UserRole role, Guid Id, TokenSettings tokenSettings)
+    public static string BuildToken(string email, UserRole role, Guid id, TokenSettings tokenSettings)
     {
         var claims = new[]
         {
                 new Claim(ClaimTypes.Email, email),
                 new Claim(ClaimTypes.Role, role.ToString()),
-                new Claim(ClaimTypes.NameIdentifier, Id.ToString())
+                new Claim(ClaimTypes.NameIdentifier, id.ToString())
             };
 
         var securityKey = new SymmetricSecurityKey(
@@ -96,7 +96,7 @@ public sealed class LoginUserCommandHandler : CommandHandlerBase,
             tokenSettings.Issuer,
             tokenSettings.Audience,
             claims,
-            expires: DateTime.Now.AddMinutes(EXPIRY_DURATION_MINUTES),
+            expires: DateTime.Now.AddMinutes(ExpiryDurationMinutes),
             signingCredentials: credentials);
 
         return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);

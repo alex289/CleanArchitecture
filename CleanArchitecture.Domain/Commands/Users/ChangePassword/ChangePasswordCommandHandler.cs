@@ -58,7 +58,7 @@ public sealed class ChangePasswordCommandHandler : CommandHandlerBase,
             return;
         }
 
-        string passwordHash = BC.HashPassword(request.NewPassword);
+        var passwordHash = BC.HashPassword(request.NewPassword);
         user.SetPassword(passwordHash);
 
         _userRepository.Update(user);

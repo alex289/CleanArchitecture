@@ -76,7 +76,6 @@ public sealed class UserService : IUserService
 
     public async Task<string> LoginUserAsync(LoginUserViewModel viewModel)
     {
-
         return await _bus.QueryAsync(new LoginUserCommand(viewModel.Email, viewModel.Password));
     }
 }

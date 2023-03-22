@@ -70,4 +70,22 @@ public class ValidationTestBase<TCommand, TValidation>
                 .Be(1);
         }
     }
+    
+    protected void ShouldHaveExpectedErrors(
+        TCommand command, 
+        params string[] expectedErrors)
+    {
+        var result = _validation.Validate(command);
+
+        result.IsValid.Should().BeFalse();
+        result.Errors.Count.Should().Be(expectedErrors.Length);
+
+        foreach (var error in expectedErrors)
+        {
+            result.Errors
+                .Count(validation => validation.ErrorCode == error)
+                .Should()
+                .Be(1);
+        }
+    }
 }
