@@ -1,4 +1,7 @@
 # Clean Architecture Dotnet 7 API Project
+
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/alex289/CleanArchitecture/dotnet.yml)
+
 This repository contains a sample API project built using the Clean Architecture principles, Onion Architecture, MediatR, and Entity Framework. The project also includes unit tests for all layers and integration tests using xUnit.
 
 ## Project Structure
