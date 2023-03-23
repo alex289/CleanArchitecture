@@ -1,7 +1,7 @@
 using CleanArchitecture.Api.Extensions;
 using CleanArchitecture.Application.Extensions;
+using CleanArchitecture.Application.gRPC;
 using CleanArchitecture.Domain.Extensions;
-using CleanArchitecture.gRPC;
 using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Builder;

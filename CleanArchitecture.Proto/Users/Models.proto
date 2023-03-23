@@ -9,3 +9,11 @@ message GrpcUser {
   string email = 5;
   bool isDeleted = 6;
 }
+
+message GetByIdsResult {
+  repeated GrpcUser users = 1;
+}
+
+message GetByIdsRequest {
+  repeated string ids = 1;
+}

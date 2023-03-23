@@ -7,7 +7,7 @@ using CleanArchitecture.Proto.Users;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 
-namespace CleanArchitecture.gRPC;
+namespace CleanArchitecture.Application.gRPC;
 
 public sealed class UsersApiImplementation : UsersApi.UsersApiBase
 {
