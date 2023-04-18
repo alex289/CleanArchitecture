@@ -9,13 +9,13 @@ public class User : Entity
     public User(
         Guid id,
         string email,
-        string firstname,
+        string firstName,
         string lastName,
         string password,
         UserRole role) : base(id)
     {
         Email = email;
-        FirstName = firstname;
+        FirstName = firstName;
         LastName = lastName;
         Password = password;
         Role = role;
