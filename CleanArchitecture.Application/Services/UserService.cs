@@ -47,8 +47,8 @@ public sealed class UserService : IUserService
         await _bus.SendCommandAsync(new CreateUserCommand(
             userId,
             user.Email,
-            user.Surname,
-            user.GivenName,
+            user.FirstName,
+            user.LastName,
             user.Password));
 
         return userId;
@@ -59,8 +59,8 @@ public sealed class UserService : IUserService
         await _bus.SendCommandAsync(new UpdateUserCommand(
             user.Id,
             user.Email,
-            user.Surname,
-            user.GivenName,
+            user.FirstName,
+            user.LastName,
             user.Role));
     }
 

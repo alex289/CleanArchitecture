@@ -39,8 +39,8 @@ public sealed class UsersApiImplementation : UsersApi.UsersApiBase
             {
                 Id = user.Id.ToString(),
                 Email = user.Email,
-                FirstName = user.GivenName,
-                LastName = user.Surname,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 IsDeleted = user.Deleted
             })
             .ToListAsync();

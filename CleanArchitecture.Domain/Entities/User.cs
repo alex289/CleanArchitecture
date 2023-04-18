@@ -9,25 +9,25 @@ public class User : Entity
     public User(
         Guid id,
         string email,
-        string surname,
-        string givenName,
+        string firstname,
+        string lastName,
         string password,
         UserRole role) : base(id)
     {
         Email = email;
-        GivenName = givenName;
-        Surname = surname;
+        FirstName = firstname;
+        LastName = lastName;
         Password = password;
         Role = role;
     }
 
     public string Email { get; private set; }
-    public string GivenName { get; private set; }
-    public string Surname { get; private set; }
+    public string FirstName { get; private set; }
+    public string LastName { get; private set; }
     public string Password { get; private set; }
     public UserRole Role { get; private set; }
 
-    public string FullName => $"{Surname}, {GivenName}";
+    public string FullName => $"{FirstName}, {LastName}";
 
     [MemberNotNull(nameof(Email))]
     public void SetEmail(string email)
@@ -46,38 +46,38 @@ public class User : Entity
         Email = email;
     }
 
-    [MemberNotNull(nameof(GivenName))]
-    public void SetGivenName(string givenName)
+    [MemberNotNull(nameof(FirstName))]
+    public void SetFirstName(string firstName)
     {
-        if (givenName == null)
+        if (firstName == null)
         {
-            throw new ArgumentNullException(nameof(givenName));
+            throw new ArgumentNullException(nameof(firstName));
         }
 
-        if (givenName.Length > 100)
+        if (firstName.Length > 100)
         {
             throw new ArgumentException(
-                "Given name may not be longer than 100 characters");
+                "First name may not be longer than 100 characters");
         }
 
-        GivenName = givenName;
+        FirstName = firstName;
     }
 
-    [MemberNotNull(nameof(Surname))]
-    public void SetSurname(string surname)
+    [MemberNotNull(nameof(LastName))]
+    public void SetLastName(string lastName)
     {
-        if (surname == null)
+        if (lastName == null)
         {
-            throw new ArgumentNullException(nameof(surname));
+            throw new ArgumentNullException(nameof(lastName));
         }
 
-        if (surname.Length > 100)
+        if (lastName.Length > 100)
         {
             throw new ArgumentException(
-                "Surname may not be longer than 100 characters");
+                "Last name may not be longer than 100 characters");
         }
 
-        Surname = surname;
+        LastName = lastName;
     }
 
     [MemberNotNull(nameof(Password))]

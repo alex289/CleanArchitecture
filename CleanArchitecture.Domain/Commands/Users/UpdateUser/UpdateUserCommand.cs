@@ -10,21 +10,21 @@ public sealed class UpdateUserCommand : CommandBase
     public UpdateUserCommand(
         Guid userId,
         string email,
-        string surname,
-        string givenName,
+        string firstName,
+        string lastName,
         UserRole role) : base(userId)
     {
         UserId = userId;
         Email = email;
-        Surname = surname;
-        GivenName = givenName;
+        FirstName = firstName;
+        LastName = lastName;
         Role = role;
     }
 
     public Guid UserId { get; }
     public string Email { get; }
-    public string Surname { get; }
-    public string GivenName { get; }
+    public string FirstName { get; }
+    public string LastName { get; }
     public UserRole Role { get; }
 
     public override bool IsValid()

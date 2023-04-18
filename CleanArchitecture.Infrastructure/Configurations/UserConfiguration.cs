@@ -16,12 +16,12 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .HasMaxLength(320);
 
         builder
-            .Property(user => user.GivenName)
+            .Property(user => user.FirstName)
             .IsRequired()
             .HasMaxLength(100);
 
         builder
-            .Property(user => user.Surname)
+            .Property(user => user.LastName)
             .IsRequired()
             .HasMaxLength(100);
 

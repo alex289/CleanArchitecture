@@ -62,8 +62,8 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
         var user = new User(
             request.UserId,
             request.Email,
-            request.Surname,
-            request.GivenName,
+            request.FirstName,
+            request.LastName,
             passwordHash,
             UserRole.User);
 

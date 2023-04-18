@@ -81,8 +81,8 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
 
         content.Id.Should().Be(_fixture.CreatedUserId);
         content.Email.Should().Be("test@email.com");
-        content.Surname.Should().Be("Test");
-        content.GivenName.Should().Be("Email");
+        content.FirstName.Should().Be("Test");
+        content.LastName.Should().Be("Email");
     }
 
     [Fact]
@@ -101,8 +101,8 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
 
         content.Id.Should().Be(_fixture.CreatedUserId);
         content.Email.Should().Be("test@email.com");
-        content.Surname.Should().Be("Test");
-        content.GivenName.Should().Be("Email");
+        content.FirstName.Should().Be("Test");
+        content.LastName.Should().Be("Email");
     }
 
     [Fact]
@@ -145,8 +145,8 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
 
         content.Id.Should().Be(_fixture.CreatedUserId);
         content.Email.Should().Be("newtest@email.com");
-        content.Surname.Should().Be("NewTest");
-        content.GivenName.Should().Be("NewEmail");
+        content.FirstName.Should().Be("NewTest");
+        content.LastName.Should().Be("NewEmail");
 
         _fixture.CreatedUserEmail = content.Email;
     }
@@ -206,14 +206,14 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         currentUser.Id.Should().Be(_fixture.CreatedUserId);
         currentUser.Role.Should().Be(UserRole.User);
         currentUser.Email.Should().Be("newtest@email.com");
-        currentUser.Surname.Should().Be("NewTest");
-        currentUser.GivenName.Should().Be("NewEmail");
+        currentUser.FirstName.Should().Be("NewTest");
+        currentUser.LastName.Should().Be("NewEmail");
 
         var adminUser = content.First(x => x.Role == UserRole.Admin);
 
         adminUser.Email.Should().Be("admin@email.com");
-        adminUser.Surname.Should().Be("Admin");
-        adminUser.GivenName.Should().Be("User");
+        adminUser.FirstName.Should().Be("Admin");
+        adminUser.LastName.Should().Be("User");
     }
 
     [Fact]

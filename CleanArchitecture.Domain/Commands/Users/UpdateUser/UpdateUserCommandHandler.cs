@@ -63,8 +63,8 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
         }
 
         user.SetEmail(request.Email);
-        user.SetSurname(request.Surname);
-        user.SetGivenName(request.GivenName);
+        user.SetFirstName(request.FirstName);
+        user.SetLastName(request.LastName);
 
         _userRepository.Update(user);
 

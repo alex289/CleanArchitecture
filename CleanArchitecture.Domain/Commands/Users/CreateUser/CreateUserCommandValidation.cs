@@ -10,8 +10,8 @@ public sealed class CreateUserCommandValidation : AbstractValidator<CreateUserCo
     {
         AddRuleForId();
         AddRuleForEmail();
-        AddRuleForSurname();
-        AddRuleForGivenName();
+        AddRuleForFirstName();
+        AddRuleForLastName();
         AddRuleForPassword();
     }
 
@@ -34,26 +34,26 @@ public sealed class CreateUserCommandValidation : AbstractValidator<CreateUserCo
             .WithMessage("Email may not be longer than 320 characters");
     }
 
-    private void AddRuleForSurname()
+    private void AddRuleForFirstName()
     {
-        RuleFor(cmd => cmd.Surname)
+        RuleFor(cmd => cmd.FirstName)
             .NotEmpty()
-            .WithErrorCode(DomainErrorCodes.UserEmptySurname)
-            .WithMessage("Surname may not be empty")
+            .WithErrorCode(DomainErrorCodes.UserEmptyFirstName)
+            .WithMessage("FirstName may not be empty")
             .MaximumLength(100)
-            .WithErrorCode(DomainErrorCodes.UserSurnameExceedsMaxLength)
-            .WithMessage("Surname may not be longer than 100 characters");
+            .WithErrorCode(DomainErrorCodes.UserFirstNameExceedsMaxLength)
+            .WithMessage("FirstName may not be longer than 100 characters");
     }
 
-    private void AddRuleForGivenName()
+    private void AddRuleForLastName()
     {
-        RuleFor(cmd => cmd.GivenName)
+        RuleFor(cmd => cmd.LastName)
             .NotEmpty()
-            .WithErrorCode(DomainErrorCodes.UserEmptyGivenName)
-            .WithMessage("Given name may not be empty")
+            .WithErrorCode(DomainErrorCodes.UserEmptyLastName)
+            .WithMessage("LastName may not be empty")
             .MaximumLength(100)
-            .WithErrorCode(DomainErrorCodes.UserGivenNameExceedsMaxLength)
-            .WithMessage("Given name may not be longer than 100 characters");
+            .WithErrorCode(DomainErrorCodes.UserLastNameExceedsMaxLength)
+            .WithMessage("LastName may not be longer than 100 characters");
     }
 
     private void AddRuleForPassword()

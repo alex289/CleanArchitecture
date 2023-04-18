@@ -66,61 +66,61 @@ public sealed class UpdateUserCommandValidationTests :
     }
 
     [Fact]
-    public void Should_Be_Invalid_For_Empty_Surname()
+    public void Should_Be_Invalid_For_Empty_First_Name()
     {
-        var command = CreateTestCommand(surName: "");
+        var command = CreateTestCommand(firstName: "");
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserEmptySurname,
-            "Surname may not be empty");
+            DomainErrorCodes.UserEmptyFirstName,
+            "FirstName may not be empty");
     }
 
     [Fact]
-    public void Should_Be_Invalid_For_Surname_Exceeds_Max_Length()
+    public void Should_Be_Invalid_For_First_Name_Exceeds_Max_Length()
     {
-        var command = CreateTestCommand(surName: new string('a', 101));
+        var command = CreateTestCommand(firstName: new string('a', 101));
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserSurnameExceedsMaxLength,
-            "Surname may not be longer than 100 characters");
+            DomainErrorCodes.UserFirstNameExceedsMaxLength,
+            "FirstName may not be longer than 100 characters");
     }
 
     [Fact]
-    public void Should_Be_Invalid_For_Empty_Given_Name()
+    public void Should_Be_Invalid_For_Empty_Last_Name()
     {
-        var command = CreateTestCommand(givenName: "");
+        var command = CreateTestCommand(lastName: "");
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserEmptyGivenName,
-            "Given name may not be empty");
+            DomainErrorCodes.UserEmptyLastName,
+            "LastName may not be empty");
     }
 
     [Fact]
-    public void Should_Be_Invalid_For_Given_Name_Exceeds_Max_Length()
+    public void Should_Be_Invalid_For_Last_Name_Exceeds_Max_Length()
     {
-        var command = CreateTestCommand(givenName: new string('a', 101));
+        var command = CreateTestCommand(lastName: new string('a', 101));
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserGivenNameExceedsMaxLength,
-            "Given name may not be longer than 100 characters");
+            DomainErrorCodes.UserLastNameExceedsMaxLength,
+            "LastName may not be longer than 100 characters");
     }
 
     private static UpdateUserCommand CreateTestCommand(
         Guid? userId = null,
         string? email = null,
-        string? surName = null,
-        string? givenName = null,
+        string? firstName = null,
+        string? lastName = null,
         UserRole? role = null)
     {
         return new(
             userId ?? Guid.NewGuid(),
             email ?? "test@email.com",
-            surName ?? "test",
-            givenName ?? "email",
+            firstName ?? "test",
+            lastName ?? "email",
             role ?? UserRole.User);
     }
 }

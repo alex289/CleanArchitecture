@@ -8,8 +8,8 @@ public sealed class UserViewModel
 {
     public Guid Id { get; set; }
     public string Email { get; set; } = string.Empty;
-    public string GivenName { get; set; } = string.Empty;
-    public string Surname { get; set; } = string.Empty;
+    public string FirstName { get; set; } = string.Empty;
+    public string LastName { get; set; } = string.Empty;
     public UserRole Role { get; set; }
 
     public static UserViewModel FromUser(User user)
@@ -18,8 +18,8 @@ public sealed class UserViewModel
         {
             Id = user.Id,
             Email = user.Email,
-            GivenName = user.GivenName,
-            Surname = user.Surname,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
             Role = user.Role
         };
     }

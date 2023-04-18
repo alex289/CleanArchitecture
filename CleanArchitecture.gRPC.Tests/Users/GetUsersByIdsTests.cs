@@ -57,8 +57,8 @@ public sealed class GetUsersByIdsTests : IClassFixture<UserTestsFixture>
             mockUser.Should().NotBeNull();
 
             user.Email.Should().Be(mockUser.Email);
-            user.FirstName.Should().Be(mockUser.GivenName);
-            user.LastName.Should().Be(mockUser.Surname);
+            user.FirstName.Should().Be(mockUser.FirstName);
+            user.LastName.Should().Be(mockUser.LastName);
         }
     }
 
