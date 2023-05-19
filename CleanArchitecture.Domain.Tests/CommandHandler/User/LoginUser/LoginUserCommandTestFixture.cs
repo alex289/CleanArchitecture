@@ -19,7 +19,7 @@ public sealed class LoginUserCommandTestFixture : CommandHandlerFixtureBase
         {
             Issuer = "TestIssuer",
             Audience = "TestAudience",
-            Secret = "asjdlkasjd87439284)@#(*"
+            Secret = "asjdlkasjd87439284)@#(*asjdlkasjd87439284)@#(*"
         });
 
         CommandHandler = new LoginUserCommandHandler(
