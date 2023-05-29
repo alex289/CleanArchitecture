@@ -4,7 +4,9 @@ using CleanArchitecture.Application.gRPC;
 using CleanArchitecture.Domain.Extensions;
 using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.Infrastructure.Extensions;
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +18,9 @@ builder.Services.AddControllers();
 builder.Services.AddGrpc();
 builder.Services.AddEndpointsApiExplorer();
 
-builder.Services.AddHealthChecks();
+builder.Services
+    .AddHealthChecks()
+    .AddDbContextCheck<ApplicationDbContext>();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -50,7 +54,10 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapHealthChecks("/health");
+app.MapHealthChecks("/healthz", new HealthCheckOptions
+{
+    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+});
 app.MapGrpcService<UsersApiImplementation>();
 
 using (var scope = app.Services.CreateScope())
