@@ -1,3 +1,4 @@
+using System;
 using CleanArchitecture.Api.Extensions;
 using CleanArchitecture.Application.Extensions;
 using CleanArchitecture.Application.gRPC;
@@ -22,8 +23,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services
     .AddHealthChecks()
     .AddDbContextCheck<ApplicationDbContext>()
-    .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!)
     .AddApplicationStatus();
+
+if (builder.Environment.IsProduction())
+{
+    builder.Services
+        .AddHealthChecks()
+        .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
+}
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
