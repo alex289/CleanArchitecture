@@ -4,6 +4,7 @@ using CleanArchitecture.Application.gRPC;
 using CleanArchitecture.Domain.Extensions;
 using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.Infrastructure.Extensions;
+using HealthChecks.ApplicationStatus.DependencyInjection;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -20,7 +21,9 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services
     .AddHealthChecks()
-    .AddDbContextCheck<ApplicationDbContext>();
+    .AddDbContextCheck<ApplicationDbContext>()
+    .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!)
+    .AddApplicationStatus();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
