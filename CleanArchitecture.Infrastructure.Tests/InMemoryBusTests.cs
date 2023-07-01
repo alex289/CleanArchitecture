@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Commands.Users.DeleteUser;
+using CleanArchitecture.Domain.DomainEvents;
 using CleanArchitecture.Domain.Events.User;
 using CleanArchitecture.Domain.Notifications;
 using MediatR;
@@ -16,8 +17,9 @@ public sealed class InMemoryBusTests
     public async Task InMemoryBus_Should_Publish_When_Not_DomainNotification()
     {
         var mediator = new Mock<IMediator>();
+        var domainEventStore = new Mock<IDomainEventStore>();
 
-        var inMemoryBus = new InMemoryBus(mediator.Object);
+        var inMemoryBus = new InMemoryBus(mediator.Object, domainEventStore.Object);
 
         const string key = "Key";
         const string value = "Value";
@@ -34,8 +36,9 @@ public sealed class InMemoryBusTests
     public async Task InMemoryBus_Should_Save_And_Publish_When_DomainNotification()
     {
         var mediator = new Mock<IMediator>();
+        var domainEventStore = new Mock<IDomainEventStore>();
 
-        var inMemoryBus = new InMemoryBus(mediator.Object);
+        var inMemoryBus = new InMemoryBus(mediator.Object, domainEventStore.Object);
 
         var userDeletedEvent = new UserDeletedEvent(Guid.NewGuid());
 
@@ -48,8 +51,9 @@ public sealed class InMemoryBusTests
     public async Task InMemoryBus_Should_Send_Command_Async()
     {
         var mediator = new Mock<IMediator>();
+        var domainEventStore = new Mock<IDomainEventStore>();
 
-        var inMemoryBus = new InMemoryBus(mediator.Object);
+        var inMemoryBus = new InMemoryBus(mediator.Object, domainEventStore.Object);
 
         var deleteUserCommand = new DeleteUserCommand(Guid.NewGuid());
 

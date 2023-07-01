@@ -1,5 +1,6 @@
 using System;
 using System.Linq.Expressions;
+using CleanArchitecture.Domain.DomainEvents;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Domain.Notifications;

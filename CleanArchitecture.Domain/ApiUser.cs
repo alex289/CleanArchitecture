@@ -11,6 +11,9 @@ public sealed class ApiUser : IUser
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
+    private string? _name = null;
+    private Guid _userId = Guid.Empty;
+
     public ApiUser(IHttpContextAccessor httpContextAccessor)
     {
         _httpContextAccessor = httpContextAccessor;
@@ -18,11 +21,17 @@ public sealed class ApiUser : IUser
 
     public Guid GetUserId()
     {
+        if (_userId != Guid.Empty)
+        {
+            return _userId;
+        }
+
         var claim = _httpContextAccessor.HttpContext?.User.Claims
             .FirstOrDefault(x => string.Equals(x.Type, ClaimTypes.NameIdentifier));
 
         if (Guid.TryParse(claim?.Value, out var userId))
         {
+            _userId = userId;
             return userId;
         }
 
@@ -42,7 +51,32 @@ public sealed class ApiUser : IUser
         throw new ArgumentException("Could not parse user role");
     }
 
-    public string Name => _httpContextAccessor.HttpContext?.User.Identity?.Name ?? string.Empty;
+    public string Name
+    {
+        get
+        {
+            if (_name != null)
+            {
+                return _name;
+            }
+            var identity = _httpContextAccessor.HttpContext?.User.Identity;
+            if (identity == null)
+            {
+                _name = string.Empty;
+                return string.Empty;
+            }
+            if (!string.IsNullOrWhiteSpace(identity.Name))
+            {
+                _name = identity.Name;
+                return identity.Name;
+            }
+            var claim = _httpContextAccessor.HttpContext!.User.Claims
+                .FirstOrDefault(c => string.Equals(c.Type, "name", StringComparison.OrdinalIgnoreCase))?
+                .Value;
+            _name = claim ?? string.Empty;
+            return _name;
+        }
+    }
 
     public string GetUserEmail()
     {
@@ -54,6 +88,6 @@ public sealed class ApiUser : IUser
             return claim.Value;
         }
 
-        throw new ArgumentException("Could not parse user email");
+        return string.Empty;
     }
 }

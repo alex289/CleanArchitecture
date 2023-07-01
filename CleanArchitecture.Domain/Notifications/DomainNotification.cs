@@ -1,8 +1,9 @@
 using System;
+using CleanArchitecture.Domain.DomainEvents;
 
 namespace CleanArchitecture.Domain.Notifications;
 
-public sealed class DomainNotification : DomainEvent
+public class DomainNotification : DomainEvent
 {
     public DomainNotification(
         string key,
@@ -23,4 +24,5 @@ public sealed class DomainNotification : DomainEvent
     public string Value { get; }
     public string Code { get; }
     public object? Data { get; set; }
+    public int Version { get; private set; } = 1;
 }

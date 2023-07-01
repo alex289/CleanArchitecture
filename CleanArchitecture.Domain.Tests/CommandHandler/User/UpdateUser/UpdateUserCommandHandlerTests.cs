@@ -4,6 +4,7 @@ using CleanArchitecture.Domain.Commands.Users.UpdateUser;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Domain.Events.User;
+using Moq;
 using Xunit;
 
 namespace CleanArchitecture.Domain.Tests.CommandHandler.User.UpdateUser;
@@ -53,5 +54,38 @@ public sealed class UpdateUserCommandHandlerTests
             .VerifyExistingNotification(
                 ErrorCodes.ObjectNotFound,
                 $"There is no User with Id {command.UserId}");
+    }
+
+    [Fact]
+    public async Task Should_Not_Update_With_Existing_User_Email()
+    {
+        var user = _fixture.SetupUser();
+
+        var command = new UpdateUserCommand(
+            user.Id,
+            "test@email.com",
+            "Test",
+            "Email",
+            UserRole.User);
+
+        _fixture.UserRepository
+            .Setup(x => x.GetByEmailAsync(command.Email))
+            .ReturnsAsync(new Entities.User(
+                Guid.NewGuid(),
+                command.Email,
+                "Some",
+                "User",
+                "234fs@#*@#",
+                UserRole.User));
+
+        await _fixture.CommandHandler.Handle(command, default);
+
+        _fixture
+            .VerifyNoCommit()
+            .VerifyNoRaisedEvent<UserUpdatedEvent>()
+            .VerifyAnyDomainNotification()
+            .VerifyExistingNotification(
+                DomainErrorCodes.UserAlreadyExists,
+                $"There is already a User with Email {command.Email}");
     }
 }

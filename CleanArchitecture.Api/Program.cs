@@ -40,7 +40,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddSwagger();
 builder.Services.AddAuth(builder.Configuration);
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration, "CleanArchitecture.Infrastructure");
 builder.Services.AddQueryHandlers();
 builder.Services.AddServices();
 builder.Services.AddCommandHandlers();
@@ -73,8 +73,12 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var appDbContext = services.GetRequiredService<ApplicationDbContext>();
+    var storeDbContext = services.GetRequiredService<EventStoreDbContext>();
+    var domainStoreDbContext = services.GetRequiredService<DomainNotificationStoreDbContext>();
 
     appDbContext.EnsureMigrationsApplied();
+    storeDbContext.EnsureMigrationsApplied();
+    domainStoreDbContext.EnsureMigrationsApplied();
 }
 
 app.Run();

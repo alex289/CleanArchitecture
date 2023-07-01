@@ -57,6 +57,21 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
             return;
         }
 
+        if (request.Email != user.Email)
+        {
+            var existingUser = await _userRepository.GetByEmailAsync(request.Email);
+
+            if (existingUser != null)
+            {
+                await Bus.RaiseEventAsync(
+                    new DomainNotification(
+                        request.MessageType,
+                        $"There is already a User with Email {request.Email}",
+                        DomainErrorCodes.UserAlreadyExists));
+                return;
+            }
+        }
+
         if (_user.GetUserRole() == UserRole.Admin)
         {
             user.SetRole(request.Role);

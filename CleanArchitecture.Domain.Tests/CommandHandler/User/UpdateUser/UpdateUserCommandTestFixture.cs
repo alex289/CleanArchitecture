@@ -21,7 +21,7 @@ public sealed class UpdateUserCommandTestFixture : CommandHandlerFixtureBase
     }
 
     public UpdateUserCommandHandler CommandHandler { get; }
-    private Mock<IUserRepository> UserRepository { get; }
+    public Mock<IUserRepository> UserRepository { get; }
 
     public Entities.User SetupUser()
     {

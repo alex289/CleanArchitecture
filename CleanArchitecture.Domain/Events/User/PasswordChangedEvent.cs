@@ -1,4 +1,5 @@
 ﻿using System;
+using CleanArchitecture.Domain.DomainEvents;
 
 namespace CleanArchitecture.Domain.Events.User;
 

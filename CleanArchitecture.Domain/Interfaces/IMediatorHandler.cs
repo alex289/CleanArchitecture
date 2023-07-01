@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Commands;
+using CleanArchitecture.Domain.DomainEvents;
 using MediatR;
 
 namespace CleanArchitecture.Domain.Interfaces;
