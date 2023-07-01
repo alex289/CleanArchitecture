@@ -15,15 +15,15 @@ public sealed class GetUsersByIdsTests : IClassFixture<GetUsersByIdsTestFixture>
     {
         _fixture = fixture;
     }
-    
+
     [Fact]
     public async Task Should_Get_Users_By_Ids()
     {
         var client = new UsersApi.UsersApiClient(_fixture.GrpcChannel);
-        
+
         var request = new GetByIdsRequest();
         request.Ids.Add(_fixture.CreatedUserId.ToString());
-        
+
         var response = await client.GetByIdsAsync(request);
 
         response.Users.Count.Should().Be(1);

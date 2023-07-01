@@ -8,7 +8,7 @@ namespace CleanArchitecture.IntegrationTests.Extensions;
 
 public static class HttpExtensions
 {
-    private static readonly JsonSerializerOptions JsonSerializerOptions = new()
+    private static readonly JsonSerializerOptions s_jsonSerializerOptions = new()
     {
         PropertyNameCaseInsensitive = true
     };
@@ -20,12 +20,12 @@ public static class HttpExtensions
             return default;
         }
 
-        return JsonSerializer.Deserialize<T>(json, JsonSerializerOptions);
+        return JsonSerializer.Deserialize<T>(json, s_jsonSerializerOptions);
     }
 
     private static string Serialize<T>(T data)
     {
-        return JsonSerializer.Serialize(data, JsonSerializerOptions);
+        return JsonSerializer.Serialize(data, s_jsonSerializerOptions);
     }
 
     public static async Task<ResponseMessage<T>?> ReadAsJsonAsync<T>(this HttpContent httpContent)

@@ -2,7 +2,6 @@ using System;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Infrastructure.Database;
-using CleanArchitecture.IntegrationTests.Infrastructure;
 using Grpc.Net.Client;
 
 namespace CleanArchitecture.IntegrationTests.Fixtures.gRPC;

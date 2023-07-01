@@ -1,5 +1,4 @@
-﻿using System;
-using CleanArchitecture.gRPC.Interfaces;
+﻿using CleanArchitecture.gRPC.Interfaces;
 
 namespace CleanArchitecture.gRPC;
 

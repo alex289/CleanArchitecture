@@ -1,4 +1,3 @@
-using System;
 using CleanArchitecture.Api.Extensions;
 using CleanArchitecture.Application.Extensions;
 using CleanArchitecture.Application.gRPC;

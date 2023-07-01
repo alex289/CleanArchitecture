@@ -19,14 +19,14 @@ public sealed class HealthChecksTests : IClassFixture<TestFixtureBase>
     {
         _fixture = fixture;
     }
-    
+
     [Fact]
     [Priority(0)]
     public async Task Should_Return_Healthy()
     {
         var response = await _fixture.ServerClient.GetAsync("/healthz");
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        
+
         var content = await response.Content.ReadAsStringAsync();
 
         var json = JObject.Parse(content);

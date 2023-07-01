@@ -20,7 +20,7 @@ namespace CleanArchitecture.Domain.Commands.Users.LoginUser;
 public sealed class LoginUserCommandHandler : CommandHandlerBase,
     IRequestHandler<LoginUserCommand, string>
 {
-    private const double ExpiryDurationMinutes = 30;
+    private const double _expiryDurationMinutes = 30;
     private readonly TokenSettings _tokenSettings;
 
     private readonly IUserRepository _userRepository;
@@ -96,7 +96,7 @@ public sealed class LoginUserCommandHandler : CommandHandlerBase,
             tokenSettings.Issuer,
             tokenSettings.Audience,
             claims,
-            expires: DateTime.Now.AddMinutes(ExpiryDurationMinutes),
+            expires: DateTime.Now.AddMinutes(_expiryDurationMinutes),
             signingCredentials: credentials);
 
         return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
