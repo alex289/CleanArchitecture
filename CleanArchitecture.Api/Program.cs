@@ -51,6 +51,22 @@ builder.Services.AddMediatR(cfg => { cfg.RegisterServicesFromAssemblies(typeof(P
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    ApplicationDbContext appDbContext = services.GetRequiredService<ApplicationDbContext>();
+    EventStoreDbContext storeDbContext = services.GetRequiredService<EventStoreDbContext>();
+    DomainNotificationStoreDbContext domainStoreDbContext = services.GetRequiredService<DomainNotificationStoreDbContext>();
+
+    appDbContext.EnsureMigrationsApplied();
+
+    if (app.Environment.EnvironmentName != "Integration")
+    {
+        storeDbContext.EnsureMigrationsApplied();
+        domainStoreDbContext.EnsureMigrationsApplied();
+    }
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -62,24 +78,12 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapControllers();
 app.MapHealthChecks("/healthz", new HealthCheckOptions
 {
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
+app.MapControllers();
 app.MapGrpcService<UsersApiImplementation>();
-
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    var appDbContext = services.GetRequiredService<ApplicationDbContext>();
-    var storeDbContext = services.GetRequiredService<EventStoreDbContext>();
-    var domainStoreDbContext = services.GetRequiredService<DomainNotificationStoreDbContext>();
-
-    appDbContext.EnsureMigrationsApplied();
-    storeDbContext.EnsureMigrationsApplied();
-    domainStoreDbContext.EnsureMigrationsApplied();
-}
 
 app.Run();
 

@@ -23,25 +23,19 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
     private readonly AddCustomSeedDataHandler? _addCustomSeedDataHandler;
 
     private readonly SqliteConnection _connection = new("DataSource=:memory:");
-    private readonly string? _environment;
     private readonly RegisterCustomServicesHandler? _registerCustomServicesHandler;
 
     public CleanArchitectureWebApplicationFactory(
         AddCustomSeedDataHandler? addCustomSeedDataHandler,
-        RegisterCustomServicesHandler? registerCustomServicesHandler,
-        string? environment = null)
+        RegisterCustomServicesHandler? registerCustomServicesHandler)
     {
         _addCustomSeedDataHandler = addCustomSeedDataHandler;
         _registerCustomServicesHandler = registerCustomServicesHandler;
-        _environment = environment;
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        if (!string.IsNullOrWhiteSpace(_environment))
-        {
-            builder.UseEnvironment(_environment);
-        }
+        builder.UseEnvironment("Integration");
 
         base.ConfigureWebHost(builder);
 
@@ -53,14 +47,14 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
             services.SetupTestDatabase<EventStoreDbContext>(_connection);
             services.SetupTestDatabase<DomainNotificationStoreDbContext>(_connection);
 
-            var sp = services.BuildServiceProvider();
+            ServiceProvider sp = services.BuildServiceProvider();
 
-            using var scope = sp.CreateScope();
-            var scopedServices = scope.ServiceProvider;
+            using IServiceScope scope = sp.CreateScope();
+            IServiceProvider scopedServices = scope.ServiceProvider;
 
-            var applicationDbContext = scopedServices.GetRequiredService<ApplicationDbContext>();
-            var storeDbContext = scopedServices.GetRequiredService<EventStoreDbContext>();
-            var domainStoreDbContext = scopedServices.GetRequiredService<DomainNotificationStoreDbContext>();
+            ApplicationDbContext applicationDbContext = scopedServices.GetRequiredService<ApplicationDbContext>();
+            EventStoreDbContext storeDbContext = scopedServices.GetRequiredService<EventStoreDbContext>();
+            DomainNotificationStoreDbContext domainStoreDbContext = scopedServices.GetRequiredService<DomainNotificationStoreDbContext>();
 
             applicationDbContext.EnsureMigrationsApplied();
 

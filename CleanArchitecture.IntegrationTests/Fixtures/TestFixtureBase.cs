@@ -12,13 +12,9 @@ public class TestFixtureBase
 {
     public TestFixtureBase()
     {
-        var projectDir = Directory.GetCurrentDirectory();
-        var configPath = Path.Combine(projectDir, "appsettings.Integration.json");
-
         Factory = new CleanArchitectureWebApplicationFactory(
             SeedTestData,
-            RegisterCustomServicesHandler,
-            configPath);
+            RegisterCustomServicesHandler);
 
         ServerClient = Factory.CreateClient();
         ServerClient.Timeout = TimeSpan.FromMinutes(5);
