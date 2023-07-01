@@ -5,6 +5,8 @@ using CleanArchitecture.IntegrationTests.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanArchitecture.IntegrationTests.Infrastructure;
@@ -48,6 +50,8 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
         builder.ConfigureServices(services =>
         {
             services.SetupTestDatabase<ApplicationDbContext>(_connection);
+            services.SetupTestDatabase<EventStoreDbContext>(_connection);
+            services.SetupTestDatabase<DomainNotificationStoreDbContext>(_connection);
 
             var sp = services.BuildServiceProvider();
 
@@ -55,8 +59,18 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
             var scopedServices = scope.ServiceProvider;
 
             var applicationDbContext = scopedServices.GetRequiredService<ApplicationDbContext>();
+            var storeDbContext = scopedServices.GetRequiredService<EventStoreDbContext>();
+            var domainStoreDbContext = scopedServices.GetRequiredService<DomainNotificationStoreDbContext>();
 
             applicationDbContext.EnsureMigrationsApplied();
+
+            var creator2 = (RelationalDatabaseCreator)storeDbContext.Database
+                    .GetService<IRelationalDatabaseCreator>();
+            creator2.CreateTables();
+
+            var creator3 = (RelationalDatabaseCreator)domainStoreDbContext
+                .Database.GetService<IRelationalDatabaseCreator>();
+            creator3.CreateTables();
 
             _addCustomSeedDataHandler?.Invoke(applicationDbContext);
             _registerCustomServicesHandler?.Invoke(services, sp, scopedServices);
