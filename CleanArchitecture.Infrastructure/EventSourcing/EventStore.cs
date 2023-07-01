@@ -1,6 +1,6 @@
+using System.Threading.Tasks;
 using CleanArchitecture.Domain.DomainEvents;
 using CleanArchitecture.Domain.DomainNotifications;
-using System.Threading.Tasks;
 using CleanArchitecture.Domain.Notifications;
 using CleanArchitecture.Infrastructure.Database;
 using Newtonsoft.Json;

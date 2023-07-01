@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using CleanArchitecture.Domain.DomainNotifications;
 using Microsoft.EntityFrameworkCore;
-using CleanArchitecture.Domain.DomainNotifications;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CleanArchitecture.Infrastructure.Configurations.EventSourcing;
 

@@ -1,6 +1,6 @@
 ﻿using CleanArchitecture.Domain.DomainEvents;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CleanArchitecture.Infrastructure.Configurations.EventSourcing;
 
