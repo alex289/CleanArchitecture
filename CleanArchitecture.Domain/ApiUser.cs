@@ -71,7 +71,7 @@ public sealed class ApiUser : IUser
                 return identity.Name;
             }
             var claim = _httpContextAccessor.HttpContext!.User.Claims
-                .FirstOrDefault(c => string.Equals(c.Type, "name", StringComparison.OrdinalIgnoreCase))?
+                .FirstOrDefault(c => string.Equals(c.Type, ClaimTypes.Name, StringComparison.OrdinalIgnoreCase))?
                 .Value;
             _name = claim ?? string.Empty;
             return _name;

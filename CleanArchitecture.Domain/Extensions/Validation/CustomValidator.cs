@@ -4,7 +4,7 @@ using FluentValidation;
 
 namespace CleanArchitecture.Domain.Extensions.Validation;
 
-public static class CustomValidator
+public static partial class CustomValidator
 {
     public static IRuleBuilderOptions<T, string> StringMustBeBase64<T>(this IRuleBuilder<T, string> ruleBuilder)
     {
@@ -14,7 +14,7 @@ public static class CustomValidator
     private static bool IsBase64String(string base64)
     {
         base64 = base64.Trim();
-        return base64.Length % 4 == 0 && Regex.IsMatch(base64, @"^[a-zA-Z0-9\+/]*={0,3}$", RegexOptions.None);
+        return base64.Length % 4 == 0 && Base64Regex().IsMatch(base64);
     }
 
     public static IRuleBuilder<T, string> Password<T>(
@@ -32,4 +32,7 @@ public static class CustomValidator
             .Matches("[^a-zA-Z0-9]").WithErrorCode(DomainErrorCodes.UserSpecialCharPassword);
         return options;
     }
+
+    [GeneratedRegex("^[a-zA-Z0-9\\+/]*={0,3}$", RegexOptions.None)]
+    private static partial Regex Base64Regex();
 }

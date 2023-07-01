@@ -14,7 +14,7 @@ namespace CleanArchitecture.Api.Controllers;
 
 [ApiController]
 [Route("/api/v1/[controller]")]
-public class UserController : ApiController
+public sealed class UserController : ApiController
 {
     private readonly IUserService _userService;
 

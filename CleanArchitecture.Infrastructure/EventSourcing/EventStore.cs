@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace CleanArchitecture.Infrastructure.EventSourcing;
 
-public class DomainEventStore : IDomainEventStore
+public sealed class DomainEventStore : IDomainEventStore
 {
     private readonly EventStoreDbContext _eventStoreDbContext;
     private readonly DomainNotificationStoreDbContext _domainNotificationStoreDbContext;

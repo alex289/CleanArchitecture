@@ -4,7 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using CleanArchitecture.Domain.Enums;
+using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Domain.Interfaces.Repositories;
@@ -70,19 +70,18 @@ public sealed class LoginUserCommandHandler : CommandHandlerBase,
         }
 
         return BuildToken(
-            user.Email,
-            user.Role,
-            user.Id,
+            user,
             _tokenSettings);
     }
 
-    private static string BuildToken(string email, UserRole role, Guid id, TokenSettings tokenSettings)
+    private static string BuildToken(User user, TokenSettings tokenSettings)
     {
         var claims = new[]
         {
-            new Claim(ClaimTypes.Email, email),
-            new Claim(ClaimTypes.Role, role.ToString()),
-            new Claim(ClaimTypes.NameIdentifier, id.ToString())
+            new Claim(ClaimTypes.Email, user.Email),
+            new Claim(ClaimTypes.Role, user.Role.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new Claim(ClaimTypes.Name, user.FullName)
         };
 
         var securityKey = new SymmetricSecurityKey(
