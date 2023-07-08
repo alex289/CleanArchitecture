@@ -29,7 +29,7 @@ jobs:
       id: outdated
       run: |
           outdated=$(dotnet outdated ${{ env.solutionFile }} -u)
-          echo "updates=${outdated}" >> $GITHUB_OUTPUT
+          echo "::set-output name=updates::$outdated"
 
     - name: Check for changes
       id: changes
