@@ -28,8 +28,7 @@ jobs:
     - name: Update packages
       id: outdated
       run: |
-          outdated=$(dotnet outdated ${{ env.solutionFile }} -u)
-          echo "::set-output name=updates::$(echo "$outdated")"
+          echo "::set-env name=UPDATES::$(dotnet outdated ${{ env.solutionFile }} -u)"
 
     - name: Check for changes
       id: changes
@@ -49,7 +48,6 @@ jobs:
       if: env.changes == 'true'
       uses: peter-evans/create-pull-request@v3
       with:
-        #token: ${{ secrets.PAT }}
         branch: "update/${{ env.date }}"
         labels: dependencies
         delete-branch: true
@@ -63,7 +61,7 @@ jobs:
 
             **Package Updates:**
             ```
-            ${{ steps.outdated.outputs.updates }}
+            ${{ env.UPDATES }}
             ```
 
             Solution file: ${{ env.solutionFile }}
