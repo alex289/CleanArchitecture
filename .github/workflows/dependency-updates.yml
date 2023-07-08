@@ -26,9 +26,10 @@ jobs:
       run: dotnet tool install --global dotnet-outdated-tool
 
     - name: Update packages
+      uses: mathiasvr/command-output@v2.0.0
       id: outdated
-      run: |
-          echo "UPDATES=$(dotnet outdated ${{ env.solutionFile }} -u)" >> $GITHUB_OUTPUT
+      with:
+        run: dotnet outdated ${{ env.solutionFile }} -u
 
     - name: Check for changes
       id: changes
@@ -61,7 +62,7 @@ jobs:
 
             **Package Updates:**
             ```
-            ${{ steps.outdated.outputs.UPDATES }}
+            ${{ steps.outdated.outputs.stdout }}
             ```
 
             Solution file: ${{ env.solutionFile }}
