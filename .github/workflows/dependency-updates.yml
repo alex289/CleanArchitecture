@@ -38,13 +38,13 @@ jobs:
       if: steps.changes.outputs.changes == 'true'
       uses: peter-evans/create-pull-request@v3
       with:
-        token: ${{ secrets.PAT }}
+        # token: ${{ secrets.PAT }}
         branch: "update/${{ steps.date.outputs.date }}"
-        label: dependencies
+        labels: dependencies
         delete-branch: true
         commit-message: "Update packages"
         committer: GitHub <noreply@github.com>
-        author: alex289 <alex289@users.noreply.github.com>
+        author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
         assignees: alex289
         reviewers: alex289
         title: "Automatic Package Update ${{ steps.date.outputs.date }}"
