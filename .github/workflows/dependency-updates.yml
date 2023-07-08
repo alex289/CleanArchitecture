@@ -28,7 +28,7 @@ jobs:
     - name: Update packages
       id: outdated
       run: |
-          echo "::set-env name=UPDATES::$(dotnet outdated ${{ env.solutionFile }} -u)"
+          echo "UPDATES=$(dotnet outdated ${{ env.solutionFile }} -u)" >> $GITHUB_OUTPUT
 
     - name: Check for changes
       id: changes
@@ -61,7 +61,7 @@ jobs:
 
             **Package Updates:**
             ```
-            ${{ env.UPDATES }}
+            ${{ steps.outdated.outputs.UPDATES }}
             ```
 
             Solution file: ${{ env.solutionFile }}
