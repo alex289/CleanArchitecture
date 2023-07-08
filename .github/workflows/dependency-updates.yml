@@ -23,7 +23,9 @@ jobs:
 
     - name: Update packages
       id: outdated
-      run: dotnet outdated CleanArchitecture.sln -u
+      run: |
+          outdated=$(dotnet outdated CleanArchitecture.sln -u)
+          echo "::set-output name=updates::$outdated"
 
     - name: Check for changes
       id: changes
@@ -38,7 +40,7 @@ jobs:
       if: steps.changes.outputs.changes == 'true'
       uses: peter-evans/create-pull-request@v3
       with:
-        # token: ${{ secrets.PAT }}
+        token: ${{ secrets.PAT }}
         branch: "update/${{ steps.date.outputs.date }}"
         labels: dependencies
         delete-branch: true
@@ -53,5 +55,5 @@ jobs:
 
             **Package Updates:**
             ```
-            ${{ steps.outdated.outputs.stdout }}
+            ${{ steps.outdated.outputs.updates }}
             ```
