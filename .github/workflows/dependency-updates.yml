@@ -49,6 +49,7 @@ jobs:
       if: env.changes == 'true'
       uses: peter-evans/create-pull-request@v3
       with:
+        token: ${{ secrets.PAT }}
         branch: "update/${{ env.date }}"
         labels: dependencies
         delete-branch: true
