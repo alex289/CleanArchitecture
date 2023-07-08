@@ -29,15 +29,6 @@ jobs:
       id: changes
       run: git diff --exit-code || echo "::set-output name=changes::true"
 
-    - name: Commit and push changes
-      if: steps.changes.outputs.changes == 'true'
-      run: |
-        git config user.name "${{ github.actor }}"
-        git config user.email "${{ github.actor }}@users.noreply.github.com"
-        git add .
-        git commit -m "Update packages"
-        git push
-
     - name: Get current date
       if: steps.changes.outputs.changes == 'true'
       id: date
@@ -47,10 +38,15 @@ jobs:
       if: steps.changes.outputs.changes == 'true'
       uses: peter-evans/create-pull-request@v3
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.PAT }}
         branch: "update/${{ steps.date.outputs.date }}"
         label: dependencies
         delete-branch: true
+        commit-message: "Update packages"
+        committer: GitHub <noreply@github.com>
+        author: alex289 <alex289@users.noreply.github.com>
+        assignees: alex289
+        reviewers: alex289
         title: "Automatic Package Update ${{ steps.date.outputs.date }}"
         body: |
             This pull request includes updates to the packages in the solution.
