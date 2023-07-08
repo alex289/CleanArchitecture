@@ -8,6 +8,10 @@ on:
 jobs:
   updatePackages:
     runs-on: ubuntu-latest
+    env:
+      reviewer: alex289
+      solutionFile: CleanArchitecture.sln
+      baseBranch: main
 
     steps:
     - name: Checkout
@@ -24,36 +28,44 @@ jobs:
     - name: Update packages
       id: outdated
       run: |
-          outdated=$(dotnet outdated CleanArchitecture.sln -u)
-          echo "::set-output name=updates::$outdated"
+          outdated=$(dotnet outdated ${{ env.solutionFile }} -u)
+          echo "updates=${outdated}" >> $GITHUB_ENV
 
     - name: Check for changes
       id: changes
-      run: git diff --exit-code || echo "::set-output name=changes::true"
+      run: |
+          if git diff --quiet; then
+            echo "changes=false" >> $GITHUB_ENV
+          else
+            echo "changes=true" >> $GITHUB_ENV
+          fi
 
     - name: Get current date
-      if: steps.changes.outputs.changes == 'true'
+      if: env.changes == 'true'
       id: date
-      run: echo "::set-output name=date::$(date +'%d_%m_%Y')"
+      run: echo "date=$(date +'%d_%m_%Y')" >> $GITHUB_ENV
 
     - name: Create Pull Request
-      if: steps.changes.outputs.changes == 'true'
+      if: env.changes == 'true'
       uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.PAT }}
-        branch: "update/${{ steps.date.outputs.date }}"
+        branch: "update/${{ env.date }}"
         labels: dependencies
         delete-branch: true
         commit-message: "Update packages"
-        committer: GitHub <noreply@github.com>
-        author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-        assignees: alex289
-        reviewers: alex289
-        title: "Automatic Package Update ${{ steps.date.outputs.date }}"
+        #committer: GitHub <noreply@github.com>
+        #author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+        assignees: ${{ env.reviewer }}
+        reviewers: ${{ env.reviewer }}
+        base: ${{ env.baseBranch }}
+        title: "Automatic Package Update ${{ env.date }}"
         body: |
             This pull request includes updates to the packages in the solution.
 
             **Package Updates:**
             ```
-            ${{ steps.outdated.outputs.updates }}
+            ${{ env.updates }}
             ```
+
+            Solution file: ${{ env.solutionFile }}
