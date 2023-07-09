@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,6 +49,12 @@ builder.Services.AddNotificationHandlers();
 builder.Services.AddApiUser();
 
 builder.Services.AddMediatR(cfg => { cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly); });
+
+builder.Services.AddLogging(x => x.AddSimpleConsole(console =>
+{
+    console.TimestampFormat = "[yyyy-MM-ddTHH:mm:ss.fff] ";
+    console.IncludeScopes = true;
+}));
 
 var app = builder.Build();
 
