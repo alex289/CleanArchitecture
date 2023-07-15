@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: clean-architecture-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clean-architecture-app
+  template:
+    metadata:
+      labels:
+        app: clean-architecture-app
+    spec:
+      containers:
+      - name: clean-architecture-app
+        image: mcr.microsoft.com/dotnet/sdk:7.0
+        workingDir: /app
+        command: ["dotnet", "CleanArchitecture.Api.dll"]
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: app-volume
+          mountPath: /app
+      volumes:
+      - name: app-volume
+        emptyDir: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: clean-architecture-service
+spec:
+  selector:
+    app: clean-architecture-app
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sql-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sql-server
+  template:
+    metadata:
+      labels:
+        app: sql-server
+    spec:
+      containers:
+      - name: sql-server
+        image: mcr.microsoft.com/mssql/server
+        env:
+        - name: ACCEPT_EULA
+          value: "Y"
+        - name: SA_PASSWORD
+          value: "YourStrongPassword"
+        ports:
+        - containerPort: 1433
