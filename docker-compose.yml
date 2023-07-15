@@ -10,10 +10,15 @@ services:
       - db
     links:
       - db
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
   db:
     image: mcr.microsoft.com/mssql/server
     environment:
       - ACCEPT_EULA=Y
-      - SA_PASSWORD=YourStrongPassword
+      - SA_PASSWORD=Password123!#
     ports:
       - 1433:1433

@@ -14,5 +14,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
 WORKDIR /app
 COPY --from=build /app/CleanArchitecture.Api/out ./
 
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+  CMD curl --fail http://localhost/healthz || exit 1
+
 EXPOSE 80
 ENTRYPOINT ["dotnet", "CleanArchitecture.Api.dll"]
