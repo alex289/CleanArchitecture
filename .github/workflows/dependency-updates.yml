@@ -9,7 +9,7 @@ jobs:
   updatePackages:
     runs-on: ubuntu-latest
     env:
-      reviewer: alex289
+      assignee: alex289
       solutionFile: CleanArchitecture.sln
       baseBranch: main
 
@@ -54,8 +54,7 @@ jobs:
         labels: dependencies
         delete-branch: true
         commit-message: "Update packages"
-        assignees: ${{ env.reviewer }}
-        reviewers: ${{ env.reviewer }}
+        assignees: ${{ env.assignee }}
         base: ${{ env.baseBranch }}
         title: "Automatic Package Update ${{ env.date }}"
         body: |
