@@ -35,14 +35,20 @@ To run the project, follow these steps:
 
 ### Using docker
 
-Build the Dockerfile: `docker build -t clean-architecture .`
+1. Build the Dockerfile: `docker build -t clean-architecture .`
+2. Run the Container: `docker run -p 80:80 clean-architecture`
 
-Run the Container: `docker run -p 80:80 clean-architecture`
+### Using docker-compose
 
+1. Change the ConnectionString in the appsettings.json to `Server=db;Database=clean-architecture;Trusted_Connection=False;MultipleActiveResultSets=true;TrustServerCertificate=True;User Id=SA;Password=Password123!#`
+2. Build the Dockerfile: `docker build -t clean-architecture .`
+3. Running the docker compose: `docker-compose up -d` (Delete: `docker-compose down`)
 
-Running the docker compose: `docker-compose up -d` (Delete: `docker-compose down`)
+### Using Kubernetes
 
-Running Kubernetes: `kubectl apply -f k8s-deployment.yml`
+1. Change the ConnectionString in the appsettings.json to `Server=clean-architecture-db-service;Database=clean-architecture;Trusted_Connection=False;MultipleActiveResultSets=true;TrustServerCertificate=True;User Id=SA;Password=Password123!#`
+2. Build the docker image and push it to the docker hub (Change the image name in the `k8s-deployment.yml` to your own)
+Apply the deployment file: `kubectl apply -f k8s-deployment.yml` (Delete: `kubectl delete -f k8s-deployment.yml`)
 
 
 ## Running the Tests
