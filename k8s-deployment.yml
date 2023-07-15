@@ -62,6 +62,6 @@ spec:
         - name: ACCEPT_EULA
           value: "Y"
         - name: SA_PASSWORD
-          value: "YourStrongPassword"
+          value: "Password123!#"
         ports:
         - containerPort: 1433

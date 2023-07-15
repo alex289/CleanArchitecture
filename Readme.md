@@ -33,6 +33,18 @@ To run the project, follow these steps:
 6. The database migrations will be automatically applied on start-up. If the database does not exist, it will be created.
 7. The API should be accessible at `https://localhost:<port>/api/<controller>` where `<port>` is the port number specified in the project properties and `<controller>` is the name of the API controller.
 
+### Using docker
+
+Build the Dockerfile: `docker build -t clean-architecture .`
+
+Run the Container: `docker run -p 80:80 clean-architecture`
+
+
+Running the docker compose: `docker-compose up -d` (Delete: `docker-compose down`)
+
+Running Kubernetes: `kubectl apply -f k8s-deployment.yml`
+
+
 ## Running the Tests
 To run the tests, follow these steps:
 
