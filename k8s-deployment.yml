@@ -14,17 +14,9 @@ spec:
     spec:
       containers:
       - name: clean-architecture-app
-        image: mcr.microsoft.com/dotnet/sdk:7.0
-        workingDir: /app
-        command: ["dotnet", "CleanArchitecture.Api.dll"]
+        image: alexdev28/clean-architecture
         ports:
         - containerPort: 80
-        volumeMounts:
-        - name: app-volume
-          mountPath: /app
-      volumes:
-      - name: app-volume
-        emptyDir: {}
 
 ---
 apiVersion: v1
@@ -65,3 +57,17 @@ spec:
           value: "Password123!#"
         ports:
         - containerPort: 1433
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: clean-architecture-db-service
+spec:
+  selector:
+    app: sql-server
+  ports:
+    - protocol: TCP
+      port: 1433
+      targetPort: 1433
+  type: ClusterIP
