@@ -11,7 +11,7 @@
         <PackageReference Include="MediatR" Version="12.1.1" />
         <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.32.0" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.32.1" />
     </ItemGroup>
 
 </Project>
