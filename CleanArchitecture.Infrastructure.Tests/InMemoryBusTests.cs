@@ -28,7 +28,7 @@ public sealed class InMemoryBusTests
 
         await inMemoryBus.RaiseEventAsync(domainEvent);
 
-        await mediator.Received(1).Publish(Arg.Is<DomainNotification>(x => x.Equals(domainEvent)), default);
+        await mediator.Received(1).Publish(Arg.Is<DomainNotification>(x => x.Equals(domainEvent)));
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public sealed class InMemoryBusTests
 
         await inMemoryBus.RaiseEventAsync(userDeletedEvent);
 
-        await mediator.Received(1).Publish(Arg.Is<UserDeletedEvent>(x => x.Equals(userDeletedEvent)), default);
+        await mediator.Received(1).Publish(Arg.Is<UserDeletedEvent>(x => x.Equals(userDeletedEvent)));
     }
 
     [Fact]
@@ -58,6 +58,6 @@ public sealed class InMemoryBusTests
 
         await inMemoryBus.SendCommandAsync(deleteUserCommand);
 
-        await mediator.Received(1).Send(Arg.Is<DeleteUserCommand>(x => x.Equals(deleteUserCommand)), default);
+        await mediator.Received(1).Send(Arg.Is<DeleteUserCommand>(x => x.Equals(deleteUserCommand)));
     }
 }

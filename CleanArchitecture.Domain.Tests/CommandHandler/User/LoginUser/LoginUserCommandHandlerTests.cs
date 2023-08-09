@@ -35,12 +35,12 @@ public sealed class LoginUserCommandHandlerTests
 
         Guid.Parse(userIdClaim!.Value).Should().Be(user.Id);
 
-        var userEmailClaim = decodedToken!.Claims
+        var userEmailClaim = decodedToken.Claims
             .FirstOrDefault(x => string.Equals(x.Type, ClaimTypes.Email));
 
         userEmailClaim!.Value.Should().Be(user.Email);
 
-        var userRoleClaim = decodedToken!.Claims
+        var userRoleClaim = decodedToken.Claims
             .FirstOrDefault(x => string.Equals(x.Type, ClaimTypes.Role));
 
         userRoleClaim!.Value.Should().Be(user.Role.ToString());
