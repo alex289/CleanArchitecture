@@ -1,12 +1,11 @@
 using System;
-using System.Threading;
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Commands.Users.DeleteUser;
 using CleanArchitecture.Domain.DomainEvents;
 using CleanArchitecture.Domain.Events.User;
 using CleanArchitecture.Domain.Notifications;
 using MediatR;
-using Moq;
+using NSubstitute;
 using Xunit;
 
 namespace CleanArchitecture.Infrastructure.Tests;
@@ -16,10 +15,10 @@ public sealed class InMemoryBusTests
     [Fact]
     public async Task InMemoryBus_Should_Publish_When_Not_DomainNotification()
     {
-        var mediator = new Mock<IMediator>();
-        var domainEventStore = new Mock<IDomainEventStore>();
+        var mediator = Substitute.For<IMediator>();
+        var domainEventStore = Substitute.For<IDomainEventStore>();
 
-        var inMemoryBus = new InMemoryBus(mediator.Object, domainEventStore.Object);
+        var inMemoryBus = new InMemoryBus(mediator, domainEventStore);
 
         const string key = "Key";
         const string value = "Value";
@@ -29,36 +28,36 @@ public sealed class InMemoryBusTests
 
         await inMemoryBus.RaiseEventAsync(domainEvent);
 
-        mediator.Verify(x => x.Publish(domainEvent, CancellationToken.None), Times.Once);
+        await mediator.Received(1).Publish(Arg.Is<DomainNotification>(x => x.Equals(domainEvent)), default);
     }
 
     [Fact]
     public async Task InMemoryBus_Should_Save_And_Publish_When_DomainNotification()
     {
-        var mediator = new Mock<IMediator>();
-        var domainEventStore = new Mock<IDomainEventStore>();
+        var mediator = Substitute.For<IMediator>();
+        var domainEventStore = Substitute.For<IDomainEventStore>();
 
-        var inMemoryBus = new InMemoryBus(mediator.Object, domainEventStore.Object);
+        var inMemoryBus = new InMemoryBus(mediator, domainEventStore);
 
         var userDeletedEvent = new UserDeletedEvent(Guid.NewGuid());
 
         await inMemoryBus.RaiseEventAsync(userDeletedEvent);
 
-        mediator.Verify(x => x.Publish(userDeletedEvent, CancellationToken.None), Times.Once);
+        await mediator.Received(1).Publish(Arg.Is<UserDeletedEvent>(x => x.Equals(userDeletedEvent)), default);
     }
 
     [Fact]
     public async Task InMemoryBus_Should_Send_Command_Async()
     {
-        var mediator = new Mock<IMediator>();
-        var domainEventStore = new Mock<IDomainEventStore>();
+        var mediator = Substitute.For<IMediator>();
+        var domainEventStore = Substitute.For<IDomainEventStore>();
 
-        var inMemoryBus = new InMemoryBus(mediator.Object, domainEventStore.Object);
+        var inMemoryBus = new InMemoryBus(mediator, domainEventStore);
 
         var deleteUserCommand = new DeleteUserCommand(Guid.NewGuid());
 
         await inMemoryBus.SendCommandAsync(deleteUserCommand);
 
-        mediator.Verify(x => x.Send(deleteUserCommand, CancellationToken.None), Times.Once);
+        await mediator.Received(1).Send(Arg.Is<DeleteUserCommand>(x => x.Equals(deleteUserCommand)), default);
     }
 }

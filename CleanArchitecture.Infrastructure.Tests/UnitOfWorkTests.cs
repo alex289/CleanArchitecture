@@ -6,7 +6,7 @@ using CleanArchitecture.Infrastructure.Tests.Fixtures;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Moq;
+using NSubstitute;
 using Xunit;
 
 namespace CleanArchitecture.Infrastructure.Tests;
@@ -17,14 +17,12 @@ public sealed class UnitOfWorkTests
     public async Task Should_Commit_Async_Returns_True()
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>();
-        var dbContextMock = new Mock<ApplicationDbContext>(options.Options);
-        var loggerMock = new Mock<ILogger<UnitOfWork<ApplicationDbContext>>>();
+        var dbContextMock = Substitute.For<ApplicationDbContext>(options.Options);
+        var loggerMock = Substitute.For<ILogger<UnitOfWork<ApplicationDbContext>>>();
 
-        dbContextMock
-            .Setup(x => x.SaveChangesAsync(CancellationToken.None))
-            .Returns(Task.FromResult(1));
+        dbContextMock.SaveChangesAsync(CancellationToken.None).Returns(Task.FromResult(1));
 
-        var unitOfWork = UnitOfWorkTestFixture.GetUnitOfWork(dbContextMock.Object, loggerMock.Object);
+        var unitOfWork = UnitOfWorkTestFixture.GetUnitOfWork(dbContextMock, loggerMock);
 
         var result = await unitOfWork.CommitAsync();
 
@@ -35,14 +33,14 @@ public sealed class UnitOfWorkTests
     public async Task Should_Commit_Async_Returns_False()
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>();
-        var dbContextMock = new Mock<ApplicationDbContext>(options.Options);
-        var loggerMock = new Mock<ILogger<UnitOfWork<ApplicationDbContext>>>();
+        var dbContextMock = Substitute.For<ApplicationDbContext>(options.Options);
+        var loggerMock = Substitute.For<ILogger<UnitOfWork<ApplicationDbContext>>>();
 
         dbContextMock
-            .Setup(x => x.SaveChangesAsync(CancellationToken.None))
-            .Throws(new DbUpdateException("Boom", new Exception("it broke")));
+            .When(x => x.SaveChangesAsync(CancellationToken.None))
+            .Do(x => throw new DbUpdateException("Boom", new Exception("it broke")));
 
-        var unitOfWork = UnitOfWorkTestFixture.GetUnitOfWork(dbContextMock.Object, loggerMock.Object);
+        var unitOfWork = UnitOfWorkTestFixture.GetUnitOfWork(dbContextMock, loggerMock);
 
         var result = await unitOfWork.CommitAsync();
 
@@ -53,14 +51,14 @@ public sealed class UnitOfWorkTests
     public async Task Should_Throw_Exception_When_Commiting_With_DbUpdateException()
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>();
-        var dbContextMock = new Mock<ApplicationDbContext>(options.Options);
-        var loggerMock = new Mock<ILogger<UnitOfWork<ApplicationDbContext>>>();
+        var dbContextMock = Substitute.For<ApplicationDbContext>(options.Options);
+        var loggerMock = Substitute.For<ILogger<UnitOfWork<ApplicationDbContext>>>();
 
         dbContextMock
-            .Setup(x => x.SaveChangesAsync(CancellationToken.None))
-            .Throws(new Exception("boom"));
+            .When(x => x.SaveChangesAsync(CancellationToken.None))
+            .Do(x => throw new Exception("Boom"));
 
-        var unitOfWork = UnitOfWorkTestFixture.GetUnitOfWork(dbContextMock.Object, loggerMock.Object);
+        var unitOfWork = UnitOfWorkTestFixture.GetUnitOfWork(dbContextMock, loggerMock);
 
         Func<Task> throwsAction = async () => await unitOfWork.CommitAsync();
 

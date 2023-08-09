@@ -1,32 +1,26 @@
 using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Domain.Notifications;
-using Moq;
+using NSubstitute;
 
 namespace CleanArchitecture.Application.Tests.Fixtures.Queries;
 
 public class QueryHandlerBaseFixture
 {
-    public Mock<IMediatorHandler> Bus { get; } = new();
+    public IMediatorHandler Bus { get; } = Substitute.For<IMediatorHandler>();
 
     public QueryHandlerBaseFixture VerifyExistingNotification(string key, string errorCode, string message)
     {
-        Bus.Verify(
-            bus => bus.RaiseEventAsync(
-                It.Is<DomainNotification>(
-                    notification =>
+        Bus.Received(1).RaiseEventAsync(Arg.Is<DomainNotification>(notification =>
                         notification.Key == key &&
                         notification.Code == errorCode &&
-                        notification.Value == message)),
-            Times.Once);
+                        notification.Value == message));
 
         return this;
     }
 
     public QueryHandlerBaseFixture VerifyNoDomainNotification()
     {
-        Bus.Verify(
-            bus => bus.RaiseEventAsync(It.IsAny<DomainNotification>()),
-            Times.Never);
+        Bus.DidNotReceive().RaiseEventAsync(Arg.Any<DomainNotification>());
 
         return this;
     }

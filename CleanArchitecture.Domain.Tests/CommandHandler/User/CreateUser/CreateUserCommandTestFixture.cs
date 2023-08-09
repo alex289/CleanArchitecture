@@ -2,7 +2,7 @@ using System;
 using CleanArchitecture.Domain.Commands.Users.CreateUser;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Interfaces.Repositories;
-using Moq;
+using NSubstitute;
 
 namespace CleanArchitecture.Domain.Tests.CommandHandler.User.CreateUser;
 
@@ -10,17 +10,17 @@ public sealed class CreateUserCommandTestFixture : CommandHandlerFixtureBase
 {
     public CreateUserCommandTestFixture()
     {
-        UserRepository = new Mock<IUserRepository>();
+        UserRepository = Substitute.For<IUserRepository>();
 
         CommandHandler = new CreateUserCommandHandler(
-            Bus.Object,
-            UnitOfWork.Object,
-            NotificationHandler.Object,
-            UserRepository.Object);
+            Bus,
+            UnitOfWork,
+            NotificationHandler,
+            UserRepository);
     }
 
     public CreateUserCommandHandler CommandHandler { get; }
-    private Mock<IUserRepository> UserRepository { get; }
+    private IUserRepository UserRepository { get; }
 
     public Entities.User SetupUser()
     {
@@ -33,8 +33,8 @@ public sealed class CreateUserCommandTestFixture : CommandHandlerFixtureBase
             UserRole.User);
 
         UserRepository
-            .Setup(x => x.GetByIdAsync(It.Is<Guid>(y => y == user.Id)))
-            .ReturnsAsync(user);
+            .GetByIdAsync(Arg.Is<Guid>(y => y == user.Id))
+            .Returns(user);
 
         return user;
     }

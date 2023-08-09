@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using CleanArchitecture.Application.gRPC;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Interfaces.Repositories;
-using MockQueryable.Moq;
-using Moq;
+using MockQueryable.NSubstitute;
+using NSubstitute;
 
 namespace CleanArchitecture.gRPC.Tests.Fixtures;
 
@@ -39,16 +38,14 @@ public sealed class UserTestsFixture
                 UserRole.User)
         };
 
-        var queryable = ExistingUsers.AsQueryable().BuildMock();
+        var queryable = ExistingUsers.BuildMock();
 
-        UserRepository
-            .Setup(repository => repository.GetAllNoTracking())
-            .Returns(queryable);
+        UserRepository.GetAllNoTracking().Returns(queryable);
 
-        UsersApiImplementation = new UsersApiImplementation(UserRepository.Object);
+        UsersApiImplementation = new UsersApiImplementation(UserRepository);
     }
 
-    private Mock<IUserRepository> UserRepository { get; } = new();
+    private IUserRepository UserRepository { get; } = Substitute.For<IUserRepository>();
 
     public UsersApiImplementation UsersApiImplementation { get; }
 

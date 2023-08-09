@@ -4,7 +4,7 @@ using CleanArchitecture.Domain.DomainEvents;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Domain.Notifications;
-using Moq;
+using NSubstitute;
 
 namespace CleanArchitecture.Domain.Tests;
 
@@ -12,46 +12,40 @@ public class CommandHandlerFixtureBase
 {
     protected CommandHandlerFixtureBase()
     {
-        Bus = new Mock<IMediatorHandler>();
-        UnitOfWork = new Mock<IUnitOfWork>();
-        NotificationHandler = new Mock<DomainNotificationHandler>();
-        User = new Mock<IUser>();
+        Bus = Substitute.For<IMediatorHandler>();
+        UnitOfWork = Substitute.For<IUnitOfWork>();
+        NotificationHandler = Substitute.For<DomainNotificationHandler>();
+        User = Substitute.For<IUser>();
 
-        User.Setup(x => x.GetUserId()).Returns(Guid.NewGuid());
-        User.Setup(x => x.GetUserRole()).Returns(UserRole.Admin);
+        User.GetUserId().Returns(Guid.NewGuid());
+        User.GetUserRole().Returns(UserRole.Admin);
 
-        UnitOfWork.Setup(unit => unit.CommitAsync()).ReturnsAsync(true);
+        UnitOfWork.CommitAsync().Returns(true);
     }
 
-    protected Mock<IMediatorHandler> Bus { get; }
-    protected Mock<IUnitOfWork> UnitOfWork { get; }
-    protected Mock<DomainNotificationHandler> NotificationHandler { get; }
-    protected Mock<IUser> User { get; }
+    protected IMediatorHandler Bus { get; }
+    protected IUnitOfWork UnitOfWork { get; }
+    protected DomainNotificationHandler NotificationHandler { get; }
+    protected IUser User { get; }
 
     public CommandHandlerFixtureBase VerifyExistingNotification(string errorCode, string message)
     {
-        Bus.Verify(
-            bus => bus.RaiseEventAsync(
-                It.Is<DomainNotification>(not => not.Code == errorCode && not.Value == message)),
-            Times.Once);
+        Bus.Received(1).RaiseEventAsync(
+            Arg.Is<DomainNotification>(not => not.Code == errorCode && not.Value == message));
 
         return this;
     }
 
     public CommandHandlerFixtureBase VerifyAnyDomainNotification()
     {
-        Bus.Verify(
-            bus => bus.RaiseEventAsync(It.IsAny<DomainNotification>()),
-            Times.Once);
+        Bus.Received(1).RaiseEventAsync(Arg.Any<DomainNotification>());
 
         return this;
     }
 
     public CommandHandlerFixtureBase VerifyNoDomainNotification()
     {
-        Bus.Verify(
-            bus => bus.RaiseEventAsync(It.IsAny<DomainNotification>()),
-            Times.Never);
+        Bus.DidNotReceive().RaiseEventAsync(Arg.Any<DomainNotification>());
 
         return this;
     }
@@ -59,39 +53,37 @@ public class CommandHandlerFixtureBase
     public CommandHandlerFixtureBase VerifyNoRaisedEvent<TEvent>()
         where TEvent : DomainEvent
     {
-        Bus.Verify(
-            bus => bus.RaiseEventAsync(It.IsAny<TEvent>()),
-            Times.Never);
+        Bus.DidNotReceive().RaiseEventAsync(Arg.Any<TEvent>());
 
         return this;
     }
 
-    public CommandHandlerFixtureBase VerifyNoRaisedEvent<TEvent>(Expression<Func<TEvent, bool>> checkFunction)
+    public CommandHandlerFixtureBase VerifyNoRaisedEvent<TEvent>(Expression<Predicate<TEvent>> checkFunction)
         where TEvent : DomainEvent
     {
-        Bus.Verify(bus => bus.RaiseEventAsync(It.Is(checkFunction)), Times.Never);
+        Bus.DidNotReceive().RaiseEventAsync(Arg.Is(checkFunction));
 
         return this;
     }
 
     public CommandHandlerFixtureBase VerifyNoCommit()
     {
-        UnitOfWork.Verify(unit => unit.CommitAsync(), Times.Never);
+        UnitOfWork.DidNotReceive().CommitAsync();
 
         return this;
     }
 
     public CommandHandlerFixtureBase VerifyCommit()
     {
-        UnitOfWork.Verify(unit => unit.CommitAsync(), Times.Once);
+        UnitOfWork.Received(1).CommitAsync();
 
         return this;
     }
 
-    public CommandHandlerFixtureBase VerifyRaisedEvent<TEvent>(Expression<Func<TEvent, bool>> checkFunction)
+    public CommandHandlerFixtureBase VerifyRaisedEvent<TEvent>(Expression<Predicate<TEvent>> checkFunction)
         where TEvent : DomainEvent
     {
-        Bus.Verify(bus => bus.RaiseEventAsync(It.Is(checkFunction)), Times.Once);
+        Bus.Received(1).RaiseEventAsync(Arg.Is(checkFunction));
 
         return this;
     }

@@ -4,7 +4,7 @@ using CleanArchitecture.Domain.Commands.Users.UpdateUser;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Domain.Events.User;
-using Moq;
+using NSubstitute;
 using Xunit;
 
 namespace CleanArchitecture.Domain.Tests.CommandHandler.User.UpdateUser;
@@ -69,8 +69,8 @@ public sealed class UpdateUserCommandHandlerTests
             UserRole.User);
 
         _fixture.UserRepository
-            .Setup(x => x.GetByEmailAsync(command.Email))
-            .ReturnsAsync(new Entities.User(
+            .GetByEmailAsync(command.Email)
+            .Returns(new Entities.User(
                 Guid.NewGuid(),
                 command.Email,
                 "Some",

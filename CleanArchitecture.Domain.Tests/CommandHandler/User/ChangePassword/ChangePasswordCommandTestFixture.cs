@@ -2,7 +2,7 @@
 using CleanArchitecture.Domain.Commands.Users.ChangePassword;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Interfaces.Repositories;
-using Moq;
+using NSubstitute;
 using BC = BCrypt.Net.BCrypt;
 
 namespace CleanArchitecture.Domain.Tests.CommandHandler.User.ChangePassword;
@@ -11,18 +11,18 @@ public sealed class ChangePasswordCommandTestFixture : CommandHandlerFixtureBase
 {
     public ChangePasswordCommandTestFixture()
     {
-        UserRepository = new Mock<IUserRepository>();
+        UserRepository = Substitute.For<IUserRepository>();
 
         CommandHandler = new ChangePasswordCommandHandler(
-            Bus.Object,
-            UnitOfWork.Object,
-            NotificationHandler.Object,
-            UserRepository.Object,
-            User.Object);
+            Bus,
+            UnitOfWork,
+            NotificationHandler,
+            UserRepository,
+            User);
     }
 
     public ChangePasswordCommandHandler CommandHandler { get; }
-    private Mock<IUserRepository> UserRepository { get; }
+    private IUserRepository UserRepository { get; }
 
     public Entities.User SetupUser()
     {
@@ -34,11 +34,11 @@ public sealed class ChangePasswordCommandTestFixture : CommandHandlerFixtureBase
             BC.HashPassword("z8]tnayvd5FNLU9:]AQm"),
             UserRole.User);
 
-        User.Setup(x => x.GetUserId()).Returns(user.Id);
+        User.GetUserId().Returns(user.Id);
 
         UserRepository
-            .Setup(x => x.GetByIdAsync(It.Is<Guid>(y => y == user.Id)))
-            .ReturnsAsync(user);
+            .GetByIdAsync(Arg.Is<Guid>(y => y == user.Id))
+            .Returns(user);
 
         return user;
     }
@@ -46,7 +46,7 @@ public sealed class ChangePasswordCommandTestFixture : CommandHandlerFixtureBase
     public Guid SetupMissingUser()
     {
         var id = Guid.NewGuid();
-        User.Setup(x => x.GetUserId()).Returns(id);
+        User.GetUserId().Returns(id);
         return id;
     }
 }

@@ -2,7 +2,7 @@ using System;
 using CleanArchitecture.Domain.Commands.Users.UpdateUser;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Interfaces.Repositories;
-using Moq;
+using NSubstitute;
 
 namespace CleanArchitecture.Domain.Tests.CommandHandler.User.UpdateUser;
 
@@ -10,18 +10,18 @@ public sealed class UpdateUserCommandTestFixture : CommandHandlerFixtureBase
 {
     public UpdateUserCommandTestFixture()
     {
-        UserRepository = new Mock<IUserRepository>();
+        UserRepository = Substitute.For<IUserRepository>();
 
         CommandHandler = new UpdateUserCommandHandler(
-            Bus.Object,
-            UnitOfWork.Object,
-            NotificationHandler.Object,
-            UserRepository.Object,
-            User.Object);
+            Bus,
+            UnitOfWork,
+            NotificationHandler,
+            UserRepository,
+            User);
     }
 
     public UpdateUserCommandHandler CommandHandler { get; }
-    public Mock<IUserRepository> UserRepository { get; }
+    public IUserRepository UserRepository { get; }
 
     public Entities.User SetupUser()
     {
@@ -34,8 +34,8 @@ public sealed class UpdateUserCommandTestFixture : CommandHandlerFixtureBase
             UserRole.User);
 
         UserRepository
-            .Setup(x => x.GetByIdAsync(It.Is<Guid>(y => y == user.Id)))
-            .ReturnsAsync(user);
+            .GetByIdAsync(Arg.Is<Guid>(y => y == user.Id))
+            .Returns(user);
 
         return user;
     }

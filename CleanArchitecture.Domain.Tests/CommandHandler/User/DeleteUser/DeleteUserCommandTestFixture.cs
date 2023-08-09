@@ -2,7 +2,7 @@ using System;
 using CleanArchitecture.Domain.Commands.Users.DeleteUser;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Interfaces.Repositories;
-using Moq;
+using NSubstitute;
 
 namespace CleanArchitecture.Domain.Tests.CommandHandler.User.DeleteUser;
 
@@ -10,18 +10,18 @@ public sealed class DeleteUserCommandTestFixture : CommandHandlerFixtureBase
 {
     public DeleteUserCommandTestFixture()
     {
-        UserRepository = new Mock<IUserRepository>();
+        UserRepository = Substitute.For<IUserRepository>();
 
         CommandHandler = new DeleteUserCommandHandler(
-            Bus.Object,
-            UnitOfWork.Object,
-            NotificationHandler.Object,
-            UserRepository.Object,
-            User.Object);
+            Bus,
+            UnitOfWork,
+            NotificationHandler,
+            UserRepository,
+            User);
     }
 
     public DeleteUserCommandHandler CommandHandler { get; }
-    private Mock<IUserRepository> UserRepository { get; }
+    private IUserRepository UserRepository { get; }
 
     public Entities.User SetupUser()
     {
@@ -34,8 +34,8 @@ public sealed class DeleteUserCommandTestFixture : CommandHandlerFixtureBase
             UserRole.User);
 
         UserRepository
-            .Setup(x => x.GetByIdAsync(It.Is<Guid>(y => y == user.Id)))
-            .ReturnsAsync(user);
+            .GetByIdAsync(Arg.Is<Guid>(y => y == user.Id))
+            .Returns(user);
 
         return user;
     }
