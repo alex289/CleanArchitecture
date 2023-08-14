@@ -11,7 +11,7 @@ public sealed class ApiUser : IUser
 {
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    private string? _name = null;
+    private string? _name;
     private Guid _userId = Guid.Empty;
 
     public ApiUser(IHttpContextAccessor httpContextAccessor)

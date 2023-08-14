@@ -38,7 +38,7 @@ public sealed class UnitOfWorkTests
 
         dbContextMock
             .When(x => x.SaveChangesAsync(CancellationToken.None))
-            .Do(x => throw new DbUpdateException("Boom", new Exception("it broke")));
+            .Do(_ => throw new DbUpdateException("Boom", new Exception("it broke")));
 
         var unitOfWork = UnitOfWorkTestFixture.GetUnitOfWork(dbContextMock, loggerMock);
 
@@ -56,7 +56,7 @@ public sealed class UnitOfWorkTests
 
         dbContextMock
             .When(x => x.SaveChangesAsync(CancellationToken.None))
-            .Do(x => throw new Exception("Boom"));
+            .Do(_ => throw new Exception("Boom"));
 
         var unitOfWork = UnitOfWorkTestFixture.GetUnitOfWork(dbContextMock, loggerMock);
 
