@@ -27,6 +27,7 @@ public sealed class UpdateUserCommandTestFixture : CommandHandlerFixtureBase
     {
         var user = new Entities.User(
             Guid.NewGuid(),
+            Guid.NewGuid(),
             "max@mustermann.com",
             "Max",
             "Mustermann",

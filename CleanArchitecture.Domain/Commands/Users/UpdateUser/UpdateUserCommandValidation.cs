@@ -1,3 +1,4 @@
+using CleanArchitecture.Domain.Constants;
 using CleanArchitecture.Domain.Errors;
 using FluentValidation;
 
@@ -28,7 +29,7 @@ public sealed class UpdateUserCommandValidation : AbstractValidator<UpdateUserCo
             .EmailAddress()
             .WithErrorCode(DomainErrorCodes.UserInvalidEmail)
             .WithMessage("Email is not a valid email address")
-            .MaximumLength(320)
+            .MaximumLength(MaxLengths.User.Email)
             .WithErrorCode(DomainErrorCodes.UserEmailExceedsMaxLength)
             .WithMessage("Email may not be longer than 320 characters");
     }
@@ -39,7 +40,7 @@ public sealed class UpdateUserCommandValidation : AbstractValidator<UpdateUserCo
             .NotEmpty()
             .WithErrorCode(DomainErrorCodes.UserEmptyFirstName)
             .WithMessage("FirstName may not be empty")
-            .MaximumLength(100)
+            .MaximumLength(MaxLengths.User.FirstName)
             .WithErrorCode(DomainErrorCodes.UserFirstNameExceedsMaxLength)
             .WithMessage("FirstName may not be longer than 100 characters");
     }
@@ -50,7 +51,7 @@ public sealed class UpdateUserCommandValidation : AbstractValidator<UpdateUserCo
             .NotEmpty()
             .WithErrorCode(DomainErrorCodes.UserEmptyLastName)
             .WithMessage("LastName may not be empty")
-            .MaximumLength(100)
+            .MaximumLength(MaxLengths.User.LastName)
             .WithErrorCode(DomainErrorCodes.UserLastNameExceedsMaxLength)
             .WithMessage("LastName may not be longer than 100 characters");
     }

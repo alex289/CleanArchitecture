@@ -72,6 +72,7 @@ public sealed class UpdateUserCommandHandlerTests
             .GetByEmailAsync(command.Email)
             .Returns(new Entities.User(
                 Guid.NewGuid(),
+                Guid.NewGuid(),
                 command.Email,
                 "Some",
                 "User",

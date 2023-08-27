@@ -178,6 +178,7 @@ public sealed class CreateUserCommandValidationTests :
 
     private static CreateUserCommand CreateTestCommand(
         Guid? userId = null,
+        Guid? tenantId = null,
         string? email = null,
         string? firstName = null,
         string? lastName = null,
@@ -185,6 +186,7 @@ public sealed class CreateUserCommandValidationTests :
     {
         return new(
             userId ?? Guid.NewGuid(),
+            tenantId ?? Guid.NewGuid(),
             email ?? "test@email.com",
             firstName ?? "test",
             lastName ?? "email",

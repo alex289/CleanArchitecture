@@ -11,9 +11,11 @@ public class ApplicationDbContext : DbContext
     }
 
     public DbSet<User> Users { get; set; } = null!;
+    public DbSet<Tenant> Tenants { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfiguration(new UserConfiguration());
+        builder.ApplyConfiguration(new TenantConfiguration());
     }
 }

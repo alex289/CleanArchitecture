@@ -17,6 +17,7 @@ public sealed class UserTestsFixture
         {
             new(
                 Guid.NewGuid(),
+                Guid.NewGuid(),
                 "test@test.de",
                 "Test First Name",
                 "Test Last Name",
@@ -24,12 +25,14 @@ public sealed class UserTestsFixture
                 UserRole.User),
             new(
                 Guid.NewGuid(),
+                Guid.NewGuid(),
                 "email@Email.de",
                 "Email First Name",
                 "Email Last Name",
                 "Email Password",
                 UserRole.Admin),
             new(
+                Guid.NewGuid(),
                 Guid.NewGuid(),
                 "user@user.de",
                 "User First Name",

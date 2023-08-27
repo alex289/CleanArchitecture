@@ -46,6 +46,7 @@ public sealed class UserService : IUserService
 
         await _bus.SendCommandAsync(new CreateUserCommand(
             userId,
+            user.TenantId,
             user.Email,
             user.FirstName,
             user.LastName,

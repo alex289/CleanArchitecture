@@ -26,6 +26,7 @@ public sealed class GetUserByIdTestFixture : QueryHandlerBaseFixture
     {
         var user = new User(
                 ExistingUserId,
+                Guid.NewGuid(),
                 "max@mustermann.com",
                 "Max",
                 "Mustermann",
@@ -41,6 +42,7 @@ public sealed class GetUserByIdTestFixture : QueryHandlerBaseFixture
     {
         var user = new User(
                 ExistingUserId,
+                Guid.NewGuid(),
                 "max@mustermann.com",
                 "Max",
                 "Mustermann",

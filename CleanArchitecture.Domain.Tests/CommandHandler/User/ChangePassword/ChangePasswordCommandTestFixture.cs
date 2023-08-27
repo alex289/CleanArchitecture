@@ -28,6 +28,7 @@ public sealed class ChangePasswordCommandTestFixture : CommandHandlerFixtureBase
     {
         var user = new Entities.User(
             Guid.NewGuid(),
+            Guid.NewGuid(),
             "max@mustermann.com",
             "Max",
             "Mustermann",

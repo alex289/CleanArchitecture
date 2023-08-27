@@ -17,6 +17,7 @@ public sealed class CreateUserCommandHandlerTests
 
         var command = new CreateUserCommand(
             Guid.NewGuid(),
+            Guid.NewGuid(),
             "test@email.com",
             "Test",
             "Email",
@@ -37,6 +38,7 @@ public sealed class CreateUserCommandHandlerTests
 
         var command = new CreateUserCommand(
             user.Id,
+            Guid.NewGuid(),
             "test@email.com",
             "Test",
             "Email",

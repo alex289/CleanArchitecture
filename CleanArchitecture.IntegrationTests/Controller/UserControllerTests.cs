@@ -32,7 +32,8 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
             _fixture.CreatedUserEmail,
             "Test",
             "Email",
-            _fixture.CreatedUserPassword);
+            _fixture.CreatedUserPassword,
+            Guid.NewGuid());
 
         var response = await _fixture.ServerClient.PostAsJsonAsync("/api/v1/user", user);
 

@@ -33,6 +33,7 @@ public sealed class GetUsersByIdsTestFixture : TestFixtureBase
     {
         return new User(
             CreatedUserId,
+            Guid.NewGuid(),
             "user@user.de",
             "User First Name",
             "User Last Name",

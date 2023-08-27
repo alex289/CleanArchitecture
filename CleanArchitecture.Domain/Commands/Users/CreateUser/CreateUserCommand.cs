@@ -8,12 +8,14 @@ public sealed class CreateUserCommand : CommandBase
 
     public CreateUserCommand(
         Guid userId,
+        Guid tenantId,
         string email,
         string firstName,
         string lastName,
         string password) : base(userId)
     {
         UserId = userId;
+        TenantId = tenantId;
         Email = email;
         FirstName = firstName;
         LastName = lastName;
@@ -21,6 +23,7 @@ public sealed class CreateUserCommand : CommandBase
     }
 
     public Guid UserId { get; }
+    public Guid TenantId { get; }
     public string Email { get; }
     public string FirstName { get; }
     public string LastName { get; }
