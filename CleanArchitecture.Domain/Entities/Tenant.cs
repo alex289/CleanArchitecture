@@ -7,8 +7,8 @@ public class Tenant : Entity
 {
     public string Name { get; private set; }
 
-    public ICollection<User> Users { get; private set; } = new HashSet<User>();
-    
+    public virtual ICollection<User> Users { get; private set; } = new HashSet<User>();
+
     public Tenant(
         Guid id,
         string name) : base(id)

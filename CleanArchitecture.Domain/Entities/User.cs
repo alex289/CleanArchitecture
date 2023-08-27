@@ -15,8 +15,8 @@ public class User : Entity
     public string FullName => $"{FirstName}, {LastName}";
 
     public Guid TenantId { get; private set; }
-    public Tenant Tenant { get; private set; } = null!;
-    
+    public virtual Tenant Tenant { get; private set; } = null!;
+
     public User(
         Guid id,
         Guid tenantId,
