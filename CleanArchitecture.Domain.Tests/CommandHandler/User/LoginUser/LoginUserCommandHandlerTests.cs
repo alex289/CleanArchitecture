@@ -57,7 +57,7 @@ public sealed class LoginUserCommandHandlerTests
             .VerifyAnyDomainNotification()
             .VerifyExistingNotification(
                 ErrorCodes.ObjectNotFound,
-                $"There is no User with Email {command.Email}");
+                $"There is no user with email {command.Email}");
 
         token.Should().BeEmpty();
     }
@@ -74,7 +74,7 @@ public sealed class LoginUserCommandHandlerTests
         _fixture
             .VerifyAnyDomainNotification()
             .VerifyExistingNotification(
-                DomainErrorCodes.UserPasswordIncorrect,
+                DomainErrorCodes.User.UserPasswordIncorrect,
                 "The password is incorrect");
 
         token.Should().BeEmpty();

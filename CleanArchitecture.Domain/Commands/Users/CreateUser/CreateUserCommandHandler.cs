@@ -35,25 +35,25 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
 
         var existingUser = await _userRepository.GetByIdAsync(request.UserId);
 
-        if (existingUser != null)
+        if (existingUser is not null)
         {
             await Bus.RaiseEventAsync(
                 new DomainNotification(
                     request.MessageType,
-                    $"There is already a User with Id {request.UserId}",
-                    DomainErrorCodes.UserAlreadyExists));
+                    $"There is already a user with Id {request.UserId}",
+                    DomainErrorCodes.User.UserAlreadyExists));
             return;
         }
 
         existingUser = await _userRepository.GetByEmailAsync(request.Email);
 
-        if (existingUser != null)
+        if (existingUser is not null)
         {
             await Bus.RaiseEventAsync(
                 new DomainNotification(
                     request.MessageType,
-                    $"There is already a User with Email {request.Email}",
-                    DomainErrorCodes.UserAlreadyExists));
+                    $"There is already a user with email {request.Email}",
+                    DomainErrorCodes.User.UserAlreadyExists));
             return;
         }
 

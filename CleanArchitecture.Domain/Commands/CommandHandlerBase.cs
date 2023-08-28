@@ -62,7 +62,7 @@ public abstract class CommandHandlerBase
             return true;
         }
 
-        if (command.ValidationResult == null)
+        if (command.ValidationResult is null)
         {
             throw new InvalidOperationException("Command is invalid and should therefore have a validation result");
         }

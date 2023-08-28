@@ -30,7 +30,7 @@ public sealed class GetUserByIdQueryHandler :
                 x.Id == request.UserId &&
                 x.Deleted == request.IsDeleted);
 
-        if (user == null)
+        if (user is null)
         {
             await _bus.RaiseEventAsync(
                 new DomainNotification(

@@ -4,7 +4,7 @@ namespace CleanArchitecture.Domain.Commands.Users.CreateUser;
 
 public sealed class CreateUserCommand : CommandBase
 {
-    private readonly CreateUserCommandValidation _validation = new();
+    private static readonly CreateUserCommandValidation s_validation = new();
 
     public CreateUserCommand(
         Guid userId,
@@ -31,7 +31,7 @@ public sealed class CreateUserCommand : CommandBase
 
     public override bool IsValid()
     {
-        ValidationResult = _validation.Validate(this);
+        ValidationResult = s_validation.Validate(this);
         return ValidationResult.IsValid;
     }
 }

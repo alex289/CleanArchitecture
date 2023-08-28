@@ -1,0 +1,58 @@
+using System.Threading;
+using System.Threading.Tasks;
+using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Errors;
+using CleanArchitecture.Domain.Events.Tenant;
+using CleanArchitecture.Domain.Interfaces;
+using CleanArchitecture.Domain.Interfaces.Repositories;
+using CleanArchitecture.Domain.Notifications;
+using MediatR;
+
+namespace CleanArchitecture.Domain.Commands.Tenants.CreateTenant;
+
+public sealed class CreateTenantCommandHandler : CommandHandlerBase,
+    IRequestHandler<CreateTenantCommand>
+{
+    private readonly ITenantRepository _tenantRepository;
+    
+    public CreateTenantCommandHandler(
+        IMediatorHandler bus,
+        IUnitOfWork unitOfWork,
+        INotificationHandler<DomainNotification> notifications,
+        ITenantRepository tenantRepository) : base(bus, unitOfWork, notifications)
+    {
+        _tenantRepository = tenantRepository;
+    }
+
+    public async Task Handle(CreateTenantCommand request, CancellationToken cancellationToken)
+    {
+        if (!await TestValidityAsync(request))
+        {
+            return;
+        }
+
+        if (await _tenantRepository.ExistsAsync(request.AggregateId))
+        {
+            await NotifyAsync(
+                new DomainNotification(
+                    request.MessageType,
+                    $"There is already a tenant with Id {request.AggregateId}",
+                    DomainErrorCodes.Tenant.TenantAlreadyExists));
+
+            return;
+        }
+
+        var tenant = new Tenant(
+            request.AggregateId,
+            request.Name);
+        
+        _tenantRepository.Add(tenant);
+
+        if (await CommitAsync())
+        {
+            await Bus.RaiseEventAsync(new TenantCreatedEvent(
+                tenant.Id,
+                tenant.Name));
+        }
+    }
+}

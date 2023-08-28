@@ -10,10 +10,10 @@ message GrpcUser {
   bool isDeleted = 6;
 }
 
-message GetByIdsResult {
+message GetUsersByIdsResult {
   repeated GrpcUser users = 1;
 }
 
-message GetByIdsRequest {
+message GetUsersByIdsRequest {
   repeated string ids = 1;
 }

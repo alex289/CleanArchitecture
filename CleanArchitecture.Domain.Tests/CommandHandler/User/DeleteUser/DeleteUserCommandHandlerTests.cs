@@ -22,7 +22,7 @@ public sealed class DeleteUserCommandHandlerTests
         _fixture
             .VerifyNoDomainNotification()
             .VerifyCommit()
-            .VerifyRaisedEvent<UserDeletedEvent>(x => x.UserId == user.Id);
+            .VerifyRaisedEvent<UserDeletedEvent>(x => x.AggregateId == user.Id);
     }
 
     [Fact]
@@ -40,6 +40,6 @@ public sealed class DeleteUserCommandHandlerTests
             .VerifyAnyDomainNotification()
             .VerifyExistingNotification(
                 ErrorCodes.ObjectNotFound,
-                $"There is no User with Id {command.UserId}");
+                $"There is no user with Id {command.UserId}");
     }
 }

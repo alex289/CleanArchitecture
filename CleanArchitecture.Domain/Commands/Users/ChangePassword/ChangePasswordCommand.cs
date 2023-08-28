@@ -4,7 +4,7 @@ namespace CleanArchitecture.Domain.Commands.Users.ChangePassword;
 
 public sealed class ChangePasswordCommand : CommandBase
 {
-    private readonly ChangePasswordCommandValidation _validation = new();
+    private static readonly ChangePasswordCommandValidation s_validation = new();
 
     public ChangePasswordCommand(string password, string newPassword) : base(Guid.NewGuid())
     {
@@ -17,7 +17,7 @@ public sealed class ChangePasswordCommand : CommandBase
 
     public override bool IsValid()
     {
-        ValidationResult = _validation.Validate(this);
+        ValidationResult = s_validation.Validate(this);
         return ValidationResult.IsValid;
     }
 }

@@ -55,12 +55,12 @@ public sealed class ApiUser : IUser
     {
         get
         {
-            if (_name != null)
+            if (_name is not null)
             {
                 return _name;
             }
             var identity = _httpContextAccessor.HttpContext?.User.Identity;
-            if (identity == null)
+            if (identity is null)
             {
                 _name = string.Empty;
                 return string.Empty;

@@ -1,0 +1,45 @@
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using CleanArchitecture.Application.ViewModels.Tenants;
+using CleanArchitecture.Domain.Errors;
+using CleanArchitecture.Domain.Interfaces;
+using CleanArchitecture.Domain.Interfaces.Repositories;
+using CleanArchitecture.Domain.Notifications;
+using MediatR;
+
+namespace CleanArchitecture.Application.Queries.Tenants.GetTenantById;
+
+public sealed class GetTenantByIdQueryHandler :
+    IRequestHandler<GetTenantByIdQuery, TenantViewModel?>
+{
+    private readonly ITenantRepository _tenantRepository;
+    private readonly IMediatorHandler _bus;
+
+    public GetTenantByIdQueryHandler(ITenantRepository tenantRepository, IMediatorHandler bus)
+    {
+        _tenantRepository = tenantRepository;
+        _bus = bus;
+    }
+
+    public async Task<TenantViewModel?> Handle(GetTenantByIdQuery request, CancellationToken cancellationToken)
+    {
+        var tenant = _tenantRepository
+            .GetAllNoTracking()
+            .FirstOrDefault(x =>
+                x.Id == request.TenantId &&
+                x.Deleted == request.IsDeleted);
+
+        if (tenant is null)
+        {
+            await _bus.RaiseEventAsync(
+                new DomainNotification(
+                    nameof(GetTenantByIdQuery),
+                    $"Tenant with id {request.TenantId} could not be found",
+                    ErrorCodes.ObjectNotFound));
+            return null;
+        }
+
+        return TenantViewModel.FromTenant(tenant);
+    }
+}

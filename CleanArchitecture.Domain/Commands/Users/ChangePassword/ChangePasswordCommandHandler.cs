@@ -36,12 +36,12 @@ public sealed class ChangePasswordCommandHandler : CommandHandlerBase,
 
         var user = await _userRepository.GetByIdAsync(_user.GetUserId());
 
-        if (user == null)
+        if (user is null)
         {
             await NotifyAsync(
                 new DomainNotification(
                     request.MessageType,
-                    $"There is no User with Id {_user.GetUserId()}",
+                    $"There is no user with Id {_user.GetUserId()}",
                     ErrorCodes.ObjectNotFound));
 
             return;
@@ -53,7 +53,7 @@ public sealed class ChangePasswordCommandHandler : CommandHandlerBase,
                 new DomainNotification(
                     request.MessageType,
                     "The password is incorrect",
-                    DomainErrorCodes.UserPasswordIncorrect));
+                    DomainErrorCodes.User.UserPasswordIncorrect));
 
             return;
         }

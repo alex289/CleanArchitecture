@@ -13,7 +13,7 @@ public sealed class EventStoreContext : IEventStoreContext
     {
         _user = user;
 
-        if (httpContextAccessor?.HttpContext == null ||
+        if (httpContextAccessor?.HttpContext is null ||
             !httpContextAccessor.HttpContext.Request.Headers.TryGetValue("X-CLEAN-ARCHITECTURE-CORRELATION-ID", out var id))
         {
             _correlationId = $"internal - {Guid.NewGuid()}";

@@ -1,9 +1,13 @@
+using CleanArchitecture.Domain.Commands.Tenants.CreateTenant;
+using CleanArchitecture.Domain.Commands.Tenants.DeleteTenant;
+using CleanArchitecture.Domain.Commands.Tenants.UpdateTenant;
 using CleanArchitecture.Domain.Commands.Users.ChangePassword;
 using CleanArchitecture.Domain.Commands.Users.CreateUser;
 using CleanArchitecture.Domain.Commands.Users.DeleteUser;
 using CleanArchitecture.Domain.Commands.Users.LoginUser;
 using CleanArchitecture.Domain.Commands.Users.UpdateUser;
 using CleanArchitecture.Domain.EventHandler;
+using CleanArchitecture.Domain.Events.Tenant;
 using CleanArchitecture.Domain.Events.User;
 using CleanArchitecture.Domain.Interfaces;
 using MediatR;
@@ -22,6 +26,10 @@ public static class ServiceCollectionExtension
         services.AddScoped<IRequestHandler<ChangePasswordCommand>, ChangePasswordCommandHandler>();
         services.AddScoped<IRequestHandler<LoginUserCommand, string>, LoginUserCommandHandler>();
 
+        // Tenant
+        services.AddScoped<IRequestHandler<CreateTenantCommand>, CreateTenantCommandHandler>();
+        services.AddScoped<IRequestHandler<UpdateTenantCommand>, UpdateTenantCommandHandler>();
+        services.AddScoped<IRequestHandler<DeleteTenantCommand>, DeleteTenantCommandHandler>();
 
         return services;
     }
@@ -33,6 +41,11 @@ public static class ServiceCollectionExtension
         services.AddScoped<INotificationHandler<UserUpdatedEvent>, UserEventHandler>();
         services.AddScoped<INotificationHandler<UserDeletedEvent>, UserEventHandler>();
         services.AddScoped<INotificationHandler<PasswordChangedEvent>, UserEventHandler>();
+        
+        // Tenant
+        services.AddScoped<INotificationHandler<TenantCreatedEvent>, TenantEventHandler>();
+        services.AddScoped<INotificationHandler<TenantUpdatedEvent>, TenantEventHandler>();
+        services.AddScoped<INotificationHandler<TenantDeletedEvent>, TenantEventHandler>();
 
         return services;
     }

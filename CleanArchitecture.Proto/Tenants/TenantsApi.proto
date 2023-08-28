@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+option csharp_namespace = "CleanArchitecture.Proto.Tenants";
+
+import "Tenants/Models.proto";
+
+service TenantsApi {
+  rpc GetByIds(GetTenantsByIdsRequest) returns (GetTenantsByIdsResult);
+}

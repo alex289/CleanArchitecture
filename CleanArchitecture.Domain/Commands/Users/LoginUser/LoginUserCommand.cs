@@ -6,7 +6,7 @@ namespace CleanArchitecture.Domain.Commands.Users.LoginUser;
 public sealed class LoginUserCommand : CommandBase,
     IRequest<string>
 {
-    private readonly LoginUserCommandValidation _validation = new();
+    private static readonly LoginUserCommandValidation s_validation = new();
 
 
     public LoginUserCommand(
@@ -22,7 +22,7 @@ public sealed class LoginUserCommand : CommandBase,
 
     public override bool IsValid()
     {
-        ValidationResult = _validation.Validate(this);
+        ValidationResult = s_validation.Validate(this);
         return ValidationResult.IsValid;
     }
 }

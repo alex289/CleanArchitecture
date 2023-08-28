@@ -27,7 +27,7 @@ public sealed class DeleteUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserEmptyId,
+            DomainErrorCodes.User.UserEmptyId,
             "User id may not be empty");
     }
 

@@ -30,7 +30,7 @@ public sealed class UpdateUserCommandHandlerTests
         _fixture
             .VerifyNoDomainNotification()
             .VerifyCommit()
-            .VerifyRaisedEvent<UserUpdatedEvent>(x => x.UserId == command.UserId);
+            .VerifyRaisedEvent<UserUpdatedEvent>(x => x.AggregateId == command.UserId);
     }
 
     [Fact]
@@ -53,7 +53,7 @@ public sealed class UpdateUserCommandHandlerTests
             .VerifyAnyDomainNotification()
             .VerifyExistingNotification(
                 ErrorCodes.ObjectNotFound,
-                $"There is no User with Id {command.UserId}");
+                $"There is no user with Id {command.UserId}");
     }
 
     [Fact]
@@ -86,7 +86,7 @@ public sealed class UpdateUserCommandHandlerTests
             .VerifyNoRaisedEvent<UserUpdatedEvent>()
             .VerifyAnyDomainNotification()
             .VerifyExistingNotification(
-                DomainErrorCodes.UserAlreadyExists,
-                $"There is already a User with Email {command.Email}");
+                DomainErrorCodes.User.UserAlreadyExists,
+                $"There is already a user with email {command.Email}");
     }
 }

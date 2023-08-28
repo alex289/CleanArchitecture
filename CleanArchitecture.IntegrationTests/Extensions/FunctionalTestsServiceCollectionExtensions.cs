@@ -15,7 +15,7 @@ public static class FunctionalTestsServiceCollectionExtensions
         DbConnection connection) where TContext : DbContext
     {
         var descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<TContext>));
-        if (descriptor != null)
+        if (descriptor is not null)
             services.Remove(descriptor);
 
         services.AddScoped(p =>

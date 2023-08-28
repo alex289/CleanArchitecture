@@ -18,8 +18,8 @@ public sealed class UsersApiImplementation : UsersApi.UsersApiBase
         _userRepository = userRepository;
     }
 
-    public override async Task<GetByIdsResult> GetByIds(
-        GetByIdsRequest request,
+    public override async Task<GetUsersByIdsResult> GetByIds(
+        GetUsersByIdsRequest request,
         ServerCallContext context)
     {
         var idsAsGuids = new List<Guid>(request.Ids.Count);
@@ -45,7 +45,7 @@ public sealed class UsersApiImplementation : UsersApi.UsersApiBase
             })
             .ToListAsync();
 
-        var result = new GetByIdsResult();
+        var result = new GetUsersByIdsResult();
 
         result.Users.AddRange(users);
 

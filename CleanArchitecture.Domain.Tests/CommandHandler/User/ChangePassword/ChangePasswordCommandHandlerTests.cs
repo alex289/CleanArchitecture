@@ -22,7 +22,7 @@ public sealed class ChangePasswordCommandHandlerTests
         _fixture
             .VerifyNoDomainNotification()
             .VerifyCommit()
-            .VerifyRaisedEvent<PasswordChangedEvent>(x => x.UserId == user.Id);
+            .VerifyRaisedEvent<PasswordChangedEvent>(x => x.AggregateId == user.Id);
     }
 
     [Fact]
@@ -40,7 +40,7 @@ public sealed class ChangePasswordCommandHandlerTests
             .VerifyAnyDomainNotification()
             .VerifyExistingNotification(
                 ErrorCodes.ObjectNotFound,
-                $"There is no User with Id {userId}");
+                $"There is no user with Id {userId}");
     }
 
     [Fact]
@@ -57,7 +57,7 @@ public sealed class ChangePasswordCommandHandlerTests
             .VerifyNoRaisedEvent<UserUpdatedEvent>()
             .VerifyAnyDomainNotification()
             .VerifyExistingNotification(
-                DomainErrorCodes.UserPasswordIncorrect,
+                DomainErrorCodes.User.UserPasswordIncorrect,
                 "The password is incorrect");
     }
 }

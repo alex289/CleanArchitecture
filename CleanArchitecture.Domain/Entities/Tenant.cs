@@ -15,4 +15,9 @@ public class Tenant : Entity
     {
         Name = name;
     }
+    
+    public void SetName(string name)
+    {
+        Name = name;
+    }
 }

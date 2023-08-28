@@ -28,7 +28,7 @@ public sealed class CreateUserCommandHandlerTests
         _fixture
             .VerifyNoDomainNotification()
             .VerifyCommit()
-            .VerifyRaisedEvent<UserCreatedEvent>(x => x.UserId == command.UserId);
+            .VerifyRaisedEvent<UserCreatedEvent>(x => x.AggregateId == command.UserId);
     }
 
     [Fact]
@@ -51,7 +51,7 @@ public sealed class CreateUserCommandHandlerTests
             .VerifyNoRaisedEvent<UserCreatedEvent>()
             .VerifyAnyDomainNotification()
             .VerifyExistingNotification(
-                DomainErrorCodes.UserAlreadyExists,
-                $"There is already a User with Id {command.UserId}");
+                DomainErrorCodes.User.UserAlreadyExists,
+                $"There is already a user with Id {command.UserId}");
     }
 }

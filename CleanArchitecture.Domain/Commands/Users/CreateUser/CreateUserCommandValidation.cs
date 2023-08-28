@@ -20,7 +20,7 @@ public sealed class CreateUserCommandValidation : AbstractValidator<CreateUserCo
     {
         RuleFor(cmd => cmd.UserId)
             .NotEmpty()
-            .WithErrorCode(DomainErrorCodes.UserEmptyId)
+            .WithErrorCode(DomainErrorCodes.User.UserEmptyId)
             .WithMessage("User id may not be empty");
     }
 
@@ -28,10 +28,10 @@ public sealed class CreateUserCommandValidation : AbstractValidator<CreateUserCo
     {
         RuleFor(cmd => cmd.Email)
             .EmailAddress()
-            .WithErrorCode(DomainErrorCodes.UserInvalidEmail)
+            .WithErrorCode(DomainErrorCodes.User.UserInvalidEmail)
             .WithMessage("Email is not a valid email address")
             .MaximumLength(MaxLengths.User.Email)
-            .WithErrorCode(DomainErrorCodes.UserEmailExceedsMaxLength)
+            .WithErrorCode(DomainErrorCodes.User.UserEmailExceedsMaxLength)
             .WithMessage("Email may not be longer than 320 characters");
     }
 
@@ -39,10 +39,10 @@ public sealed class CreateUserCommandValidation : AbstractValidator<CreateUserCo
     {
         RuleFor(cmd => cmd.FirstName)
             .NotEmpty()
-            .WithErrorCode(DomainErrorCodes.UserEmptyFirstName)
+            .WithErrorCode(DomainErrorCodes.User.UserEmptyFirstName)
             .WithMessage("FirstName may not be empty")
             .MaximumLength(MaxLengths.User.FirstName)
-            .WithErrorCode(DomainErrorCodes.UserFirstNameExceedsMaxLength)
+            .WithErrorCode(DomainErrorCodes.User.UserFirstNameExceedsMaxLength)
             .WithMessage("FirstName may not be longer than 100 characters");
     }
 
@@ -50,10 +50,10 @@ public sealed class CreateUserCommandValidation : AbstractValidator<CreateUserCo
     {
         RuleFor(cmd => cmd.LastName)
             .NotEmpty()
-            .WithErrorCode(DomainErrorCodes.UserEmptyLastName)
+            .WithErrorCode(DomainErrorCodes.User.UserEmptyLastName)
             .WithMessage("LastName may not be empty")
             .MaximumLength(MaxLengths.User.LastName)
-            .WithErrorCode(DomainErrorCodes.UserLastNameExceedsMaxLength)
+            .WithErrorCode(DomainErrorCodes.User.UserLastNameExceedsMaxLength)
             .WithMessage("LastName may not be longer than 100 characters");
     }
 

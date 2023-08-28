@@ -28,7 +28,7 @@ public sealed class UpdateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserEmptyId,
+            DomainErrorCodes.User.UserEmptyId,
             "User id may not be empty");
     }
 
@@ -39,7 +39,7 @@ public sealed class UpdateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserInvalidEmail,
+            DomainErrorCodes.User.UserInvalidEmail,
             "Email is not a valid email address");
     }
 
@@ -50,7 +50,7 @@ public sealed class UpdateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserInvalidEmail,
+            DomainErrorCodes.User.UserInvalidEmail,
             "Email is not a valid email address");
     }
 
@@ -61,7 +61,7 @@ public sealed class UpdateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserEmailExceedsMaxLength,
+            DomainErrorCodes.User.UserEmailExceedsMaxLength,
             "Email may not be longer than 320 characters");
     }
 
@@ -72,7 +72,7 @@ public sealed class UpdateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserEmptyFirstName,
+            DomainErrorCodes.User.UserEmptyFirstName,
             "FirstName may not be empty");
     }
 
@@ -83,7 +83,7 @@ public sealed class UpdateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserFirstNameExceedsMaxLength,
+            DomainErrorCodes.User.UserFirstNameExceedsMaxLength,
             "FirstName may not be longer than 100 characters");
     }
 
@@ -94,7 +94,7 @@ public sealed class UpdateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserEmptyLastName,
+            DomainErrorCodes.User.UserEmptyLastName,
             "LastName may not be empty");
     }
 
@@ -105,7 +105,7 @@ public sealed class UpdateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserLastNameExceedsMaxLength,
+            DomainErrorCodes.User.UserLastNameExceedsMaxLength,
             "LastName may not be longer than 100 characters");
     }
 

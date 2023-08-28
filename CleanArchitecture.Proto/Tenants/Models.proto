@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+option csharp_namespace = "CleanArchitecture.Proto.Tenants";
+
+message Tenant {
+  string id = 1;
+  string name = 2;
+  bool isDeleted = 3;
+}
+
+message GetTenantsByIdsResult {
+  repeated Tenant tenants = 1;
+}
+
+message GetTenantsByIdsRequest {
+  repeated string ids = 1;
+}

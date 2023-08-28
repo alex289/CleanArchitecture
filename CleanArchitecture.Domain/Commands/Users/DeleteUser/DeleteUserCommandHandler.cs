@@ -36,12 +36,12 @@ public sealed class DeleteUserCommandHandler : CommandHandlerBase,
 
         var user = await _userRepository.GetByIdAsync(request.UserId);
 
-        if (user == null)
+        if (user is null)
         {
             await NotifyAsync(
                 new DomainNotification(
                     request.MessageType,
-                    $"There is no User with Id {request.UserId}",
+                    $"There is no user with Id {request.UserId}",
                     ErrorCodes.ObjectNotFound));
 
             return;

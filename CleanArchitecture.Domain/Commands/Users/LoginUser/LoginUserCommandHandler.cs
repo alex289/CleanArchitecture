@@ -45,12 +45,12 @@ public sealed class LoginUserCommandHandler : CommandHandlerBase,
 
         var user = await _userRepository.GetByEmailAsync(request.Email);
 
-        if (user == null)
+        if (user is null)
         {
             await NotifyAsync(
                 new DomainNotification(
                     request.MessageType,
-                    $"There is no User with Email {request.Email}",
+                    $"There is no user with email {request.Email}",
                     ErrorCodes.ObjectNotFound));
 
             return "";
@@ -64,7 +64,7 @@ public sealed class LoginUserCommandHandler : CommandHandlerBase,
                 new DomainNotification(
                     request.MessageType,
                     "The password is incorrect",
-                    DomainErrorCodes.UserPasswordIncorrect));
+                    DomainErrorCodes.User.UserPasswordIncorrect));
 
             return "";
         }

@@ -21,7 +21,7 @@ public sealed class GetUsersByIdsTests : IClassFixture<GetUsersByIdsTestFixture>
     {
         var client = new UsersApi.UsersApiClient(_fixture.GrpcChannel);
 
-        var request = new GetByIdsRequest();
+        var request = new GetUsersByIdsRequest();
         request.Ids.Add(_fixture.CreatedUserId.ToString());
 
         var response = await client.GetByIdsAsync(request);

@@ -36,12 +36,12 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
 
         var user = await _userRepository.GetByIdAsync(request.UserId);
 
-        if (user == null)
+        if (user is null)
         {
             await Bus.RaiseEventAsync(
                 new DomainNotification(
                     request.MessageType,
-                    $"There is no User with Id {request.UserId}",
+                    $"There is no user with Id {request.UserId}",
                     ErrorCodes.ObjectNotFound));
             return;
         }
@@ -61,13 +61,13 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
         {
             var existingUser = await _userRepository.GetByEmailAsync(request.Email);
 
-            if (existingUser != null)
+            if (existingUser is not null)
             {
                 await Bus.RaiseEventAsync(
                     new DomainNotification(
                         request.MessageType,
-                        $"There is already a User with Email {request.Email}",
-                        DomainErrorCodes.UserAlreadyExists));
+                        $"There is already a user with email {request.Email}",
+                        DomainErrorCodes.User.UserAlreadyExists));
                 return;
             }
         }

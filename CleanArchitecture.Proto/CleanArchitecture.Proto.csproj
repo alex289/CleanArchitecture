@@ -6,13 +6,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <None Remove="Users\Models.proto" />
-        <None Remove="Users\UsersApi.proto" />
-    </ItemGroup>
-
-    <ItemGroup>
         <Protobuf Include="Users\Models.proto" GrpcServices="Both" />
         <Protobuf Include="Users\UsersApi.proto" GrpcServices="Both" />
+        <Protobuf Include="Tenants\Models.proto" GrpcServices="Both" />
+        <Protobuf Include="Tenants\TenantsApi.proto" GrpcServices="Both" />
     </ItemGroup>
 
     <ItemGroup>

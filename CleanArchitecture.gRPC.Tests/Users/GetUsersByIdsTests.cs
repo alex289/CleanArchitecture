@@ -62,9 +62,9 @@ public sealed class GetUsersByIdsTests : IClassFixture<UserTestsFixture>
         }
     }
 
-    private static GetByIdsRequest SetupRequest(IEnumerable<Guid> ids)
+    private static GetUsersByIdsRequest SetupRequest(IEnumerable<Guid> ids)
     {
-        var request = new GetByIdsRequest();
+        var request = new GetUsersByIdsRequest();
 
         request.Ids.AddRange(ids.Select(id => id.ToString()));
         request.Ids.Add("Not a guid");

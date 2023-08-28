@@ -5,7 +5,7 @@ namespace CleanArchitecture.Domain.Commands.Users.UpdateUser;
 
 public sealed class UpdateUserCommand : CommandBase
 {
-    private readonly UpdateUserCommandValidation _validation = new();
+    private static readonly UpdateUserCommandValidation s_validation = new();
 
     public UpdateUserCommand(
         Guid userId,
@@ -29,7 +29,7 @@ public sealed class UpdateUserCommand : CommandBase
 
     public override bool IsValid()
     {
-        ValidationResult = _validation.Validate(this);
+        ValidationResult = s_validation.Validate(this);
         return ValidationResult.IsValid;
     }
 }

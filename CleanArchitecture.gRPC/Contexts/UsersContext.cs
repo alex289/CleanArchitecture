@@ -19,7 +19,7 @@ public sealed class UsersContext : IUsersContext
 
     public async Task<IEnumerable<UserViewModel>> GetUsersByIds(IEnumerable<Guid> ids)
     {
-        var request = new GetByIdsRequest();
+        var request = new GetUsersByIdsRequest();
 
         request.Ids.AddRange(ids.Select(id => id.ToString()));
 

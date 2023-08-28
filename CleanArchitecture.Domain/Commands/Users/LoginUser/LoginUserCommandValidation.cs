@@ -17,10 +17,10 @@ public sealed class LoginUserCommandValidation : AbstractValidator<LoginUserComm
     {
         RuleFor(cmd => cmd.Email)
             .EmailAddress()
-            .WithErrorCode(DomainErrorCodes.UserInvalidEmail)
+            .WithErrorCode(DomainErrorCodes.User.UserInvalidEmail)
             .WithMessage("Email is not a valid email address")
             .MaximumLength(MaxLengths.User.Email)
-            .WithErrorCode(DomainErrorCodes.UserEmailExceedsMaxLength)
+            .WithErrorCode(DomainErrorCodes.User.UserEmailExceedsMaxLength)
             .WithMessage("Email may not be longer than 320 characters");
     }
 
