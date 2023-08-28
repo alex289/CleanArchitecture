@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using CleanArchitecture.Application.ViewModels.Users;
+using CleanArchitecture.Domain.Constants;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.IntegrationTests.Extensions;
 using CleanArchitecture.IntegrationTests.Fixtures;
@@ -33,7 +34,7 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
             "Test",
             "Email",
             _fixture.CreatedUserPassword,
-            Guid.NewGuid());
+            Ids.Seed.TenantId);
 
         var response = await _fixture.ServerClient.PostAsJsonAsync("/api/v1/user", user);
 
