@@ -11,6 +11,7 @@ public sealed class UserTestFixture : TestFixtureBase
 
     public void EnableAuthentication()
     {
+        ServerClient.DefaultRequestHeaders.Clear();
         ServerClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {CreatedUserToken}");
     }
 }

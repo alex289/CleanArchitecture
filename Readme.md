@@ -2,7 +2,9 @@
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/alex289/CleanArchitecture/dotnet.yml)
 
-This repository contains a sample API project built using the Clean Architecture principles, Onion Architecture, MediatR, and Entity Framework. The project also includes unit tests for all layers and integration tests using xUnit.
+This repository contains a sample API project built using the Clean Architecture principles, Onion Architecture, MediatR, and Entity Framework. The project also includes unit tests for all layers and integration tests using xUnit and Nsubstitute.
+
+The purpose of this project is to create a clean boilerplate for an API and to show how to implement specific features.
 
 ## Project Structure
 The project follows the Onion Architecture, which means that the codebase is organized into layers, with the domain model at the center and the outer layers dependent on the inner layers.
@@ -20,6 +22,7 @@ The project uses the following dependencies:
 - **MediatR**: A lightweight library that provides a mediator pattern implementation for .NET.
 - **Entity Framework Core**: A modern object-relational mapper for .NET that provides data access to the application.
 - **FluentValidation**: A validation library that provides a fluent API for validating objects.
+- **gRPC**: gRPC is an open-source remote procedure call framework that enables efficient communication between distributed systems using a variety of programming languages and protocols.
 
 ## Running the Project
 To run the project, follow these steps:

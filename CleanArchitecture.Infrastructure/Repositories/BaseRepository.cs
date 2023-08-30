@@ -55,7 +55,7 @@ public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : Enti
         DbSet.Update(entity);
     }
 
-    public async Task<bool> ExistsAsync(Guid id)
+    public virtual async Task<bool> ExistsAsync(Guid id)
     {
         return await DbSet.AnyAsync(entity => entity.Id == id);
     }

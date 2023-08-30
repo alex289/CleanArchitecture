@@ -9,11 +9,11 @@ using Xunit;
 
 namespace CleanArchitecture.gRPC.Tests.Users;
 
-public sealed class GetUsersByIdsTests : IClassFixture<UserTestsFixture>
+public sealed class GetUsersByIdsTests : IClassFixture<UserTestFixture>
 {
-    private readonly UserTestsFixture _fixture;
+    private readonly UserTestFixture _fixture;
 
-    public GetUsersByIdsTests(UserTestsFixture fixture)
+    public GetUsersByIdsTests(UserTestFixture fixture)
     {
         _fixture = fixture;
     }
@@ -23,13 +23,13 @@ public sealed class GetUsersByIdsTests : IClassFixture<UserTestsFixture>
     {
         var result = await _fixture.UsersApiImplementation.GetByIds(
             SetupRequest(Enumerable.Empty<Guid>()),
-            null!);
+            default!);
 
         result.Users.Should().HaveCount(0);
     }
 
     [Fact]
-    public async Task Should_Get_Requested_Asked_Ids()
+    public async Task Should_Get_Requested_Users()
     {
         var nonExistingId = Guid.NewGuid();
 
@@ -40,9 +40,10 @@ public sealed class GetUsersByIdsTests : IClassFixture<UserTestsFixture>
 
         ids.Add(nonExistingId);
 
+// Todo: Use default instead of null everywhere
         var result = await _fixture.UsersApiImplementation.GetByIds(
             SetupRequest(ids),
-            null!);
+            default!);
 
         result.Users.Should().HaveCount(2);
 

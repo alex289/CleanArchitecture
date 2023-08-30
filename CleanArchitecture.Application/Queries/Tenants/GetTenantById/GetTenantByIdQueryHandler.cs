@@ -7,6 +7,7 @@ using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Domain.Interfaces.Repositories;
 using CleanArchitecture.Domain.Notifications;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitecture.Application.Queries.Tenants.GetTenantById;
 
@@ -26,6 +27,7 @@ public sealed class GetTenantByIdQueryHandler :
     {
         var tenant = _tenantRepository
             .GetAllNoTracking()
+            .Include(x => x.Users)
             .FirstOrDefault(x =>
                 x.Id == request.TenantId &&
                 x.Deleted == request.IsDeleted);

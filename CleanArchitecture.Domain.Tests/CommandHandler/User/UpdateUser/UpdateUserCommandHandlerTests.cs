@@ -23,7 +23,8 @@ public sealed class UpdateUserCommandHandlerTests
             "test@email.com",
             "Test",
             "Email",
-            UserRole.User);
+            UserRole.User,
+            Guid.NewGuid());
 
         await _fixture.CommandHandler.Handle(command, default);
 
@@ -43,7 +44,8 @@ public sealed class UpdateUserCommandHandlerTests
             "test@email.com",
             "Test",
             "Email",
-            UserRole.User);
+            UserRole.User,
+            Guid.NewGuid());
 
         await _fixture.CommandHandler.Handle(command, default);
 
@@ -66,7 +68,8 @@ public sealed class UpdateUserCommandHandlerTests
             "test@email.com",
             "Test",
             "Email",
-            UserRole.User);
+            UserRole.User,
+            Guid.NewGuid());
 
         _fixture.UserRepository
             .GetByEmailAsync(command.Email)

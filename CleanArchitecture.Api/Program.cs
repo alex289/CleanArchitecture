@@ -91,6 +91,7 @@ app.MapHealthChecks("/healthz", new HealthCheckOptions
 });
 app.MapControllers();
 app.MapGrpcService<UsersApiImplementation>();
+app.MapGrpcService<TenantsApiImplementation>();
 
 app.Run();
 

@@ -13,11 +13,15 @@ public sealed class CreateUserCommandHandlerTests
     [Fact]
     public void Should_Create_User()
     {
-        _fixture.SetupUser();
+        // Todo: Fix tests
+        _fixture.SetupCurrentUser();
+        
+        var user = _fixture.SetupUser();
+        _fixture.SetupTenant(user.TenantId);
 
         var command = new CreateUserCommand(
             Guid.NewGuid(),
-            Guid.NewGuid(),
+            user.TenantId,
             "test@email.com",
             "Test",
             "Email",
@@ -34,6 +38,8 @@ public sealed class CreateUserCommandHandlerTests
     [Fact]
     public void Should_Not_Create_Already_Existing_User()
     {
+        _fixture.SetupCurrentUser();
+        
         var user = _fixture.SetupUser();
 
         var command = new CreateUserCommand(
@@ -53,5 +59,55 @@ public sealed class CreateUserCommandHandlerTests
             .VerifyExistingNotification(
                 DomainErrorCodes.User.UserAlreadyExists,
                 $"There is already a user with Id {command.UserId}");
+    }
+    
+    [Fact]
+    public void Should_Not_Create_User_Tenant_Does_Not_Exist()
+    {
+        _fixture.SetupCurrentUser();
+        
+        _fixture.SetupUser();
+
+        var command = new CreateUserCommand(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            "test@email.com",
+            "Test",
+            "Email",
+            "Po=PF]PC6t.?8?ks)A6W");
+
+        _fixture.CommandHandler.Handle(command, default).Wait();
+
+        _fixture
+            .VerifyNoCommit()
+            .VerifyNoRaisedEvent<UserCreatedEvent>()
+            .VerifyAnyDomainNotification()
+            .VerifyExistingNotification(
+                ErrorCodes.ObjectNotFound,
+                $"There is no tenant with Id {command.TenantId}");
+    }
+    
+    [Fact]
+    public void Should_Not_Create_User_Insufficient_Permissions()
+    {
+        _fixture.SetupUser();
+
+        var command = new CreateUserCommand(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            "test@email.com",
+            "Test",
+            "Email",
+            "Po=PF]PC6t.?8?ks)A6W");
+
+        _fixture.CommandHandler.Handle(command, default).Wait();
+
+        _fixture
+            .VerifyNoCommit()
+            .VerifyNoRaisedEvent<UserCreatedEvent>()
+            .VerifyAnyDomainNotification()
+            .VerifyExistingNotification(
+                ErrorCodes.InsufficientPermissions,
+                "You are not allowed to create users");
     }
 }

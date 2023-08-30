@@ -12,16 +12,18 @@ public sealed class UpdateUserCommand : CommandBase
         string email,
         string firstName,
         string lastName,
-        UserRole role) : base(userId)
+        UserRole role, Guid tenantId) : base(userId)
     {
         UserId = userId;
         Email = email;
         FirstName = firstName;
         LastName = lastName;
         Role = role;
+        TenantId = tenantId;
     }
 
     public Guid UserId { get; }
+    public Guid TenantId { get; }
     public string Email { get; }
     public string FirstName { get; }
     public string LastName { get; }

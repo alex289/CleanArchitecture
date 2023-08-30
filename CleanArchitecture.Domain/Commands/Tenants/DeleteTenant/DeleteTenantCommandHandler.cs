@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Domain.Events.Tenant;
 using CleanArchitecture.Domain.Interfaces;
@@ -15,22 +16,38 @@ public sealed class DeleteTenantCommandHandler : CommandHandlerBase,
 {
     private readonly ITenantRepository _tenantRepository;
     private readonly IUserRepository _userRepository;
-    
+    private readonly IUser _user;
+
     public DeleteTenantCommandHandler(
         IMediatorHandler bus,
         IUnitOfWork unitOfWork,
         INotificationHandler<DomainNotification> notifications,
         ITenantRepository tenantRepository,
-        IUserRepository userRepository) : base(bus, unitOfWork, notifications)
+        IUserRepository userRepository,
+        IUser user) : base(bus, unitOfWork, notifications)
     {
         _tenantRepository = tenantRepository;
         _userRepository = userRepository;
+        _user = user;
     }
 
     public async Task Handle(DeleteTenantCommand request, CancellationToken cancellationToken)
     {
         if (!await TestValidityAsync(request))
         {
+            return;
+        }
+        
+        // Todo: Test following
+
+        if (_user.GetUserRole() != UserRole.Admin)
+        {
+            await NotifyAsync(
+                new DomainNotification(
+                    request.MessageType,
+                    $"No permission to delete tenant {request.AggregateId}",
+                    ErrorCodes.InsufficientPermissions));
+
             return;
         }
 

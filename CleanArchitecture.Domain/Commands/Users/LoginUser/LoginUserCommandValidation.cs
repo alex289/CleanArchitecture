@@ -21,7 +21,7 @@ public sealed class LoginUserCommandValidation : AbstractValidator<LoginUserComm
             .WithMessage("Email is not a valid email address")
             .MaximumLength(MaxLengths.User.Email)
             .WithErrorCode(DomainErrorCodes.User.UserEmailExceedsMaxLength)
-            .WithMessage("Email may not be longer than 320 characters");
+            .WithMessage($"Email may not be longer than {MaxLengths.User.Email} characters");
     }
 
     private void AddRuleForPassword()

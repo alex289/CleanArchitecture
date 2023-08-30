@@ -9,9 +9,9 @@ using NSubstitute;
 
 namespace CleanArchitecture.gRPC.Tests.Fixtures;
 
-public sealed class UserTestsFixture
+public sealed class UserTestFixture
 {
-    public UserTestsFixture()
+    public UserTestFixture()
     {
         ExistingUsers = new List<User>
         {

@@ -1,6 +1,7 @@
 using System;
 using CleanArchitecture.Domain.Commands.Users.CreateUser;
 using CleanArchitecture.Domain.Enums;
+using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Domain.Interfaces.Repositories;
 using NSubstitute;
 
@@ -11,16 +12,23 @@ public sealed class CreateUserCommandTestFixture : CommandHandlerFixtureBase
     public CreateUserCommandTestFixture()
     {
         UserRepository = Substitute.For<IUserRepository>();
+        TenantRepository = Substitute.For<ITenantRepository>();
+        User = Substitute.For<IUser>();
 
         CommandHandler = new CreateUserCommandHandler(
             Bus,
             UnitOfWork,
             NotificationHandler,
-            UserRepository);
+            UserRepository,
+            TenantRepository,
+            User);
     }
 
+    // Todo: Properties over ctor
     public CreateUserCommandHandler CommandHandler { get; }
     private IUserRepository UserRepository { get; }
+    private ITenantRepository TenantRepository { get; }
+    private IUser User { get; }
 
     public Entities.User SetupUser()
     {
@@ -38,5 +46,30 @@ public sealed class CreateUserCommandTestFixture : CommandHandlerFixtureBase
             .Returns(user);
 
         return user;
+    }
+
+    public void SetupCurrentUser()
+    {
+        var userId = Guid.NewGuid();
+
+        User.GetUserId().Returns(userId);
+
+        UserRepository
+            .GetByIdAsync(Arg.Is<Guid>(y => y == userId))
+            .Returns(new Entities.User(
+                userId,
+                Guid.NewGuid(),
+                "some email",
+                "some first name",
+                "some last name",
+                "some password",
+                UserRole.Admin));
+    }
+
+    public void SetupTenant(Guid tenantId)
+    {
+        TenantRepository
+            .ExistsAsync(Arg.Is<Guid>(y => y == tenantId))
+            .Returns(true);
     }
 }

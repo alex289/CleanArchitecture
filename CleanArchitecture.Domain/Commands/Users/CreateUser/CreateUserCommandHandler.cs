@@ -16,14 +16,20 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
     IRequestHandler<CreateUserCommand>
 {
     private readonly IUserRepository _userRepository;
+    private readonly ITenantRepository _tenantRepository;
+    private readonly IUser _user;
 
     public CreateUserCommandHandler(
         IMediatorHandler bus,
         IUnitOfWork unitOfWork,
         INotificationHandler<DomainNotification> notifications,
-        IUserRepository userRepository) : base(bus, unitOfWork, notifications)
+        IUserRepository userRepository,
+        ITenantRepository tenantRepository,
+        IUser user) : base(bus, unitOfWork, notifications)
     {
         _userRepository = userRepository;
+        _tenantRepository = tenantRepository;
+        _user = user;
     }
 
     public async Task Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -32,12 +38,24 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
         {
             return;
         }
+        
+        var currentUser = await _userRepository.GetByIdAsync(_user.GetUserId());
+        
+        if (currentUser is null || currentUser.Role != UserRole.Admin)
+        {
+            await NotifyAsync(
+                new DomainNotification(
+                    request.MessageType,
+                    "You are not allowed to create users",
+                    ErrorCodes.InsufficientPermissions));
+            return;
+        }
 
         var existingUser = await _userRepository.GetByIdAsync(request.UserId);
 
         if (existingUser is not null)
         {
-            await Bus.RaiseEventAsync(
+            await NotifyAsync(
                 new DomainNotification(
                     request.MessageType,
                     $"There is already a user with Id {request.UserId}",
@@ -49,11 +67,21 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
 
         if (existingUser is not null)
         {
-            await Bus.RaiseEventAsync(
+            await NotifyAsync(
                 new DomainNotification(
                     request.MessageType,
                     $"There is already a user with email {request.Email}",
                     DomainErrorCodes.User.UserAlreadyExists));
+            return;
+        }
+
+        if (!await _tenantRepository.ExistsAsync(request.TenantId))
+        {
+            await NotifyAsync(
+                new DomainNotification(
+                    request.MessageType,
+                    $"There is no tenant with Id {request.TenantId}",
+                    ErrorCodes.ObjectNotFound));
             return;
         }
 

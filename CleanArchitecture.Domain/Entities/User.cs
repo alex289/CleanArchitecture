@@ -11,7 +11,7 @@ public class User : Entity
     public string LastName { get; private set; }
     public string Password { get; private set; }
     public UserRole Role { get; private set; }
-
+    
     public string FullName => $"{FirstName}, {LastName}";
 
     public Guid TenantId { get; private set; }
@@ -57,5 +57,10 @@ public class User : Entity
     public void SetRole(UserRole role)
     {
         Role = role;
+    }
+    
+    public void SetTenant(Guid tenantId)
+    {
+        TenantId = tenantId;
     }
 }

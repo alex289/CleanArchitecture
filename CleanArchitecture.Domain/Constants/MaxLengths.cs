@@ -1,6 +1,6 @@
 namespace CleanArchitecture.Domain.Constants;
 
-public sealed class MaxLengths
+public static class MaxLengths
 {
     public static class User
     {

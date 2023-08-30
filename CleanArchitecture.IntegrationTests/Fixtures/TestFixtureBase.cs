@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
+using CleanArchitecture.Application.ViewModels.Users;
 using CleanArchitecture.Infrastructure.Database;
+using CleanArchitecture.IntegrationTests.Extensions;
 using CleanArchitecture.IntegrationTests.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,5 +35,19 @@ public class TestFixtureBase
         ServiceProvider serviceProvider,
         IServiceProvider scopedServices)
     {
+    }
+    
+    // Todo: Fix auth
+    public virtual async Task AuthenticateUserAsync()
+    {
+        ServerClient.DefaultRequestHeaders.Clear();
+        var user = new LoginUserViewModel(
+            "admin@email.com",
+            "!Password123#");
+
+        var response = await ServerClient.PostAsJsonAsync("/api/v1/user/login", user);
+
+        var message = await response.Content.ReadAsJsonAsync<string>();
+        ServerClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {message!.Data}");
     }
 }

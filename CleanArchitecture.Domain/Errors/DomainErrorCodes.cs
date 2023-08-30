@@ -34,7 +34,7 @@ public static class DomainErrorCodes
         public const string TenantEmptyId = "TENANT_EMPTY_ID";
         public const string TenantEmptyName = "TENANT_EMPTY_NAME";
         public const string TenantNameExceedsMaxLength = "TENANT_NAME_EXCEEDS_MAX_LENGTH";
-        
+
         // General
         public const string TenantAlreadyExists = "TENANT_ALREADY_EXISTS";
     }

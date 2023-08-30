@@ -1,5 +1,6 @@
 using System;
 using CleanArchitecture.Domain.Commands.Users.UpdateUser;
+using CleanArchitecture.Domain.Constants;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Errors;
 using Xunit;
@@ -57,12 +58,12 @@ public sealed class UpdateUserCommandValidationTests :
     [Fact]
     public void Should_Be_Invalid_For_Email_Exceeds_Max_Length()
     {
-        var command = CreateTestCommand(email: new string('a', 320) + "@test.com");
+        var command = CreateTestCommand(email: new string('a', MaxLengths.User.Email) + "@test.com");
 
         ShouldHaveSingleError(
             command,
             DomainErrorCodes.User.UserEmailExceedsMaxLength,
-            "Email may not be longer than 320 characters");
+            $"Email may not be longer than {MaxLengths.User.Email} characters");
     }
 
     [Fact]
@@ -79,12 +80,12 @@ public sealed class UpdateUserCommandValidationTests :
     [Fact]
     public void Should_Be_Invalid_For_First_Name_Exceeds_Max_Length()
     {
-        var command = CreateTestCommand(firstName: new string('a', 101));
+        var command = CreateTestCommand(firstName: new string('a', MaxLengths.User.FirstName + 1));
 
         ShouldHaveSingleError(
             command,
             DomainErrorCodes.User.UserFirstNameExceedsMaxLength,
-            "FirstName may not be longer than 100 characters");
+            $"FirstName may not be longer than {MaxLengths.User.FirstName} characters");
     }
 
     [Fact]
@@ -101,16 +102,28 @@ public sealed class UpdateUserCommandValidationTests :
     [Fact]
     public void Should_Be_Invalid_For_Last_Name_Exceeds_Max_Length()
     {
-        var command = CreateTestCommand(lastName: new string('a', 101));
+        var command = CreateTestCommand(lastName: new string('a', MaxLengths.User.LastName + 1));
 
         ShouldHaveSingleError(
             command,
             DomainErrorCodes.User.UserLastNameExceedsMaxLength,
-            "LastName may not be longer than 100 characters");
+            $"LastName may not be longer than {MaxLengths.User.LastName} characters");
+    }
+    
+    [Fact]
+    public void Should_Be_Invalid_For_Empty_Tenant_Id()
+    {
+        var command = CreateTestCommand(tenantId: Guid.Empty);
+
+        ShouldHaveSingleError(
+            command,
+            DomainErrorCodes.Tenant.TenantEmptyId,
+            "Tenant id may not be empty");
     }
 
     private static UpdateUserCommand CreateTestCommand(
         Guid? userId = null,
+        Guid? tenantId = null,
         string? email = null,
         string? firstName = null,
         string? lastName = null,
@@ -121,6 +134,7 @@ public sealed class UpdateUserCommandValidationTests :
             email ?? "test@email.com",
             firstName ?? "test",
             lastName ?? "email",
-            role ?? UserRole.User);
+            role ?? UserRole.User,
+            tenantId ?? Guid.NewGuid());
     }
 }

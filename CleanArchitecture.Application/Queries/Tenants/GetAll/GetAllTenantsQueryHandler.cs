@@ -25,6 +25,7 @@ public sealed class GetAllTenantsQueryHandler :
     {
         return await _tenantRepository
             .GetAllNoTracking()
+            .Include(x => x.Users)
             .Where(x => !x.Deleted)
             .Select(x => TenantViewModel.FromTenant(x))
             .ToListAsync(cancellationToken);

@@ -26,7 +26,7 @@ public sealed class GetUsersByIdsTests : IClassFixture<GetUsersByIdsTestFixture>
 
         var response = await client.GetByIdsAsync(request);
 
-        response.Users.Count.Should().Be(1);
+        response.Users.Should().HaveCount(1);
 
         var user = response.Users.First();
         var createdUser = _fixture.CreateUser();

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CleanArchitecture.Domain.Commands.Users.LoginUser;
+using CleanArchitecture.Domain.Constants;
 using CleanArchitecture.Domain.Errors;
 using Xunit;
 
@@ -46,12 +47,12 @@ public sealed class LoginUserCommandValidationTests :
     [Fact]
     public void Should_Be_Invalid_For_Email_Exceeds_Max_Length()
     {
-        var command = CreateTestCommand(new string('a', 320) + "@test.com");
+        var command = CreateTestCommand(new string('a', MaxLengths.User.Email) + "@test.com");
 
         ShouldHaveSingleError(
             command,
             DomainErrorCodes.User.UserEmailExceedsMaxLength,
-            "Email may not be longer than 320 characters");
+            $"Email may not be longer than {MaxLengths.User.Email} characters");
     }
 
     [Fact]

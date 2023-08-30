@@ -38,7 +38,7 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
 
         if (user is null)
         {
-            await Bus.RaiseEventAsync(
+            await NotifyAsync(
                 new DomainNotification(
                     request.MessageType,
                     $"There is no user with Id {request.UserId}",
@@ -63,7 +63,7 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
 
             if (existingUser is not null)
             {
-                await Bus.RaiseEventAsync(
+                await NotifyAsync(
                     new DomainNotification(
                         request.MessageType,
                         $"There is already a user with email {request.Email}",
@@ -75,6 +75,10 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
         if (_user.GetUserRole() == UserRole.Admin)
         {
             user.SetRole(request.Role);
+            
+            // Todo: Test
+            // Todo: Check if tenant exists first
+            user.SetTenant(request.TenantId);
         }
 
         user.SetEmail(request.Email);

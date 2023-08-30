@@ -1,5 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
+using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Domain.Events.Tenant;
 using CleanArchitecture.Domain.Interfaces;
@@ -13,20 +14,34 @@ public sealed class UpdateTenantCommandHandler : CommandHandlerBase,
     IRequestHandler<UpdateTenantCommand>
 {
     private readonly ITenantRepository _tenantRepository;
-    
+    private readonly IUser _user;
+
     public UpdateTenantCommandHandler(
         IMediatorHandler bus,
         IUnitOfWork unitOfWork,
         INotificationHandler<DomainNotification> notifications,
-        ITenantRepository tenantRepository) : base(bus, unitOfWork, notifications)
+        ITenantRepository tenantRepository,
+        IUser user) : base(bus, unitOfWork, notifications)
     {
         _tenantRepository = tenantRepository;
+        _user = user;
     }
 
     public async Task Handle(UpdateTenantCommand request, CancellationToken cancellationToken)
     {
         if (!await TestValidityAsync(request))
         {
+            return;
+        }
+        
+        if (_user.GetUserRole() != UserRole.Admin)
+        {
+            await NotifyAsync(
+                new DomainNotification(
+                    request.MessageType,
+                    $"No permission to update tenant {request.AggregateId}",
+                    ErrorCodes.InsufficientPermissions));
+
             return;
         }
 
