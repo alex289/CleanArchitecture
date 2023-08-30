@@ -20,11 +20,11 @@ public sealed class TenantsContext : ITenantsContext
     public async Task<IEnumerable<TenantViewModel>> GetTenantsByIds(IEnumerable<Guid> ids)
     {
         var request = new GetTenantsByIdsRequest();
-        
+
         request.Ids.AddRange(ids.Select(id => id.ToString()));
-        
+
         var result = await _client.GetByIdsAsync(request);
-        
+
         return result.Tenants.Select(tenant => new TenantViewModel(
             Guid.Parse(tenant.Id),
             tenant.Name));

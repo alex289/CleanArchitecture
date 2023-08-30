@@ -10,16 +10,16 @@ namespace CleanArchitecture.Application.Tests.Fixtures.Queries.Tenants;
 
 public sealed class GetAllTenantsTestFixture : QueryHandlerBaseFixture
 {
-    public GetAllTenantsQueryHandler QueryHandler { get; }
-    private ITenantRepository TenantRepository { get; }
-
     public GetAllTenantsTestFixture()
     {
         TenantRepository = Substitute.For<ITenantRepository>();
-        
-        QueryHandler = new(TenantRepository);
+
+        QueryHandler = new GetAllTenantsQueryHandler(TenantRepository);
     }
-    
+
+    public GetAllTenantsQueryHandler QueryHandler { get; }
+    private ITenantRepository TenantRepository { get; }
+
     public Tenant SetupTenant(bool deleted = false)
     {
         var tenant = new Tenant(Guid.NewGuid(), "Tenant 1");
@@ -31,7 +31,7 @@ public sealed class GetAllTenantsTestFixture : QueryHandlerBaseFixture
 
         var tenantList = new List<Tenant> { tenant }.BuildMock();
         TenantRepository.GetAllNoTracking().Returns(tenantList);
-        
+
         return tenant;
     }
 }

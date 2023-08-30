@@ -16,7 +16,7 @@ public sealed class DeleteTenantCommandHandlerTests
         var tenant = _fixture.SetupTenant();
 
         var command = new DeleteTenantCommand(tenant.Id);
-        
+
         _fixture.CommandHandler.Handle(command, default).Wait();
 
         _fixture
@@ -24,14 +24,14 @@ public sealed class DeleteTenantCommandHandlerTests
             .VerifyCommit()
             .VerifyRaisedEvent<TenantDeletedEvent>(x => x.AggregateId == tenant.Id);
     }
-    
+
     [Fact]
     public void Should_Not_Delete_Non_Existing_Tenant()
     {
         _fixture.SetupTenant();
 
         var command = new DeleteTenantCommand(Guid.NewGuid());
-        
+
         _fixture.CommandHandler.Handle(command, default).Wait();
 
         _fixture

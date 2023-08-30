@@ -15,9 +15,9 @@ namespace CleanArchitecture.Domain.Commands.Users.CreateUser;
 public sealed class CreateUserCommandHandler : CommandHandlerBase,
     IRequestHandler<CreateUserCommand>
 {
-    private readonly IUserRepository _userRepository;
     private readonly ITenantRepository _tenantRepository;
     private readonly IUser _user;
+    private readonly IUserRepository _userRepository;
 
     public CreateUserCommandHandler(
         IMediatorHandler bus,
@@ -38,9 +38,9 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
         {
             return;
         }
-        
+
         var currentUser = await _userRepository.GetByIdAsync(_user.GetUserId());
-        
+
         if (currentUser is null || currentUser.Role != UserRole.Admin)
         {
             await NotifyAsync(

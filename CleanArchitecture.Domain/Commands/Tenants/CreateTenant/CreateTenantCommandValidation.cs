@@ -11,7 +11,7 @@ public sealed class CreateTenantCommandValidation : AbstractValidator<CreateTena
         AddRuleForId();
         AddRuleForName();
     }
-    
+
     private void AddRuleForId()
     {
         RuleFor(cmd => cmd.AggregateId)
@@ -19,7 +19,7 @@ public sealed class CreateTenantCommandValidation : AbstractValidator<CreateTena
             .WithErrorCode(DomainErrorCodes.Tenant.TenantEmptyId)
             .WithMessage("Tenant id may not be empty");
     }
-    
+
     private void AddRuleForName()
     {
         RuleFor(cmd => cmd.Name)

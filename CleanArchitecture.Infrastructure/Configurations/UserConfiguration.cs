@@ -1,4 +1,3 @@
-using System;
 using CleanArchitecture.Domain.Constants;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Enums;

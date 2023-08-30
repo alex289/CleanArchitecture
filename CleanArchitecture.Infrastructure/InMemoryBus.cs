@@ -8,8 +8,8 @@ namespace CleanArchitecture.Infrastructure;
 
 public sealed class InMemoryBus : IMediatorHandler
 {
-    private readonly IMediator _mediator;
     private readonly IDomainEventStore _domainEventStore;
+    private readonly IMediator _mediator;
 
     public InMemoryBus(
         IMediator mediator,

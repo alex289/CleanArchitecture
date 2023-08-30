@@ -60,9 +60,12 @@ public static class ServiceCollectionExtension
         services.AddHttpContextAccessor();
 
         services.AddAuthentication(
-            options => { options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme; })
+                options => { options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme; })
             .AddJwtBearer(
-            jwtOptions => { jwtOptions.TokenValidationParameters = CreateTokenValidationParameters(configuration); });
+                jwtOptions =>
+                {
+                    jwtOptions.TokenValidationParameters = CreateTokenValidationParameters(configuration);
+                });
 
         services
             .AddOptions<TokenSettings>()

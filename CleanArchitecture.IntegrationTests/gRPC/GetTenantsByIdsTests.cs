@@ -26,9 +26,9 @@ public sealed class GetTenantsByIdsTests : IClassFixture<GetTenantsByIdsTestFixt
         request.Ids.Add(_fixture.CreatedTenantId.ToString());
 
         var response = await client.GetByIdsAsync(request);
-        
+
         response.Tenants.Should().HaveCount(1);
-        
+
         var tenant = response.Tenants.First();
         var createdTenant = _fixture.CreateTenant();
 

@@ -25,13 +25,13 @@ public sealed class GetUserByIdTestFixture : QueryHandlerBaseFixture
     public void SetupUserAsync()
     {
         var user = new User(
-                ExistingUserId,
-                Guid.NewGuid(),
-                "max@mustermann.com",
-                "Max",
-                "Mustermann",
-                "Password",
-                UserRole.User);
+            ExistingUserId,
+            Guid.NewGuid(),
+            "max@mustermann.com",
+            "Max",
+            "Mustermann",
+            "Password",
+            UserRole.User);
 
         var query = new[] { user }.BuildMock();
 
@@ -41,13 +41,13 @@ public sealed class GetUserByIdTestFixture : QueryHandlerBaseFixture
     public void SetupDeletedUserAsync()
     {
         var user = new User(
-                ExistingUserId,
-                Guid.NewGuid(),
-                "max@mustermann.com",
-                "Max",
-                "Mustermann",
-                "Password",
-                UserRole.User);
+            ExistingUserId,
+            Guid.NewGuid(),
+            "max@mustermann.com",
+            "Max",
+            "Mustermann",
+            "Password",
+            UserRole.User);
 
         user.Delete();
 

@@ -75,7 +75,7 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
         if (_user.GetUserRole() == UserRole.Admin)
         {
             user.SetRole(request.Role);
-            
+
             // Todo: Test
             // Todo: Check if tenant exists first
             user.SetTenant(request.TenantId);

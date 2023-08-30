@@ -23,7 +23,7 @@ public sealed class TenantsApiImplementation : TenantsApi.TenantsApiBase
         ServerCallContext context)
     {
         var idsAsGuids = new List<Guid>(request.Ids.Count);
-        
+
         foreach (var id in request.Ids)
         {
             if (Guid.TryParse(id, out var parsed))
@@ -44,7 +44,7 @@ public sealed class TenantsApiImplementation : TenantsApi.TenantsApiBase
             .ToListAsync();
 
         var result = new GetTenantsByIdsResult();
-        
+
         result.Tenants.AddRange(tenants);
 
         return result;

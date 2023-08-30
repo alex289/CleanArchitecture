@@ -14,7 +14,8 @@ public sealed class EventStoreContext : IEventStoreContext
         _user = user;
 
         if (httpContextAccessor?.HttpContext is null ||
-            !httpContextAccessor.HttpContext.Request.Headers.TryGetValue("X-CLEAN-ARCHITECTURE-CORRELATION-ID", out var id))
+            !httpContextAccessor.HttpContext.Request.Headers.TryGetValue("X-CLEAN-ARCHITECTURE-CORRELATION-ID",
+                out var id))
         {
             _correlationId = $"internal - {Guid.NewGuid()}";
         }
@@ -24,7 +25,13 @@ public sealed class EventStoreContext : IEventStoreContext
         }
     }
 
-    public string GetCorrelationId() => _correlationId;
+    public string GetCorrelationId()
+    {
+        return _correlationId;
+    }
 
-    public string GetUserEmail() => _user?.GetUserEmail() ?? string.Empty;
+    public string GetUserEmail()
+    {
+        return _user?.GetUserEmail() ?? string.Empty;
+    }
 }

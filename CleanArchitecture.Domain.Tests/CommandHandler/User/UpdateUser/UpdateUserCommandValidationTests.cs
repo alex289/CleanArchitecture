@@ -109,7 +109,7 @@ public sealed class UpdateUserCommandValidationTests :
             DomainErrorCodes.User.UserLastNameExceedsMaxLength,
             $"LastName may not be longer than {MaxLengths.User.LastName} characters");
     }
-    
+
     [Fact]
     public void Should_Be_Invalid_For_Empty_Tenant_Id()
     {
@@ -129,7 +129,7 @@ public sealed class UpdateUserCommandValidationTests :
         string? lastName = null,
         UserRole? role = null)
     {
-        return new(
+        return new UpdateUserCommand(
             userId ?? Guid.NewGuid(),
             email ?? "test@email.com",
             firstName ?? "test",

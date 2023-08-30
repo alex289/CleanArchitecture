@@ -26,12 +26,12 @@ public sealed class CreateTenantCommandHandlerTests
                 x.AggregateId == command.AggregateId &&
                 x.Name == command.Name);
     }
-    
+
     [Fact]
     public void Should_Not_Create_Tenant_Insufficient_Permissions()
     {
         _fixture.SetupUser();
-            
+
         var command = new CreateTenantCommand(
             Guid.NewGuid(),
             "Test Tenant");
@@ -46,14 +46,14 @@ public sealed class CreateTenantCommandHandlerTests
                 ErrorCodes.InsufficientPermissions,
                 $"No permission to create tenant {command.AggregateId}");
     }
-    
+
     [Fact]
     public void Should_Not_Create_Tenant_Already_Exists()
     {
         var command = new CreateTenantCommand(
             Guid.NewGuid(),
             "Test Tenant");
-        
+
         _fixture.SetupExistingTenant(command.AggregateId);
 
         _fixture.CommandHandler.Handle(command, default!).Wait();

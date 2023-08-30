@@ -24,7 +24,7 @@ public sealed class GetTenantsByIdsTests : IClassFixture<TenantTestFixture>
         var result = await _fixture.TenantsApiImplementation.GetByIds(
             SetupRequest(Enumerable.Empty<Guid>()),
             default!);
-        
+
         result.Tenants.Should().HaveCount(0);
     }
 
@@ -37,36 +37,36 @@ public sealed class GetTenantsByIdsTests : IClassFixture<TenantTestFixture>
             .Take(2)
             .Select(tenant => tenant.Id)
             .ToList();
-        
+
         ids.Add(nonExistingId);
-        
+
         var result = await _fixture.TenantsApiImplementation.GetByIds(
             SetupRequest(ids),
             default!);
-        
+
         result.Tenants.Should().HaveCount(2);
 
         foreach (var tenant in result.Tenants)
         {
             var tenantId = Guid.Parse(tenant.Id);
-            
+
             tenantId.Should().NotBe(nonExistingId);
-            
+
             var mockTenant = _fixture.ExistingTenants.First(t => t.Id == tenantId);
-            
+
             mockTenant.Should().NotBeNull();
-            
+
             tenant.Name.Should().Be(mockTenant.Name);
         }
     }
-    
+
     private static GetTenantsByIdsRequest SetupRequest(IEnumerable<Guid> ids)
     {
         var request = new GetTenantsByIdsRequest();
-        
+
         request.Ids.AddRange(ids.Select(id => id.ToString()));
         request.Ids.Add("Not a guid");
-        
+
         return request;
     }
 }

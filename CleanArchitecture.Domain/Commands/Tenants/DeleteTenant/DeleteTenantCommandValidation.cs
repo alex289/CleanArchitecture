@@ -9,7 +9,7 @@ public sealed class DeleteTenantCommandValidation : AbstractValidator<DeleteTena
     {
         AddRuleForId();
     }
-    
+
     private void AddRuleForId()
     {
         RuleFor(cmd => cmd.AggregateId)

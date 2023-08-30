@@ -33,6 +33,6 @@ public sealed class DeleteUserCommandValidationTests :
 
     private static DeleteUserCommand CreateTestCommand(Guid? userId = null)
     {
-        return new(userId ?? Guid.NewGuid());
+        return new DeleteUserCommand(userId ?? Guid.NewGuid());
     }
 }

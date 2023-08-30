@@ -53,7 +53,7 @@ public static class ServiceCollectionExtensions
 
         services.AddSingleton<IUsersContext, UsersContext>();
         services.AddSingleton<ITenantsContext, TenantsContext>();
-        
+
         return services;
     }
 }

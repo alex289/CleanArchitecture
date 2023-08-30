@@ -23,7 +23,7 @@ public sealed class UpdateUserCommandValidation : AbstractValidator<UpdateUserCo
             .WithErrorCode(DomainErrorCodes.User.UserEmptyId)
             .WithMessage("User id may not be empty");
     }
-    
+
     private void AddRuleForTenantId()
     {
         RuleFor(cmd => cmd.TenantId)

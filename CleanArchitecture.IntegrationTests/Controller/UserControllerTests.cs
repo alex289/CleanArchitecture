@@ -26,13 +26,13 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
     }
 
     // Todo: Refactor tests to work alone
-    
+
     [Fact]
     [Priority(0)]
     public async Task Should_Create_User()
     {
         await _fixture.AuthenticateUserAsync();
-        
+
         var user = new CreateUserViewModel(
             _fixture.CreatedUserEmail,
             "Test",
@@ -237,7 +237,7 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
 
         var content = message!.Data;
         content.Should().Be(_fixture.CreatedUserId);
-        
+
         // Todo: Check if stuff is done
     }
 }

@@ -72,7 +72,7 @@ public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : Enti
             DbSet.Update(entity);
         }
     }
-    
+
     public void RemoveRange(IEnumerable<TEntity> entities, bool hardDelete = false)
     {
         if (hardDelete)

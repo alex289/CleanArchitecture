@@ -10,12 +10,12 @@ namespace CleanArchitecture.Application.Tests.Queries.Tenants;
 public sealed class GetAllTenantsQueryHandlerTests
 {
     private readonly GetAllTenantsTestFixture _fixture = new();
-    
+
     [Fact]
     public async Task Should_Get_Existing_Tenant()
     {
         var tenant = _fixture.SetupTenant();
-        
+
         var result = await _fixture.QueryHandler.Handle(
             new GetAllTenantsQuery(),
             default);
@@ -24,12 +24,12 @@ public sealed class GetAllTenantsQueryHandlerTests
 
         tenant.Should().BeEquivalentTo(result.First());
     }
-    
+
     [Fact]
     public async Task Should_Not_Get_Deleted_Tenant()
     {
         _fixture.SetupTenant(true);
-        
+
         var result = await _fixture.QueryHandler.Handle(
             new GetAllTenantsQuery(),
             default);

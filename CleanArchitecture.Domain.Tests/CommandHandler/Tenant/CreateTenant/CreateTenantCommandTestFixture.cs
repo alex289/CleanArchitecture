@@ -8,21 +8,21 @@ namespace CleanArchitecture.Domain.Tests.CommandHandler.Tenant.CreateTenant;
 
 public sealed class CreateTenantCommandTestFixture : CommandHandlerFixtureBase
 {
-    public CreateTenantCommandHandler CommandHandler { get;}
-    
-    private ITenantRepository TenantRepository { get; }
-
     public CreateTenantCommandTestFixture()
     {
         TenantRepository = Substitute.For<ITenantRepository>();
-        
-        CommandHandler = new(
+
+        CommandHandler = new CreateTenantCommandHandler(
             Bus,
             UnitOfWork,
             NotificationHandler,
             TenantRepository,
             User);
     }
+
+    public CreateTenantCommandHandler CommandHandler { get; }
+
+    private ITenantRepository TenantRepository { get; }
 
     public void SetupUser()
     {

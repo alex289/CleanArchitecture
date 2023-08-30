@@ -15,8 +15,8 @@ public sealed class DeleteTenantCommandHandler : CommandHandlerBase,
     IRequestHandler<DeleteTenantCommand>
 {
     private readonly ITenantRepository _tenantRepository;
-    private readonly IUserRepository _userRepository;
     private readonly IUser _user;
+    private readonly IUserRepository _userRepository;
 
     public DeleteTenantCommandHandler(
         IMediatorHandler bus,
@@ -37,7 +37,7 @@ public sealed class DeleteTenantCommandHandler : CommandHandlerBase,
         {
             return;
         }
-        
+
         // Todo: Test following
 
         if (_user.GetUserRole() != UserRole.Admin)
@@ -67,9 +67,9 @@ public sealed class DeleteTenantCommandHandler : CommandHandlerBase,
         var tenantUsers = _userRepository
             .GetAll()
             .Where(x => x.TenantId == request.AggregateId);
-        
+
         _userRepository.RemoveRange(tenantUsers);
-        
+
         _tenantRepository.Remove(tenant);
 
         if (await CommitAsync())

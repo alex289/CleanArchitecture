@@ -176,7 +176,7 @@ public sealed class CreateUserCommandValidationTests :
 
         ShouldHaveSingleError(command, DomainErrorCodes.User.UserLongPassword);
     }
-    
+
     [Fact]
     public void Should_Be_Invalid_For_Empty_Tenant_Id()
     {
@@ -193,7 +193,7 @@ public sealed class CreateUserCommandValidationTests :
         string? lastName = null,
         string? password = null)
     {
-        return new(
+        return new CreateUserCommand(
             userId ?? Guid.NewGuid(),
             tenantId ?? Guid.NewGuid(),
             email ?? "test@email.com",

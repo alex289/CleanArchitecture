@@ -15,7 +15,7 @@ public sealed class GetTenantByIdQueryHandlerTests
     public async Task Should_Get_Existing_Tenant()
     {
         var tenant = _fixture.SetupTenant();
-        
+
         var result = await _fixture.QueryHandler.Handle(
             new GetTenantByIdQuery(tenant.Id, false),
             default);
@@ -24,12 +24,12 @@ public sealed class GetTenantByIdQueryHandlerTests
 
         tenant.Should().BeEquivalentTo(result);
     }
-    
+
     [Fact]
     public async Task Should_Get_Deleted_Tenant()
     {
         var tenant = _fixture.SetupTenant(true);
-        
+
         var result = await _fixture.QueryHandler.Handle(
             new GetTenantByIdQuery(tenant.Id, true),
             default);
@@ -38,12 +38,12 @@ public sealed class GetTenantByIdQueryHandlerTests
 
         tenant.Should().BeEquivalentTo(result);
     }
-    
+
     [Fact]
     public async Task Should_Not_Get_Deleted_Tenant()
     {
         var tenant = _fixture.SetupTenant(true);
-        
+
         var result = await _fixture.QueryHandler.Handle(
             new GetTenantByIdQuery(tenant.Id, false),
             default);

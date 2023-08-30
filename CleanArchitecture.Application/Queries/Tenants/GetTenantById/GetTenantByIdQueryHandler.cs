@@ -14,8 +14,8 @@ namespace CleanArchitecture.Application.Queries.Tenants.GetTenantById;
 public sealed class GetTenantByIdQueryHandler :
     IRequestHandler<GetTenantByIdQuery, TenantViewModel?>
 {
-    private readonly ITenantRepository _tenantRepository;
     private readonly IMediatorHandler _bus;
+    private readonly ITenantRepository _tenantRepository;
 
     public GetTenantByIdQueryHandler(ITenantRepository tenantRepository, IMediatorHandler bus)
     {

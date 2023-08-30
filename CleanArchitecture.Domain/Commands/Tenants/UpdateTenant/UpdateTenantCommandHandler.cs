@@ -33,7 +33,7 @@ public sealed class UpdateTenantCommandHandler : CommandHandlerBase,
         {
             return;
         }
-        
+
         if (_user.GetUserRole() != UserRole.Admin)
         {
             await NotifyAsync(
@@ -57,9 +57,9 @@ public sealed class UpdateTenantCommandHandler : CommandHandlerBase,
 
             return;
         }
-        
+
         tenant.SetName(request.Name);
-        
+
         if (await CommitAsync())
         {
             await Bus.RaiseEventAsync(new TenantUpdatedEvent(

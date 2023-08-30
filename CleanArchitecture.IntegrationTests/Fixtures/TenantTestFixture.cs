@@ -7,7 +7,7 @@ namespace CleanArchitecture.IntegrationTests.Fixtures;
 public sealed class TenantTestFixture : TestFixtureBase
 {
     public Guid CreatedTenantId { get; } = Guid.NewGuid();
-    
+
     protected override void SeedTestData(ApplicationDbContext context)
     {
         context.Tenants.Add(new Tenant(

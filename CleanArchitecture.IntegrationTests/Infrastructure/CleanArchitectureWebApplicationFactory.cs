@@ -47,19 +47,19 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
             services.SetupTestDatabase<EventStoreDbContext>(_connection);
             services.SetupTestDatabase<DomainNotificationStoreDbContext>(_connection);
 
-            ServiceProvider sp = services.BuildServiceProvider();
+            var sp = services.BuildServiceProvider();
 
-            using IServiceScope scope = sp.CreateScope();
-            IServiceProvider scopedServices = scope.ServiceProvider;
+            using var scope = sp.CreateScope();
+            var scopedServices = scope.ServiceProvider;
 
-            ApplicationDbContext applicationDbContext = scopedServices.GetRequiredService<ApplicationDbContext>();
-            EventStoreDbContext storeDbContext = scopedServices.GetRequiredService<EventStoreDbContext>();
-            DomainNotificationStoreDbContext domainStoreDbContext = scopedServices.GetRequiredService<DomainNotificationStoreDbContext>();
+            var applicationDbContext = scopedServices.GetRequiredService<ApplicationDbContext>();
+            var storeDbContext = scopedServices.GetRequiredService<EventStoreDbContext>();
+            var domainStoreDbContext = scopedServices.GetRequiredService<DomainNotificationStoreDbContext>();
 
             applicationDbContext.EnsureMigrationsApplied();
 
             var creator2 = (RelationalDatabaseCreator)storeDbContext.Database
-                    .GetService<IRelationalDatabaseCreator>();
+                .GetService<IRelationalDatabaseCreator>();
             creator2.CreateTables();
 
             var creator3 = (RelationalDatabaseCreator)domainStoreDbContext

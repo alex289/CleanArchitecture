@@ -11,7 +11,7 @@ public sealed class CreateTenantCommandValidationTests :
     public CreateTenantCommandValidationTests() : base(new CreateTenantCommandValidation())
     {
     }
-    
+
     [Fact]
     public void Should_Be_Valid()
     {
@@ -19,7 +19,7 @@ public sealed class CreateTenantCommandValidationTests :
 
         ShouldBeValid(command);
     }
-    
+
     [Fact]
     public void Should_Be_Invalid_For_Empty_Tenant_Id()
     {
@@ -30,7 +30,7 @@ public sealed class CreateTenantCommandValidationTests :
             DomainErrorCodes.Tenant.TenantEmptyId,
             "Tenant id may not be empty");
     }
-    
+
     [Fact]
     public void Should_Be_Invalid_For_Empty_Tenant_Name()
     {
@@ -46,7 +46,7 @@ public sealed class CreateTenantCommandValidationTests :
         Guid? id = null,
         string? name = null)
     {
-        return new(
+        return new CreateTenantCommand(
             id ?? Guid.NewGuid(),
             name ?? "Test Tenant");
     }

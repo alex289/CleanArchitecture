@@ -41,7 +41,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<INotificationHandler<UserUpdatedEvent>, UserEventHandler>();
         services.AddScoped<INotificationHandler<UserDeletedEvent>, UserEventHandler>();
         services.AddScoped<INotificationHandler<PasswordChangedEvent>, UserEventHandler>();
-        
+
         // Tenant
         services.AddScoped<INotificationHandler<TenantCreatedEvent>, TenantEventHandler>();
         services.AddScoped<INotificationHandler<TenantUpdatedEvent>, TenantEventHandler>();

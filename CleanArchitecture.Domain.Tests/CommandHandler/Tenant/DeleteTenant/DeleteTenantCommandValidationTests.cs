@@ -11,7 +11,7 @@ public sealed class DeleteTenantCommandValidationTests :
     public DeleteTenantCommandValidationTests() : base(new DeleteTenantCommandValidation())
     {
     }
-    
+
     [Fact]
     public void Should_Be_Valid()
     {
@@ -19,7 +19,7 @@ public sealed class DeleteTenantCommandValidationTests :
 
         ShouldBeValid(command);
     }
-    
+
     [Fact]
     public void Should_Be_Invalid_For_Empty_Tenant_Id()
     {
@@ -30,9 +30,9 @@ public sealed class DeleteTenantCommandValidationTests :
             DomainErrorCodes.Tenant.TenantEmptyId,
             "Tenant id may not be empty");
     }
-    
+
     private static DeleteTenantCommand CreateTestCommand(Guid? tenantId = null)
     {
-        return new(tenantId ?? Guid.NewGuid());
+        return new DeleteTenantCommand(tenantId ?? Guid.NewGuid());
     }
 }

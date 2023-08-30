@@ -10,24 +10,24 @@ namespace CleanArchitecture.gRPC.Tests.Fixtures;
 
 public sealed class TenantTestFixture
 {
-    public TenantsApiImplementation TenantsApiImplementation { get; }
-    private ITenantRepository TenantRepository { get; }
-    
-    public IEnumerable<Tenant> ExistingTenants { get; }
-
     public TenantTestFixture()
     {
         TenantRepository = Substitute.For<ITenantRepository>();
 
         ExistingTenants = new List<Tenant>
         {
-            new Tenant(Guid.NewGuid(), "Tenant 1"),
-            new Tenant(Guid.NewGuid(), "Tenant 2"),
-            new Tenant(Guid.NewGuid(), "Tenant 3"),
+            new(Guid.NewGuid(), "Tenant 1"),
+            new(Guid.NewGuid(), "Tenant 2"),
+            new(Guid.NewGuid(), "Tenant 3")
         };
-        
+
         TenantRepository.GetAllNoTracking().Returns(ExistingTenants.BuildMock());
-        
-        TenantsApiImplementation = new(TenantRepository);
+
+        TenantsApiImplementation = new TenantsApiImplementation(TenantRepository);
     }
+
+    public TenantsApiImplementation TenantsApiImplementation { get; }
+    private ITenantRepository TenantRepository { get; }
+
+    public IEnumerable<Tenant> ExistingTenants { get; }
 }

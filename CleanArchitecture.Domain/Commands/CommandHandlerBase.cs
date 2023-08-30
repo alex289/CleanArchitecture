@@ -9,9 +9,9 @@ namespace CleanArchitecture.Domain.Commands;
 
 public abstract class CommandHandlerBase
 {
-    protected readonly IMediatorHandler Bus;
     private readonly DomainNotificationHandler _notifications;
     private readonly IUnitOfWork _unitOfWork;
+    protected readonly IMediatorHandler Bus;
 
     protected CommandHandlerBase(
         IMediatorHandler bus,

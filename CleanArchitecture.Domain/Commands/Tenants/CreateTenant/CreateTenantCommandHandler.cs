@@ -34,7 +34,7 @@ public sealed class CreateTenantCommandHandler : CommandHandlerBase,
         {
             return;
         }
-        
+
         if (_user.GetUserRole() != UserRole.Admin)
         {
             await NotifyAsync(
@@ -60,7 +60,7 @@ public sealed class CreateTenantCommandHandler : CommandHandlerBase,
         var tenant = new Tenant(
             request.AggregateId,
             request.Name);
-        
+
         _tenantRepository.Add(tenant);
 
         if (await CommitAsync())

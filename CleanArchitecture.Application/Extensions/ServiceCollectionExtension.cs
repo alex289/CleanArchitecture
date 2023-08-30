@@ -30,8 +30,9 @@ public static class ServiceCollectionExtension
 
         // Tenant
         services.AddScoped<IRequestHandler<GetTenantByIdQuery, TenantViewModel?>, GetTenantByIdQueryHandler>();
-        services.AddScoped<IRequestHandler<GetAllTenantsQuery, IEnumerable<TenantViewModel>>, GetAllTenantsQueryHandler>();
-        
+        services
+            .AddScoped<IRequestHandler<GetAllTenantsQuery, IEnumerable<TenantViewModel>>, GetAllTenantsQueryHandler>();
+
         return services;
     }
 }

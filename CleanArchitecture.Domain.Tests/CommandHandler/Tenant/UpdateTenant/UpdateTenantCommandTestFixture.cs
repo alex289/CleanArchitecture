@@ -1,7 +1,6 @@
 using System;
 using CleanArchitecture.Domain.Commands.Tenants.UpdateTenant;
 using CleanArchitecture.Domain.Enums;
-using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Domain.Interfaces.Repositories;
 using NSubstitute;
 
@@ -9,22 +8,22 @@ namespace CleanArchitecture.Domain.Tests.CommandHandler.Tenant.UpdateTenant;
 
 public sealed class UpdateTenantCommandTestFixture : CommandHandlerFixtureBase
 {
-    public UpdateTenantCommandHandler CommandHandler { get;}
-    
-    private ITenantRepository TenantRepository { get; }
-
     public UpdateTenantCommandTestFixture()
     {
         TenantRepository = Substitute.For<ITenantRepository>();
-        
-        CommandHandler = new(
+
+        CommandHandler = new UpdateTenantCommandHandler(
             Bus,
             UnitOfWork,
             NotificationHandler,
             TenantRepository,
             User);
     }
-    
+
+    public UpdateTenantCommandHandler CommandHandler { get; }
+
+    private ITenantRepository TenantRepository { get; }
+
     public void SetupUser()
     {
         User.GetUserRole().Returns(UserRole.User);

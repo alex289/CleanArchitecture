@@ -16,7 +16,7 @@ public sealed class UpdateTenantCommandHandlerTests
         var command = new UpdateTenantCommand(
             Guid.NewGuid(),
             "Tenant Name");
-        
+
         _fixture.SetupExistingTenant(command.AggregateId);
 
         _fixture.CommandHandler.Handle(command, default!).Wait();
@@ -28,14 +28,14 @@ public sealed class UpdateTenantCommandHandlerTests
                 x.AggregateId == command.AggregateId &&
                 x.Name == command.Name);
     }
-    
+
     [Fact]
     public void Should_Not_Update_Tenant_Insufficient_Permissions()
     {
         var command = new UpdateTenantCommand(
             Guid.NewGuid(),
             "Tenant Name");
-        
+
         _fixture.SetupUser();
 
         _fixture.CommandHandler.Handle(command, default!).Wait();
@@ -48,14 +48,14 @@ public sealed class UpdateTenantCommandHandlerTests
                 ErrorCodes.InsufficientPermissions,
                 $"No permission to update tenant {command.AggregateId}");
     }
-    
+
     [Fact]
     public void Should_Not_Update_Tenant_Not_Existing()
     {
         var command = new UpdateTenantCommand(
             Guid.NewGuid(),
             "Tenant Name");
-        
+
         _fixture.CommandHandler.Handle(command, default!).Wait();
 
         _fixture

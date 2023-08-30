@@ -125,7 +125,7 @@ public sealed class LoginUserCommandValidationTests :
         string? email = null,
         string? password = null)
     {
-        return new(
+        return new LoginUserCommand(
             email ?? "test@email.com",
             password ?? "Po=PF]PC6t.?8?ks)A6W");
     }

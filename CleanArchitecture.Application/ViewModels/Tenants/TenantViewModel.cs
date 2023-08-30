@@ -11,7 +11,7 @@ public sealed class TenantViewModel
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public IEnumerable<UserViewModel> Users { get; set; } = new List<UserViewModel>();
-    
+
     public static TenantViewModel FromTenant(Tenant tenant)
     {
         return new TenantViewModel

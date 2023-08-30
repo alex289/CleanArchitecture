@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using CleanArchitecture.Application.ViewModels.Users;
@@ -36,7 +35,7 @@ public class TestFixtureBase
         IServiceProvider scopedServices)
     {
     }
-    
+
     // Todo: Fix auth
     public virtual async Task AuthenticateUserAsync()
     {

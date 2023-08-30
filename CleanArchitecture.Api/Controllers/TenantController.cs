@@ -18,14 +18,14 @@ namespace CleanArchitecture.Api.Controllers;
 public sealed class TenantController : ApiController
 {
     private readonly ITenantService _tenantService;
-    
+
     public TenantController(
         INotificationHandler<DomainNotification> notifications,
         ITenantService tenantService) : base(notifications)
     {
         _tenantService = tenantService;
     }
-    
+
     [HttpGet]
     [SwaggerOperation("Get a list of all tenants")]
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<IEnumerable<TenantViewModel>>))]
@@ -34,7 +34,7 @@ public sealed class TenantController : ApiController
         var tenants = await _tenantService.GetAllTenantsAsync();
         return Response(tenants);
     }
-    
+
     [HttpGet("{id:guid}")]
     [SwaggerOperation("Get a tenant by id")]
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<TenantViewModel>))]
@@ -45,7 +45,7 @@ public sealed class TenantController : ApiController
         var tenant = await _tenantService.GetTenantByIdAsync(id, isDeleted);
         return Response(tenant);
     }
-    
+
     [HttpPost]
     [SwaggerOperation("Create a new tenant")]
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<Guid>))]
@@ -54,7 +54,7 @@ public sealed class TenantController : ApiController
         var tenantId = await _tenantService.CreateTenantAsync(tenant);
         return Response(tenantId);
     }
-    
+
     [HttpPut]
     [SwaggerOperation("Update an existing tenant")]
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<UpdateTenantViewModel>))]
@@ -63,7 +63,7 @@ public sealed class TenantController : ApiController
         await _tenantService.UpdateTenantAsync(tenant);
         return Response(tenant);
     }
-    
+
     [HttpDelete("{id:guid}")]
     [SwaggerOperation("Delete an existing tenant")]
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<Guid>))]

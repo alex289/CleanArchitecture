@@ -90,7 +90,7 @@ public sealed class ChangePasswordCommandValidationTests :
     private static ChangePasswordCommand CreateTestCommand(
         string? password = null, string? newPassword = null)
     {
-        return new(
+        return new ChangePasswordCommand(
             password ?? "z8]tnayvd5FNLU9:]AQm",
             newPassword ?? "z8]tnayvd5FNLU9:]AQw");
     }

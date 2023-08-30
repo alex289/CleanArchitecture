@@ -4,4 +4,4 @@ using MediatR;
 
 namespace CleanArchitecture.Application.Queries.Tenants.GetAll;
 
-public sealed record GetAllTenantsQuery() : IRequest<IEnumerable<TenantViewModel>>;
+public sealed record GetAllTenantsQuery : IRequest<IEnumerable<TenantViewModel>>;

@@ -15,7 +15,7 @@ public sealed class CreateUserCommandHandlerTests
     {
         // Todo: Fix tests
         _fixture.SetupCurrentUser();
-        
+
         var user = _fixture.SetupUser();
         _fixture.SetupTenant(user.TenantId);
 
@@ -39,7 +39,7 @@ public sealed class CreateUserCommandHandlerTests
     public void Should_Not_Create_Already_Existing_User()
     {
         _fixture.SetupCurrentUser();
-        
+
         var user = _fixture.SetupUser();
 
         var command = new CreateUserCommand(
@@ -60,12 +60,12 @@ public sealed class CreateUserCommandHandlerTests
                 DomainErrorCodes.User.UserAlreadyExists,
                 $"There is already a user with Id {command.UserId}");
     }
-    
+
     [Fact]
     public void Should_Not_Create_User_Tenant_Does_Not_Exist()
     {
         _fixture.SetupCurrentUser();
-        
+
         _fixture.SetupUser();
 
         var command = new CreateUserCommand(
@@ -86,7 +86,7 @@ public sealed class CreateUserCommandHandlerTests
                 ErrorCodes.ObjectNotFound,
                 $"There is no tenant with Id {command.TenantId}");
     }
-    
+
     [Fact]
     public void Should_Not_Create_User_Insufficient_Permissions()
     {

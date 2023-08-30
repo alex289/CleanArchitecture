@@ -24,11 +24,11 @@ public sealed class TenantService : ITenantService
     public async Task<Guid> CreateTenantAsync(CreateTenantViewModel tenant)
     {
         var tenantId = Guid.NewGuid();
-        
+
         await _bus.SendCommandAsync(new CreateTenantCommand(
             tenantId,
             tenant.Name));
-        
+
         return tenantId;
     }
 
