@@ -11,6 +11,7 @@ public sealed class UserViewModel
     public string FirstName { get; set; } = string.Empty;
     public string LastName { get; set; } = string.Empty;
     public UserRole Role { get; set; }
+    public UserStatus Status { get; set; }
 
     public static UserViewModel FromUser(User user)
     {
@@ -20,7 +21,8 @@ public sealed class UserViewModel
             Email = user.Email,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            Role = user.Role
+            Role = user.Role,
+            Status = user.Status
         };
     }
 }
