@@ -42,4 +42,24 @@ public sealed class DeleteUserCommandHandlerTests
                 ErrorCodes.ObjectNotFound,
                 $"There is no user with Id {command.UserId}");
     }
+    
+    [Fact]
+    public void Should_Not_Delete_User_Insufficient_Permissions()
+    {
+        var user = _fixture.SetupUser();
+
+        _fixture.SetupCurrentUser();
+
+        var command = new DeleteUserCommand(user.Id);
+
+        _fixture.CommandHandler.Handle(command, default).Wait();
+
+        _fixture
+            .VerifyNoCommit()
+            .VerifyNoRaisedEvent<UserDeletedEvent>()
+            .VerifyAnyDomainNotification()
+            .VerifyExistingNotification(
+                ErrorCodes.InsufficientPermissions,
+                $"No permission to delete user {command.UserId}");
+    }
 }

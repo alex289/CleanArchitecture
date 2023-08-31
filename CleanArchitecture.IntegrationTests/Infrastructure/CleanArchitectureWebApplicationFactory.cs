@@ -57,7 +57,7 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
                 {
                     options.DefaultAuthenticateScheme = "Testing";
                     options.DefaultChallengeScheme = "Testing";
-                }).AddTestAuthentication(options => { });
+                }).AddTestAuthentication(_ => { });
             }
 
             var sp = services.BuildServiceProvider();

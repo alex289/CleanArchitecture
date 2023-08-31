@@ -40,4 +40,9 @@ public sealed class DeleteUserCommandTestFixture : CommandHandlerFixtureBase
 
         return user;
     }
+    
+    public void SetupCurrentUser()
+    {
+        User.GetUserRole().Returns(UserRole.User);
+    }
 }

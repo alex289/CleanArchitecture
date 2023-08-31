@@ -56,7 +56,6 @@ public sealed class UserController : ApiController
     }
 
     [HttpPost]
-    [AllowAnonymous]
     [SwaggerOperation("Create a new user")]
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<Guid>))]
     public async Task<IActionResult> CreateUserAsync([FromBody] CreateUserViewModel viewModel)

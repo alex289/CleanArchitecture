@@ -1,7 +1,6 @@
 using System;
 using CleanArchitecture.Domain.Commands.Users.CreateUser;
 using CleanArchitecture.Domain.Enums;
-using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Domain.Interfaces.Repositories;
 using NSubstitute;
 
@@ -10,15 +9,13 @@ namespace CleanArchitecture.Domain.Tests.CommandHandler.User.CreateUser;
 public sealed class CreateUserCommandTestFixture : CommandHandlerFixtureBase
 {
     public CreateUserCommandHandler CommandHandler { get; }
-    private IUserRepository UserRepository { get; }
+    public IUserRepository UserRepository { get; }
     private ITenantRepository TenantRepository { get; }
-    private IUser User { get; }
 
     public CreateUserCommandTestFixture()
     {
         UserRepository = Substitute.For<IUserRepository>();
         TenantRepository = Substitute.For<ITenantRepository>();
-        User = Substitute.For<IUser>();
 
         CommandHandler = new CreateUserCommandHandler(
             Bus,

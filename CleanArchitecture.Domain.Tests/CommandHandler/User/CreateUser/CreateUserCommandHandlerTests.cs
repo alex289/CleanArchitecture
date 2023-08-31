@@ -1,7 +1,9 @@
 using System;
 using CleanArchitecture.Domain.Commands.Users.CreateUser;
+using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Domain.Events.User;
+using NSubstitute;
 using Xunit;
 
 namespace CleanArchitecture.Domain.Tests.CommandHandler.User.CreateUser;
@@ -13,7 +15,6 @@ public sealed class CreateUserCommandHandlerTests
     [Fact]
     public void Should_Create_User()
     {
-        // Todo: Fix tests
         _fixture.SetupCurrentUser();
 
         var user = _fixture.SetupUser();
@@ -59,6 +60,41 @@ public sealed class CreateUserCommandHandlerTests
             .VerifyExistingNotification(
                 DomainErrorCodes.User.UserAlreadyExists,
                 $"There is already a user with Id {command.UserId}");
+    }
+    
+    [Fact]
+    public void Should_Not_Create_Already_Existing_Email()
+    {
+        _fixture.SetupCurrentUser();
+
+        _fixture.UserRepository
+            .GetByEmailAsync(Arg.Is<string>(y => y == "test@email.com"))
+            .Returns(new Entities.User(
+                Guid.NewGuid(),
+                Guid.NewGuid(),
+                "max@mustermann.com",
+                "Max",
+                "Mustermann",
+                "Password",
+                UserRole.User));
+
+        var command = new CreateUserCommand(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            "test@email.com",
+            "Test",
+            "Email",
+            "Po=PF]PC6t.?8?ks)A6W");
+
+        _fixture.CommandHandler.Handle(command, default).Wait();
+
+        _fixture
+            .VerifyNoCommit()
+            .VerifyNoRaisedEvent<UserCreatedEvent>()
+            .VerifyAnyDomainNotification()
+            .VerifyExistingNotification(
+                DomainErrorCodes.User.UserAlreadyExists,
+                $"There is already a user with email {command.Email}");
     }
 
     [Fact]
