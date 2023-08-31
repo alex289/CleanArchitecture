@@ -5,6 +5,8 @@ namespace CleanArchitecture.Domain.DomainEvents;
 
 public abstract class DomainEvent : Message, INotification
 {
+    public DateTime Timestamp { get; private set; }
+
     protected DomainEvent(Guid aggregateId) : base(aggregateId)
     {
         Timestamp = DateTime.Now;
@@ -14,6 +16,4 @@ public abstract class DomainEvent : Message, INotification
     {
         Timestamp = DateTime.Now;
     }
-
-    public DateTime Timestamp { get; private set; }
 }

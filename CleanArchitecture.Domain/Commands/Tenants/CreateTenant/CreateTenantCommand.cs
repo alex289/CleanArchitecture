@@ -6,12 +6,12 @@ public sealed class CreateTenantCommand : CommandBase
 {
     private static readonly CreateTenantCommandValidation s_validation = new();
 
+    public string Name { get; }
+
     public CreateTenantCommand(Guid tenantId, string name) : base(tenantId)
     {
         Name = name;
     }
-
-    public string Name { get; }
 
     public override bool IsValid()
     {

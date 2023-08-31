@@ -7,6 +7,9 @@ namespace CleanArchitecture.IntegrationTests.Fixtures.gRPC;
 
 public sealed class GetTenantsByIdsTestFixture : TestFixtureBase
 {
+    public GrpcChannel GrpcChannel { get; }
+    public Guid CreatedTenantId { get; } = Guid.NewGuid();
+
     public GetTenantsByIdsTestFixture()
     {
         GrpcChannel = GrpcChannel.ForAddress("http://localhost", new GrpcChannelOptions
@@ -14,9 +17,6 @@ public sealed class GetTenantsByIdsTestFixture : TestFixtureBase
             HttpHandler = Factory.Server.CreateHandler()
         });
     }
-
-    public GrpcChannel GrpcChannel { get; }
-    public Guid CreatedTenantId { get; } = Guid.NewGuid();
 
     protected override void SeedTestData(ApplicationDbContext context)
     {

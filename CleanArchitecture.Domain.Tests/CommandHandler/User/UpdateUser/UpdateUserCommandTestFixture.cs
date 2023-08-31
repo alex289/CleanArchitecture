@@ -8,6 +8,10 @@ namespace CleanArchitecture.Domain.Tests.CommandHandler.User.UpdateUser;
 
 public sealed class UpdateUserCommandTestFixture : CommandHandlerFixtureBase
 {
+    public UpdateUserCommandHandler CommandHandler { get; }
+    public IUserRepository UserRepository { get; }
+    private ITenantRepository TenantRepository { get; }
+
     public UpdateUserCommandTestFixture()
     {
         UserRepository = Substitute.For<IUserRepository>();
@@ -21,10 +25,6 @@ public sealed class UpdateUserCommandTestFixture : CommandHandlerFixtureBase
             User,
             TenantRepository);
     }
-
-    public UpdateUserCommandHandler CommandHandler { get; }
-    public IUserRepository UserRepository { get; }
-    private ITenantRepository TenantRepository { get; }
 
     public Entities.User SetupUser()
     {
@@ -47,7 +47,7 @@ public sealed class UpdateUserCommandTestFixture : CommandHandlerFixtureBase
     public Entities.Tenant SetupTenant(Guid tenantId)
     {
         var tenant = new Entities.Tenant(tenantId, "Name");
-        
+
         TenantRepository
             .ExistsAsync(Arg.Is<Guid>(y => y == tenant.Id))
             .Returns(true);

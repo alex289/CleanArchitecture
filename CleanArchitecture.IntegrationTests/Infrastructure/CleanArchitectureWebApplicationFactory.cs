@@ -22,10 +22,10 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
         IServiceProvider scopedServices);
 
     private readonly AddCustomSeedDataHandler? _addCustomSeedDataHandler;
+    private readonly bool _addTestAuthentication;
 
     private readonly SqliteConnection _connection = new("DataSource=:memory:");
     private readonly RegisterCustomServicesHandler? _registerCustomServicesHandler;
-    private readonly bool _addTestAuthentication;
 
     public CleanArchitectureWebApplicationFactory(
         AddCustomSeedDataHandler? addCustomSeedDataHandler,

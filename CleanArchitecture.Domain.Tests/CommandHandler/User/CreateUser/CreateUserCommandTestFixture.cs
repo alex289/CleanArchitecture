@@ -9,6 +9,11 @@ namespace CleanArchitecture.Domain.Tests.CommandHandler.User.CreateUser;
 
 public sealed class CreateUserCommandTestFixture : CommandHandlerFixtureBase
 {
+    public CreateUserCommandHandler CommandHandler { get; }
+    private IUserRepository UserRepository { get; }
+    private ITenantRepository TenantRepository { get; }
+    private IUser User { get; }
+
     public CreateUserCommandTestFixture()
     {
         UserRepository = Substitute.For<IUserRepository>();
@@ -23,12 +28,6 @@ public sealed class CreateUserCommandTestFixture : CommandHandlerFixtureBase
             TenantRepository,
             User);
     }
-
-    // Todo: Properties over ctor
-    public CreateUserCommandHandler CommandHandler { get; }
-    private IUserRepository UserRepository { get; }
-    private ITenantRepository TenantRepository { get; }
-    private IUser User { get; }
 
     public Entities.User SetupUser()
     {

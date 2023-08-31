@@ -13,6 +13,9 @@ namespace CleanArchitecture.IntegrationTests.Fixtures;
 
 public class TestFixtureBase
 {
+    public HttpClient ServerClient { get; }
+    protected WebApplicationFactory<Program> Factory { get; }
+
     public TestFixtureBase(bool useTestAuthentication = true)
     {
         Factory = new CleanArchitectureWebApplicationFactory(
@@ -23,9 +26,6 @@ public class TestFixtureBase
         ServerClient = Factory.CreateClient();
         ServerClient.Timeout = TimeSpan.FromMinutes(5);
     }
-
-    public HttpClient ServerClient { get; }
-    protected WebApplicationFactory<Program> Factory { get; }
 
     protected virtual void SeedTestData(ApplicationDbContext context)
     {

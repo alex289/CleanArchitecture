@@ -6,6 +6,13 @@ public sealed class CreateUserCommand : CommandBase
 {
     private static readonly CreateUserCommandValidation s_validation = new();
 
+    public Guid UserId { get; }
+    public Guid TenantId { get; }
+    public string Email { get; }
+    public string FirstName { get; }
+    public string LastName { get; }
+    public string Password { get; }
+
     public CreateUserCommand(
         Guid userId,
         Guid tenantId,
@@ -21,13 +28,6 @@ public sealed class CreateUserCommand : CommandBase
         LastName = lastName;
         Password = password;
     }
-
-    public Guid UserId { get; }
-    public Guid TenantId { get; }
-    public string Email { get; }
-    public string FirstName { get; }
-    public string LastName { get; }
-    public string Password { get; }
 
     public override bool IsValid()
     {

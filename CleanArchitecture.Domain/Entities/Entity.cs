@@ -4,13 +4,13 @@ namespace CleanArchitecture.Domain.Entities;
 
 public abstract class Entity
 {
+    public Guid Id { get; private set; }
+    public bool Deleted { get; private set; }
+
     protected Entity(Guid id)
     {
         Id = id;
     }
-
-    public Guid Id { get; private set; }
-    public bool Deleted { get; private set; }
 
     public void SetId(Guid id)
     {

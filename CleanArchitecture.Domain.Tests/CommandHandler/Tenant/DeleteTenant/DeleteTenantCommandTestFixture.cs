@@ -8,6 +8,11 @@ namespace CleanArchitecture.Domain.Tests.CommandHandler.Tenant.DeleteTenant;
 
 public sealed class DeleteTenantCommandTestFixture : CommandHandlerFixtureBase
 {
+    public DeleteTenantCommandHandler CommandHandler { get; }
+
+    private ITenantRepository TenantRepository { get; }
+    private IUserRepository UserRepository { get; }
+
     public DeleteTenantCommandTestFixture()
     {
         TenantRepository = Substitute.For<ITenantRepository>();
@@ -22,11 +27,6 @@ public sealed class DeleteTenantCommandTestFixture : CommandHandlerFixtureBase
             User);
     }
 
-    public DeleteTenantCommandHandler CommandHandler { get; }
-
-    private ITenantRepository TenantRepository { get; }
-    private IUserRepository UserRepository { get; }
-
     public Entities.Tenant SetupTenant()
     {
         var tenant = new Entities.Tenant(Guid.NewGuid(), "TestTenant");
@@ -37,7 +37,7 @@ public sealed class DeleteTenantCommandTestFixture : CommandHandlerFixtureBase
 
         return tenant;
     }
-    
+
     public void SetupUser()
     {
         User.GetUserRole().Returns(UserRole.User);

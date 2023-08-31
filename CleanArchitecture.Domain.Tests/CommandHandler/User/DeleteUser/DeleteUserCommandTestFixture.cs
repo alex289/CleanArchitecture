@@ -8,6 +8,9 @@ namespace CleanArchitecture.Domain.Tests.CommandHandler.User.DeleteUser;
 
 public sealed class DeleteUserCommandTestFixture : CommandHandlerFixtureBase
 {
+    public DeleteUserCommandHandler CommandHandler { get; }
+    private IUserRepository UserRepository { get; }
+
     public DeleteUserCommandTestFixture()
     {
         UserRepository = Substitute.For<IUserRepository>();
@@ -19,9 +22,6 @@ public sealed class DeleteUserCommandTestFixture : CommandHandlerFixtureBase
             UserRepository,
             User);
     }
-
-    public DeleteUserCommandHandler CommandHandler { get; }
-    private IUserRepository UserRepository { get; }
 
     public Entities.User SetupUser()
     {

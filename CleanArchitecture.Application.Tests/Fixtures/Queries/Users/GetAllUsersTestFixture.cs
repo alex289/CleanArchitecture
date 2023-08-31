@@ -10,16 +10,16 @@ namespace CleanArchitecture.Application.Tests.Fixtures.Queries.Users;
 
 public sealed class GetAllUsersTestFixture : QueryHandlerBaseFixture
 {
+    private IUserRepository UserRepository { get; }
+    public GetAllUsersQueryHandler Handler { get; }
+    public Guid ExistingUserId { get; } = Guid.NewGuid();
+
     public GetAllUsersTestFixture()
     {
         UserRepository = Substitute.For<IUserRepository>();
 
         Handler = new GetAllUsersQueryHandler(UserRepository);
     }
-
-    private IUserRepository UserRepository { get; }
-    public GetAllUsersQueryHandler Handler { get; }
-    public Guid ExistingUserId { get; } = Guid.NewGuid();
 
     public void SetupUserAsync()
     {

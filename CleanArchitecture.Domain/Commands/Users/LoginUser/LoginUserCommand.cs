@@ -8,6 +8,9 @@ public sealed class LoginUserCommand : CommandBase,
 {
     private static readonly LoginUserCommandValidation s_validation = new();
 
+    public string Email { get; set; }
+    public string Password { get; set; }
+
 
     public LoginUserCommand(
         string email,
@@ -16,9 +19,6 @@ public sealed class LoginUserCommand : CommandBase,
         Email = email;
         Password = password;
     }
-
-    public string Email { get; set; }
-    public string Password { get; set; }
 
     public override bool IsValid()
     {

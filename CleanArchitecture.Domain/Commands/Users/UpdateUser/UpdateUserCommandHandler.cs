@@ -13,9 +13,9 @@ namespace CleanArchitecture.Domain.Commands.Users.UpdateUser;
 public sealed class UpdateUserCommandHandler : CommandHandlerBase,
     IRequestHandler<UpdateUserCommand>
 {
+    private readonly ITenantRepository _tenantRepository;
     private readonly IUser _user;
     private readonly IUserRepository _userRepository;
-    private readonly ITenantRepository _tenantRepository;
 
     public UpdateUserCommandHandler(
         IMediatorHandler bus,
@@ -88,6 +88,7 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
                         ErrorCodes.ObjectNotFound));
                 return;
             }
+
             user.SetTenant(request.TenantId);
         }
 

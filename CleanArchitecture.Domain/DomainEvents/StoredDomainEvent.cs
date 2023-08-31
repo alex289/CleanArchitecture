@@ -4,6 +4,11 @@ namespace CleanArchitecture.Domain.DomainEvents;
 
 public class StoredDomainEvent : DomainEvent
 {
+    public Guid Id { get; private set; }
+    public string Data { get; private set; } = string.Empty;
+    public string User { get; private set; } = string.Empty;
+    public string CorrelationId { get; private set; } = string.Empty;
+
     public StoredDomainEvent(
         DomainEvent domainEvent,
         string data,
@@ -21,9 +26,4 @@ public class StoredDomainEvent : DomainEvent
     protected StoredDomainEvent() : base(Guid.NewGuid())
     {
     }
-
-    public Guid Id { get; private set; }
-    public string Data { get; private set; } = string.Empty;
-    public string User { get; private set; } = string.Empty;
-    public string CorrelationId { get; private set; } = string.Empty;
 }

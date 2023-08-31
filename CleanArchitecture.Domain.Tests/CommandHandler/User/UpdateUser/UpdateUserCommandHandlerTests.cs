@@ -48,7 +48,7 @@ public sealed class UpdateUserCommandHandlerTests
             "Email",
             UserRole.User,
             Guid.NewGuid());
-        
+
         _fixture.SetupTenant(command.TenantId);
 
         await _fixture.CommandHandler.Handle(command, default);
@@ -74,7 +74,7 @@ public sealed class UpdateUserCommandHandlerTests
             "Email",
             UserRole.User,
             Guid.NewGuid());
-        
+
         _fixture.SetupTenant(command.TenantId);
 
         _fixture.UserRepository
@@ -98,7 +98,7 @@ public sealed class UpdateUserCommandHandlerTests
                 DomainErrorCodes.User.UserAlreadyExists,
                 $"There is already a user with email {command.Email}");
     }
-    
+
     [Fact]
     public async Task Should_Not_Update_Non_Existing_Tenant()
     {
@@ -111,7 +111,7 @@ public sealed class UpdateUserCommandHandlerTests
             "Email",
             UserRole.User,
             Guid.NewGuid());
-        
+
         await _fixture.CommandHandler.Handle(command, default);
 
         _fixture
@@ -122,13 +122,13 @@ public sealed class UpdateUserCommandHandlerTests
                 ErrorCodes.ObjectNotFound,
                 $"There is no tenant with Id {command.TenantId}");
     }
-    
+
     [Fact]
     public async Task Should_Not_Update_Admin_Properties()
     {
         var user = _fixture.SetupUser();
         _fixture.SetupCurrentUser(user.Id);
-        
+
         var command = new UpdateUserCommand(
             user.Id,
             "test@email.com",
@@ -140,8 +140,8 @@ public sealed class UpdateUserCommandHandlerTests
         _fixture.SetupTenant(command.TenantId);
 
         await _fixture.CommandHandler.Handle(command, default);
-        
-        _fixture.UserRepository.Received(1).Update(Arg.Is<Entities.User>(u => 
+
+        _fixture.UserRepository.Received(1).Update(Arg.Is<Entities.User>(u =>
             u.TenantId == user.TenantId &&
             u.Role == user.Role &&
             u.Id == command.UserId &&

@@ -11,6 +11,12 @@ namespace CleanArchitecture.gRPC.Tests.Fixtures;
 
 public sealed class UserTestFixture
 {
+    private IUserRepository UserRepository { get; } = Substitute.For<IUserRepository>();
+
+    public UsersApiImplementation UsersApiImplementation { get; }
+
+    public IEnumerable<User> ExistingUsers { get; }
+
     public UserTestFixture()
     {
         ExistingUsers = new List<User>
@@ -47,10 +53,4 @@ public sealed class UserTestFixture
 
         UsersApiImplementation = new UsersApiImplementation(UserRepository);
     }
-
-    private IUserRepository UserRepository { get; } = Substitute.For<IUserRepository>();
-
-    public UsersApiImplementation UsersApiImplementation { get; }
-
-    public IEnumerable<User> ExistingUsers { get; }
 }

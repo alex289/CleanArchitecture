@@ -6,11 +6,11 @@ namespace CleanArchitecture.Infrastructure.Database;
 
 public class DomainNotificationStoreDbContext : DbContext
 {
+    public virtual DbSet<StoredDomainNotification> StoredDomainNotifications { get; set; } = null!;
+
     public DomainNotificationStoreDbContext(DbContextOptions<DomainNotificationStoreDbContext> options) : base(options)
     {
     }
-
-    public virtual DbSet<StoredDomainNotification> StoredDomainNotifications { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

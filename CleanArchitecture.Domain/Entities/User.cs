@@ -5,6 +5,17 @@ namespace CleanArchitecture.Domain.Entities;
 
 public class User : Entity
 {
+    public string Email { get; private set; }
+    public string FirstName { get; private set; }
+    public string LastName { get; private set; }
+    public string Password { get; private set; }
+    public UserRole Role { get; private set; }
+
+    public string FullName => $"{FirstName}, {LastName}";
+
+    public Guid TenantId { get; private set; }
+    public virtual Tenant Tenant { get; private set; } = null!;
+
     public User(
         Guid id,
         Guid tenantId,
@@ -21,17 +32,6 @@ public class User : Entity
         Password = password;
         Role = role;
     }
-
-    public string Email { get; private set; }
-    public string FirstName { get; private set; }
-    public string LastName { get; private set; }
-    public string Password { get; private set; }
-    public UserRole Role { get; private set; }
-
-    public string FullName => $"{FirstName}, {LastName}";
-
-    public Guid TenantId { get; private set; }
-    public virtual Tenant Tenant { get; private set; } = null!;
 
     public void SetEmail(string email)
     {

@@ -7,6 +7,13 @@ public sealed class UpdateUserCommand : CommandBase
 {
     private static readonly UpdateUserCommandValidation s_validation = new();
 
+    public Guid UserId { get; }
+    public Guid TenantId { get; }
+    public string Email { get; }
+    public string FirstName { get; }
+    public string LastName { get; }
+    public UserRole Role { get; }
+
     public UpdateUserCommand(
         Guid userId,
         string email,
@@ -21,13 +28,6 @@ public sealed class UpdateUserCommand : CommandBase
         Role = role;
         TenantId = tenantId;
     }
-
-    public Guid UserId { get; }
-    public Guid TenantId { get; }
-    public string Email { get; }
-    public string FirstName { get; }
-    public string LastName { get; }
-    public UserRole Role { get; }
 
     public override bool IsValid()
     {

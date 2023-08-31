@@ -25,7 +25,7 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
     {
         _fixture = fixture;
     }
-    
+
     [Fact]
     [Priority(0)]
     public async Task Should_Get_All_User()
@@ -49,21 +49,21 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         currentUser.FirstName.Should().Be(TestAuthenticationOptions.FirstName);
         currentUser.LastName.Should().Be(TestAuthenticationOptions.LastName);
     }
-    
+
     [Fact]
     [Priority(5)]
     public async Task Should_Get_User_By_Id()
     {
         var response = await _fixture.ServerClient.GetAsync("/api/v1/user/" + TestAuthenticationOptions.TestUserId);
-    
+
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-    
+
         var message = await response.Content.ReadAsJsonAsync<UserViewModel>();
-    
+
         message?.Data.Should().NotBeNull();
-    
+
         var content = message!.Data!;
-    
+
         content.Id.Should().Be(TestAuthenticationOptions.TestUserId);
         content.Email.Should().Be(TestAuthenticationOptions.Email);
         content.FirstName.Should().Be(TestAuthenticationOptions.FirstName);
@@ -148,18 +148,18 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         var content = message!.Data;
 
         content.Should().BeEquivalentTo(user);
-        
+
         // Check if user is really updated
         var userResponse = await _fixture.ServerClient.GetAsync("/api/v1/user/" + user.Id);
-        
+
         userResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        
+
         var userMessage = await userResponse.Content.ReadAsJsonAsync<UserViewModel>();
-        
+
         userMessage?.Data.Should().NotBeNull();
-        
+
         var userContent = userMessage!.Data!;
-        
+
         userContent.Id.Should().Be(user.Id);
         userContent.Email.Should().Be(user.Email);
         userContent.FirstName.Should().Be(user.FirstName);
@@ -217,7 +217,7 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         content.Should().Be(TestAuthenticationOptions.TestUserId);
 
         var userResponse = await _fixture.ServerClient.GetAsync("/api/v1/user/" + TestAuthenticationOptions.TestUserId);
-        
+
         userResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 }

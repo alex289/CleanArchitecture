@@ -8,6 +8,10 @@ namespace CleanArchitecture.Domain.Tests.CommandHandler.Tenant.UpdateTenant;
 
 public sealed class UpdateTenantCommandTestFixture : CommandHandlerFixtureBase
 {
+    public UpdateTenantCommandHandler CommandHandler { get; }
+
+    private ITenantRepository TenantRepository { get; }
+
     public UpdateTenantCommandTestFixture()
     {
         TenantRepository = Substitute.For<ITenantRepository>();
@@ -19,10 +23,6 @@ public sealed class UpdateTenantCommandTestFixture : CommandHandlerFixtureBase
             TenantRepository,
             User);
     }
-
-    public UpdateTenantCommandHandler CommandHandler { get; }
-
-    private ITenantRepository TenantRepository { get; }
 
     public void SetupUser()
     {

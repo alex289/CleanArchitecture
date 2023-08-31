@@ -11,16 +11,16 @@ namespace CleanArchitecture.Application.Tests.Fixtures.Queries.Users;
 
 public sealed class GetUserByIdTestFixture : QueryHandlerBaseFixture
 {
+    private IUserRepository UserRepository { get; }
+    public GetUserByIdQueryHandler Handler { get; }
+    public Guid ExistingUserId { get; } = Guid.NewGuid();
+
     public GetUserByIdTestFixture()
     {
         UserRepository = Substitute.For<IUserRepository>();
 
         Handler = new GetUserByIdQueryHandler(UserRepository, Bus);
     }
-
-    private IUserRepository UserRepository { get; }
-    public GetUserByIdQueryHandler Handler { get; }
-    public Guid ExistingUserId { get; } = Guid.NewGuid();
 
     public void SetupUserAsync()
     {

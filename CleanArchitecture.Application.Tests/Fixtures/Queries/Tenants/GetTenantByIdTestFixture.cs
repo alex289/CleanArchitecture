@@ -10,6 +10,9 @@ namespace CleanArchitecture.Application.Tests.Fixtures.Queries.Tenants;
 
 public sealed class GetTenantByIdTestFixture : QueryHandlerBaseFixture
 {
+    public GetTenantByIdQueryHandler QueryHandler { get; }
+    private ITenantRepository TenantRepository { get; }
+
     public GetTenantByIdTestFixture()
     {
         TenantRepository = Substitute.For<ITenantRepository>();
@@ -18,9 +21,6 @@ public sealed class GetTenantByIdTestFixture : QueryHandlerBaseFixture
             TenantRepository,
             Bus);
     }
-
-    public GetTenantByIdQueryHandler QueryHandler { get; }
-    private ITenantRepository TenantRepository { get; }
 
     public Tenant SetupTenant(bool deleted = false)
     {

@@ -11,6 +11,10 @@ namespace CleanArchitecture.Domain.Tests.CommandHandler.User.LoginUser;
 
 public sealed class LoginUserCommandTestFixture : CommandHandlerFixtureBase
 {
+    public LoginUserCommandHandler CommandHandler { get; set; }
+    public IUserRepository UserRepository { get; set; }
+    public IOptions<TokenSettings> TokenSettings { get; set; }
+
     public LoginUserCommandTestFixture()
     {
         UserRepository = Substitute.For<IUserRepository>();
@@ -29,10 +33,6 @@ public sealed class LoginUserCommandTestFixture : CommandHandlerFixtureBase
             UserRepository,
             TokenSettings);
     }
-
-    public LoginUserCommandHandler CommandHandler { get; set; }
-    public IUserRepository UserRepository { get; set; }
-    public IOptions<TokenSettings> TokenSettings { get; set; }
 
     public Entities.User SetupUser()
     {

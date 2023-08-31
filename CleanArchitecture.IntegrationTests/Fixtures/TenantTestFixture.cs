@@ -11,7 +11,7 @@ public sealed class TenantTestFixture : TestFixtureBase
     protected override void SeedTestData(ApplicationDbContext context)
     {
         base.SeedTestData(context);
-        
+
         context.Tenants.Add(new Tenant(
             CreatedTenantId,
             "Test Tenant"));
