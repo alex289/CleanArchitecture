@@ -2,6 +2,7 @@
 using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.Infrastructure.Extensions;
 using CleanArchitecture.IntegrationTests.Extensions;
+using CleanArchitecture.IntegrationTests.Infrastructure.Auth;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
@@ -24,13 +25,16 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
 
     private readonly SqliteConnection _connection = new("DataSource=:memory:");
     private readonly RegisterCustomServicesHandler? _registerCustomServicesHandler;
+    private readonly bool _addTestAuthentication;
 
     public CleanArchitectureWebApplicationFactory(
         AddCustomSeedDataHandler? addCustomSeedDataHandler,
-        RegisterCustomServicesHandler? registerCustomServicesHandler)
+        RegisterCustomServicesHandler? registerCustomServicesHandler,
+        bool addTestAuthentication)
     {
         _addCustomSeedDataHandler = addCustomSeedDataHandler;
         _registerCustomServicesHandler = registerCustomServicesHandler;
+        _addTestAuthentication = addTestAuthentication;
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -46,6 +50,15 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
             services.SetupTestDatabase<ApplicationDbContext>(_connection);
             services.SetupTestDatabase<EventStoreDbContext>(_connection);
             services.SetupTestDatabase<DomainNotificationStoreDbContext>(_connection);
+
+            if (_addTestAuthentication)
+            {
+                services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = "Testing";
+                    options.DefaultChallengeScheme = "Testing";
+                }).AddTestAuthentication(options => { });
+            }
 
             var sp = services.BuildServiceProvider();
 

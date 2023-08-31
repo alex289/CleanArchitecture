@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Net.Http;
-using System.Threading.Tasks;
-using CleanArchitecture.Application.ViewModels.Users;
+using CleanArchitecture.Domain.Constants;
+using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Infrastructure.Database;
-using CleanArchitecture.IntegrationTests.Extensions;
 using CleanArchitecture.IntegrationTests.Infrastructure;
+using CleanArchitecture.IntegrationTests.Infrastructure.Auth;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,11 +13,12 @@ namespace CleanArchitecture.IntegrationTests.Fixtures;
 
 public class TestFixtureBase
 {
-    public TestFixtureBase()
+    public TestFixtureBase(bool useTestAuthentication = true)
     {
         Factory = new CleanArchitectureWebApplicationFactory(
             SeedTestData,
-            RegisterCustomServicesHandler);
+            RegisterCustomServicesHandler,
+            useTestAuthentication);
 
         ServerClient = Factory.CreateClient();
         ServerClient.Timeout = TimeSpan.FromMinutes(5);
@@ -27,6 +29,17 @@ public class TestFixtureBase
 
     protected virtual void SeedTestData(ApplicationDbContext context)
     {
+        context.Users.Add(new User(
+            TestAuthenticationOptions.TestUserId,
+            Ids.Seed.TenantId,
+            TestAuthenticationOptions.Email,
+            TestAuthenticationOptions.FirstName,
+            TestAuthenticationOptions.LastName,
+            // !Password123#
+            "$2a$12$Blal/uiFIJdYsCLTMUik/egLbfg3XhbnxBC6Sb5IKz2ZYhiU/MzL2",
+            UserRole.Admin));
+
+        context.SaveChanges();
     }
 
     protected virtual void RegisterCustomServicesHandler(
@@ -34,19 +47,5 @@ public class TestFixtureBase
         ServiceProvider serviceProvider,
         IServiceProvider scopedServices)
     {
-    }
-
-    // Todo: Fix auth
-    public virtual async Task AuthenticateUserAsync()
-    {
-        ServerClient.DefaultRequestHeaders.Clear();
-        var user = new LoginUserViewModel(
-            "admin@email.com",
-            "!Password123#");
-
-        var response = await ServerClient.PostAsJsonAsync("/api/v1/user/login", user);
-
-        var message = await response.Content.ReadAsJsonAsync<string>();
-        ServerClient.DefaultRequestHeaders.Add("Authorization", $"Bearer {message!.Data}");
     }
 }

@@ -27,8 +27,6 @@ public sealed class TenantControllerTests : IClassFixture<TenantTestFixture>
     [Priority(0)]
     public async Task Should_Get_Tenant_By_Id()
     {
-        await _fixture.AuthenticateUserAsync();
-
         var response = await _fixture.ServerClient.GetAsync($"/api/v1/Tenant/{_fixture.CreatedTenantId}");
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -45,8 +43,6 @@ public sealed class TenantControllerTests : IClassFixture<TenantTestFixture>
     [Priority(5)]
     public async Task Should_Get_All_Tenants()
     {
-        await _fixture.AuthenticateUserAsync();
-
         var response = await _fixture.ServerClient.GetAsync("api/v1/Tenant");
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -64,8 +60,6 @@ public sealed class TenantControllerTests : IClassFixture<TenantTestFixture>
     [Priority(10)]
     public async Task Should_Create_Tenant()
     {
-        await _fixture.AuthenticateUserAsync();
-
         var request = new CreateTenantViewModel("Test Tenant 2");
 
         var response = await _fixture.ServerClient.PostAsJsonAsync("/api/v1/Tenant", request);
@@ -92,8 +86,6 @@ public sealed class TenantControllerTests : IClassFixture<TenantTestFixture>
     [Priority(15)]
     public async Task Should_Update_Tenant()
     {
-        await _fixture.AuthenticateUserAsync();
-
         var request = new UpdateTenantViewModel(_fixture.CreatedTenantId, "Test Tenant 3");
 
         var response = await _fixture.ServerClient.PutAsJsonAsync("/api/v1/Tenant", request);
@@ -122,8 +114,6 @@ public sealed class TenantControllerTests : IClassFixture<TenantTestFixture>
     [Priority(20)]
     public async Task Should_Delete_Tenant()
     {
-        await _fixture.AuthenticateUserAsync();
-
         var response = await _fixture.ServerClient.DeleteAsync($"/api/v1/Tenant/{_fixture.CreatedTenantId}");
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
