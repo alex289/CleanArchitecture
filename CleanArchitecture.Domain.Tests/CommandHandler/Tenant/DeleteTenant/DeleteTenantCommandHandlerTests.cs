@@ -42,4 +42,23 @@ public sealed class DeleteTenantCommandHandlerTests
                 ErrorCodes.ObjectNotFound,
                 $"There is no tenant with Id {command.AggregateId}");
     }
+
+    [Fact]
+    public void Should_Not_Delete_Tenant_Insufficient_Permissions()
+    {
+        var tenant = _fixture.SetupTenant();
+        _fixture.SetupUser();
+
+        var command = new DeleteTenantCommand(tenant.Id);
+
+        _fixture.CommandHandler.Handle(command, default).Wait();
+
+        _fixture
+            .VerifyNoCommit()
+            .VerifyNoRaisedEvent<TenantDeletedEvent>()
+            .VerifyAnyDomainNotification()
+            .VerifyExistingNotification(
+                ErrorCodes.InsufficientPermissions,
+                $"No permission to delete tenant {command.AggregateId}");
+    }
 }

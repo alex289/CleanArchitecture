@@ -17,7 +17,7 @@ public sealed class CreateTenantCommandHandlerTests
             Guid.NewGuid(),
             "Test Tenant");
 
-        _fixture.CommandHandler.Handle(command, default!).Wait();
+        _fixture.CommandHandler.Handle(command, default).Wait();
 
         _fixture
             .VerifyNoDomainNotification()
@@ -36,7 +36,7 @@ public sealed class CreateTenantCommandHandlerTests
             Guid.NewGuid(),
             "Test Tenant");
 
-        _fixture.CommandHandler.Handle(command, default!).Wait();
+        _fixture.CommandHandler.Handle(command, default).Wait();
 
         _fixture
             .VerifyNoCommit()
@@ -56,7 +56,7 @@ public sealed class CreateTenantCommandHandlerTests
 
         _fixture.SetupExistingTenant(command.AggregateId);
 
-        _fixture.CommandHandler.Handle(command, default!).Wait();
+        _fixture.CommandHandler.Handle(command, default).Wait();
 
         _fixture
             .VerifyNoCommit()

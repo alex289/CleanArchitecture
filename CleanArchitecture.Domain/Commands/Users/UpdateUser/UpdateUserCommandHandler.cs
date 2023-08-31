@@ -15,16 +15,19 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
 {
     private readonly IUser _user;
     private readonly IUserRepository _userRepository;
+    private readonly ITenantRepository _tenantRepository;
 
     public UpdateUserCommandHandler(
         IMediatorHandler bus,
         IUnitOfWork unitOfWork,
         INotificationHandler<DomainNotification> notifications,
         IUserRepository userRepository,
-        IUser user) : base(bus, unitOfWork, notifications)
+        IUser user,
+        ITenantRepository tenantRepository) : base(bus, unitOfWork, notifications)
     {
         _userRepository = userRepository;
         _user = user;
+        _tenantRepository = tenantRepository;
     }
 
     public async Task Handle(UpdateUserCommand request, CancellationToken cancellationToken)
@@ -76,8 +79,15 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
         {
             user.SetRole(request.Role);
 
-            // Todo: Test
-            // Todo: Check if tenant exists first
+            if (!await _tenantRepository.ExistsAsync(request.TenantId))
+            {
+                await NotifyAsync(
+                    new DomainNotification(
+                        request.MessageType,
+                        $"There is no tenant with Id {request.TenantId}",
+                        ErrorCodes.ObjectNotFound));
+                return;
+            }
             user.SetTenant(request.TenantId);
         }
 

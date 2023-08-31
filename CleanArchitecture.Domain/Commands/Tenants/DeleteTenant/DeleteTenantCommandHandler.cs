@@ -38,8 +38,6 @@ public sealed class DeleteTenantCommandHandler : CommandHandlerBase,
             return;
         }
 
-        // Todo: Test following
-
         if (_user.GetUserRole() != UserRole.Admin)
         {
             await NotifyAsync(

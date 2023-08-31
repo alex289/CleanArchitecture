@@ -19,7 +19,7 @@ public sealed class UpdateTenantCommandHandlerTests
 
         _fixture.SetupExistingTenant(command.AggregateId);
 
-        _fixture.CommandHandler.Handle(command, default!).Wait();
+        _fixture.CommandHandler.Handle(command, default).Wait();
 
         _fixture
             .VerifyCommit()
@@ -38,7 +38,7 @@ public sealed class UpdateTenantCommandHandlerTests
 
         _fixture.SetupUser();
 
-        _fixture.CommandHandler.Handle(command, default!).Wait();
+        _fixture.CommandHandler.Handle(command, default).Wait();
 
         _fixture
             .VerifyNoCommit()
@@ -56,7 +56,7 @@ public sealed class UpdateTenantCommandHandlerTests
             Guid.NewGuid(),
             "Tenant Name");
 
-        _fixture.CommandHandler.Handle(command, default!).Wait();
+        _fixture.CommandHandler.Handle(command, default).Wait();
 
         _fixture
             .VerifyNoCommit()

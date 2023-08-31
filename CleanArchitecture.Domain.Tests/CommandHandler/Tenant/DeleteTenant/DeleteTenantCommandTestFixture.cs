@@ -1,5 +1,6 @@
 using System;
 using CleanArchitecture.Domain.Commands.Tenants.DeleteTenant;
+using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Interfaces.Repositories;
 using NSubstitute;
 
@@ -35,5 +36,10 @@ public sealed class DeleteTenantCommandTestFixture : CommandHandlerFixtureBase
             .Returns(tenant);
 
         return tenant;
+    }
+    
+    public void SetupUser()
+    {
+        User.GetUserRole().Returns(UserRole.User);
     }
 }

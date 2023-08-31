@@ -40,7 +40,6 @@ public sealed class GetUsersByIdsTests : IClassFixture<UserTestFixture>
 
         ids.Add(nonExistingId);
 
-// Todo: Use default instead of null everywhere
         var result = await _fixture.UsersApiImplementation.GetByIds(
             SetupRequest(ids),
             default!);

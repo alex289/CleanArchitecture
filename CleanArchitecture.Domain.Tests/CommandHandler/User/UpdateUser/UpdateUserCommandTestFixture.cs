@@ -11,17 +11,20 @@ public sealed class UpdateUserCommandTestFixture : CommandHandlerFixtureBase
     public UpdateUserCommandTestFixture()
     {
         UserRepository = Substitute.For<IUserRepository>();
+        TenantRepository = Substitute.For<ITenantRepository>();
 
         CommandHandler = new UpdateUserCommandHandler(
             Bus,
             UnitOfWork,
             NotificationHandler,
             UserRepository,
-            User);
+            User,
+            TenantRepository);
     }
 
     public UpdateUserCommandHandler CommandHandler { get; }
     public IUserRepository UserRepository { get; }
+    private ITenantRepository TenantRepository { get; }
 
     public Entities.User SetupUser()
     {
@@ -39,5 +42,22 @@ public sealed class UpdateUserCommandTestFixture : CommandHandlerFixtureBase
             .Returns(user);
 
         return user;
+    }
+
+    public Entities.Tenant SetupTenant(Guid tenantId)
+    {
+        var tenant = new Entities.Tenant(tenantId, "Name");
+        
+        TenantRepository
+            .ExistsAsync(Arg.Is<Guid>(y => y == tenant.Id))
+            .Returns(true);
+
+        return tenant;
+    }
+
+    public void SetupCurrentUser(Guid userId)
+    {
+        User.GetUserId().Returns(userId);
+        User.GetUserRole().Returns(UserRole.User);
     }
 }
