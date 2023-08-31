@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Application.ViewModels.Tenants;
 using CleanArchitecture.IntegrationTests.Extensions;
 using CleanArchitecture.IntegrationTests.Fixtures;
@@ -43,15 +43,16 @@ public sealed class TenantControllerTests : IClassFixture<TenantTestFixture>
     [Priority(5)]
     public async Task Should_Get_All_Tenants()
     {
-        var response = await _fixture.ServerClient.GetAsync("api/v1/Tenant");
+        var response = await _fixture.ServerClient.GetAsync(
+            "api/v1/Tenant?searchTerm=Test&pageSize=5&page=1");
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        var message = await response.Content.ReadAsJsonAsync<IEnumerable<TenantViewModel>>();
+        var message = await response.Content.ReadAsJsonAsync<PagedResult<TenantViewModel>>();
 
-        message?.Data.Should().NotBeEmpty();
-        message!.Data.Should().HaveCountGreaterOrEqualTo(2);
-        message.Data!
+        message?.Data!.Items.Should().NotBeEmpty();
+        message!.Data!.Items.Should().HaveCount(1);
+        message.Data!.Items
             .FirstOrDefault(x => x.Id == _fixture.CreatedTenantId)
             .Should().NotBeNull();
     }

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Application.Queries.Users.GetAll;
 using CleanArchitecture.Application.Queries.Users.GetUserById;
+using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Application.ViewModels.Users;
 using CleanArchitecture.Domain.Commands.Users.ChangePassword;
 using CleanArchitecture.Domain.Commands.Users.CreateUser;
@@ -35,9 +36,9 @@ public sealed class UserService : IUserService
         return await _bus.QueryAsync(new GetUserByIdQuery(_user.GetUserId(), false));
     }
 
-    public async Task<IEnumerable<UserViewModel>> GetAllUsersAsync()
+    public async Task<PagedResult<UserViewModel>> GetAllUsersAsync(PageQuery query, string searchTerm = "")
     {
-        return await _bus.QueryAsync(new GetAllUsersQuery());
+        return await _bus.QueryAsync(new GetAllUsersQuery(query, searchTerm));
     }
 
     public async Task<Guid> CreateUserAsync(CreateUserViewModel user)

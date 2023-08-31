@@ -21,7 +21,7 @@ public sealed class GetAllUsersTestFixture : QueryHandlerBaseFixture
         Handler = new GetAllUsersQueryHandler(UserRepository);
     }
 
-    public void SetupUserAsync()
+    public User SetupUserAsync()
     {
         var user = new User(
             ExistingUserId,
@@ -35,6 +35,8 @@ public sealed class GetAllUsersTestFixture : QueryHandlerBaseFixture
         var query = new[] { user }.BuildMock();
 
         UserRepository.GetAllNoTracking().Returns(query);
+
+        return user;
     }
 
     public void SetupDeletedUserAsync()

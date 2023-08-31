@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using CleanArchitecture.Api.Models;
 using CleanArchitecture.Application.Interfaces;
+using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Application.ViewModels.Users;
 using CleanArchitecture.Domain.Notifications;
 using MediatR;
@@ -28,10 +28,14 @@ public sealed class UserController : ApiController
 
     [HttpGet]
     [SwaggerOperation("Get a list of all users")]
-    [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<IEnumerable<UserViewModel>>))]
-    public async Task<IActionResult> GetAllUsersAsync()
+    [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<PagedResult<UserViewModel>>))]
+    public async Task<IActionResult> GetAllUsersAsync(
+        [FromQuery] PageQuery query,
+        [FromQuery] string searchTerm = "")
     {
-        var users = await _userService.GetAllUsersAsync();
+        var users = await _userService.GetAllUsersAsync(
+            query,
+            searchTerm);
         return Response(users);
     }
 
