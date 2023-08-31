@@ -68,6 +68,14 @@ public sealed class LoginUserCommandHandler : CommandHandlerBase,
 
             return "";
         }
+        
+        user.SetActive();
+        user.SetLastLoggedinDate(DateTimeOffset.Now);
+
+        if (!await CommitAsync())
+        {
+            return "";
+        }
 
         return BuildToken(
             user,
