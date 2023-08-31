@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Application.ViewModels.Users;
 using CleanArchitecture.Domain.Constants;
 using CleanArchitecture.Domain.Enums;
@@ -34,11 +34,11 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        var message = await response.Content.ReadAsJsonAsync<IEnumerable<UserViewModel>>();
+        var message = await response.Content.ReadAsJsonAsync<PagedResult<UserViewModel>>();
 
         message?.Data.Should().NotBeNull();
 
-        var content = message!.Data!.ToList();
+        var content = message!.Data!.Items.ToList();
 
         content.Count.Should().Be(2);
 

@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using CleanArchitecture.Api.Models;
 using CleanArchitecture.Application.Interfaces;
+using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Application.ViewModels.Tenants;
 using CleanArchitecture.Domain.Notifications;
 using MediatR;
@@ -28,10 +28,14 @@ public sealed class TenantController : ApiController
 
     [HttpGet]
     [SwaggerOperation("Get a list of all tenants")]
-    [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<IEnumerable<TenantViewModel>>))]
-    public async Task<IActionResult> GetAllTenantsAsync()
+    [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<PagedResult<TenantViewModel>>))]
+    public async Task<IActionResult> GetAllTenantsAsync(
+        [FromQuery] PageQuery query,
+        [FromQuery] string searchTerm = "")
     {
-        var tenants = await _tenantService.GetAllTenantsAsync();
+        var tenants = await _tenantService.GetAllTenantsAsync(
+            query,
+            searchTerm);
         return Response(tenants);
     }
 

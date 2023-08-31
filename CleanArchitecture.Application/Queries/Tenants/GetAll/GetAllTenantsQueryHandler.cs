@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Application.ViewModels.Tenants;
 using CleanArchitecture.Domain.Interfaces.Repositories;
 using MediatR;
@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CleanArchitecture.Application.Queries.Tenants.GetAll;
 
 public sealed class GetAllTenantsQueryHandler :
-    IRequestHandler<GetAllTenantsQuery, IEnumerable<TenantViewModel>>
+    IRequestHandler<GetAllTenantsQuery, PagedResult<TenantViewModel>>
 {
     private readonly ITenantRepository _tenantRepository;
 
@@ -19,15 +19,30 @@ public sealed class GetAllTenantsQueryHandler :
         _tenantRepository = tenantRepository;
     }
 
-    public async Task<IEnumerable<TenantViewModel>> Handle(
+    public async Task<PagedResult<TenantViewModel>> Handle(
         GetAllTenantsQuery request,
         CancellationToken cancellationToken)
     {
-        return await _tenantRepository
+        var tenantsQuery = _tenantRepository
             .GetAllNoTracking()
             .Include(x => x.Users)
-            .Where(x => !x.Deleted)
-            .Select(x => TenantViewModel.FromTenant(x))
+            .Where(x => !x.Deleted);
+        
+        if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+        {
+            tenantsQuery = tenantsQuery.Where(tenant => 
+                tenant.Name.Contains(request.SearchTerm));
+        }
+        
+        var totalCount = await tenantsQuery.CountAsync(cancellationToken);
+        
+        var tenants = await tenantsQuery
+            .Skip((request.Query.Page - 1) * request.Query.PageSize)
+            .Take(request.Query.PageSize)
+            .Select(tenant => TenantViewModel.FromTenant(tenant))
             .ToListAsync(cancellationToken);
+        
+        return new PagedResult<TenantViewModel>(
+            totalCount, tenants, request.Query.Page, request.Query.PageSize);
     }
 }

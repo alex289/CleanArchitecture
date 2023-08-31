@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Application.ViewModels.Users;
 using CleanArchitecture.Domain.Interfaces.Repositories;
 using MediatR;
@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace CleanArchitecture.Application.Queries.Users.GetAll;
 
 public sealed class GetAllUsersQueryHandler :
-    IRequestHandler<GetAllUsersQuery, IEnumerable<UserViewModel>>
+    IRequestHandler<GetAllUsersQuery, PagedResult<UserViewModel>>
 {
     private readonly IUserRepository _userRepository;
 
@@ -19,12 +19,31 @@ public sealed class GetAllUsersQueryHandler :
         _userRepository = userRepository;
     }
 
-    public async Task<IEnumerable<UserViewModel>> Handle(GetAllUsersQuery request, CancellationToken cancellationToken)
+    public async Task<PagedResult<UserViewModel>> Handle(
+        GetAllUsersQuery request,
+        CancellationToken cancellationToken)
     {
-        return await _userRepository
+        var usersQuery = _userRepository
             .GetAllNoTracking()
-            .Where(x => !x.Deleted)
-            .Select(x => UserViewModel.FromUser(x))
+            .Where(x => !x.Deleted);
+
+        if (!string.IsNullOrWhiteSpace(request.SearchTerm))
+        {
+            usersQuery = usersQuery.Where(user => 
+                user.Email.Contains(request.SearchTerm) ||
+                user.FirstName.Contains(request.SearchTerm) ||
+                user.LastName.Contains(request.SearchTerm));
+        }
+        
+        var totalCount = await usersQuery.CountAsync(cancellationToken);
+        
+        var users = await usersQuery
+            .Skip((request.Query.Page - 1) * request.Query.PageSize)
+            .Take(request.Query.PageSize)
+            .Select(user => UserViewModel.FromUser(user))
             .ToListAsync(cancellationToken);
+
+        return new PagedResult<UserViewModel>(
+            totalCount, users, request.Query.Page, request.Query.PageSize);
     }
 }

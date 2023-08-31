@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Application.Queries.Tenants.GetAll;
 using CleanArchitecture.Application.Queries.Tenants.GetTenantById;
+using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Application.ViewModels.Tenants;
 using CleanArchitecture.Domain.Commands.Tenants.CreateTenant;
 using CleanArchitecture.Domain.Commands.Tenants.DeleteTenant;
@@ -49,8 +50,8 @@ public sealed class TenantService : ITenantService
         return await _bus.QueryAsync(new GetTenantByIdQuery(tenantId, deleted));
     }
 
-    public async Task<IEnumerable<TenantViewModel>> GetAllTenantsAsync()
+    public async Task<PagedResult<TenantViewModel>> GetAllTenantsAsync(PageQuery query, string searchTerm = "")
     {
-        return await _bus.QueryAsync(new GetAllTenantsQuery());
+        return await _bus.QueryAsync(new GetAllTenantsQuery(query, searchTerm));
     }
 }

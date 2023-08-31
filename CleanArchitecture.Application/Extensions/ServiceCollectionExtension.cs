@@ -1,10 +1,10 @@
-using System.Collections.Generic;
 using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Application.Queries.Tenants.GetAll;
 using CleanArchitecture.Application.Queries.Tenants.GetTenantById;
 using CleanArchitecture.Application.Queries.Users.GetAll;
 using CleanArchitecture.Application.Queries.Users.GetUserById;
 using CleanArchitecture.Application.Services;
+using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Application.ViewModels.Tenants;
 using CleanArchitecture.Application.ViewModels.Users;
 using MediatR;
@@ -26,12 +26,12 @@ public static class ServiceCollectionExtension
     {
         // User
         services.AddScoped<IRequestHandler<GetUserByIdQuery, UserViewModel?>, GetUserByIdQueryHandler>();
-        services.AddScoped<IRequestHandler<GetAllUsersQuery, IEnumerable<UserViewModel>>, GetAllUsersQueryHandler>();
+        services.AddScoped<IRequestHandler<GetAllUsersQuery, PagedResult<UserViewModel>>, GetAllUsersQueryHandler>();
 
         // Tenant
         services.AddScoped<IRequestHandler<GetTenantByIdQuery, TenantViewModel?>, GetTenantByIdQueryHandler>();
         services
-            .AddScoped<IRequestHandler<GetAllTenantsQuery, IEnumerable<TenantViewModel>>, GetAllTenantsQueryHandler>();
+            .AddScoped<IRequestHandler<GetAllTenantsQuery, PagedResult<TenantViewModel>>, GetAllTenantsQueryHandler>();
 
         return services;
     }
