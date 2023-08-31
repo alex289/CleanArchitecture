@@ -56,6 +56,19 @@ builder.Services.AddLogging(x => x.AddSimpleConsole(console =>
     console.IncludeScopes = true;
 }));
 
+if (builder.Environment.IsProduction())
+{
+    builder.Services.AddStackExchangeRedisCache(options =>
+    {
+        options.Configuration = builder.Configuration["RedisHostName"];
+        options.InstanceName = "clean-architecture";
+    });
+}
+else
+{
+    builder.Services.AddDistributedMemoryCache();
+}
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())

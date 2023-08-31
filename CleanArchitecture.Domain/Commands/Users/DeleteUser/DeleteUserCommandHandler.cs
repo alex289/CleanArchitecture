@@ -62,7 +62,7 @@ public sealed class DeleteUserCommandHandler : CommandHandlerBase,
 
         if (await CommitAsync())
         {
-            await Bus.RaiseEventAsync(new UserDeletedEvent(request.UserId));
+            await Bus.RaiseEventAsync(new UserDeletedEvent(request.UserId, user.TenantId));
         }
     }
 }

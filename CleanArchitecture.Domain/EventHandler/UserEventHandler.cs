@@ -1,7 +1,9 @@
 using System.Threading;
 using System.Threading.Tasks;
+using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Events.User;
 using MediatR;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace CleanArchitecture.Domain.EventHandler;
 
@@ -11,23 +13,36 @@ public sealed class UserEventHandler :
     INotificationHandler<UserUpdatedEvent>,
     INotificationHandler<PasswordChangedEvent>
 {
+    private readonly IDistributedCache _distributedCache;
+
+    public UserEventHandler(IDistributedCache distributedCache)
+    {
+        _distributedCache = distributedCache;
+    }
+
     public Task Handle(PasswordChangedEvent notification, CancellationToken cancellationToken)
     {
         return Task.CompletedTask;
     }
 
-    public Task Handle(UserCreatedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(UserCreatedEvent notification, CancellationToken cancellationToken)
     {
-        return Task.CompletedTask;
+        await _distributedCache.RemoveAsync(
+            CacheKeyGenerator.GetEntityCacheKey<Tenant>(notification.TenantId),
+            cancellationToken);
     }
 
-    public Task Handle(UserDeletedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(UserDeletedEvent notification, CancellationToken cancellationToken)
     {
-        return Task.CompletedTask;
+        await _distributedCache.RemoveAsync(
+            CacheKeyGenerator.GetEntityCacheKey<Tenant>(notification.TenantId),
+            cancellationToken);
     }
 
-    public Task Handle(UserUpdatedEvent notification, CancellationToken cancellationToken)
+    public async Task Handle(UserUpdatedEvent notification, CancellationToken cancellationToken)
     {
-        return Task.CompletedTask;
+        await _distributedCache.RemoveAsync(
+            CacheKeyGenerator.GetEntityCacheKey<Tenant>(notification.TenantId),
+            cancellationToken);
     }
 }

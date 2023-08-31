@@ -39,7 +39,7 @@ public sealed class InMemoryBusTests
 
         var inMemoryBus = new InMemoryBus(mediator, domainEventStore);
 
-        var userDeletedEvent = new UserDeletedEvent(Guid.NewGuid());
+        var userDeletedEvent = new UserDeletedEvent(Guid.NewGuid(), Guid.NewGuid());
 
         await inMemoryBus.RaiseEventAsync(userDeletedEvent);
 
