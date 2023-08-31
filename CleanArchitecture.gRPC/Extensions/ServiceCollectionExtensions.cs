@@ -1,6 +1,7 @@
 ﻿using CleanArchitecture.gRPC.Contexts;
 using CleanArchitecture.gRPC.Interfaces;
 using CleanArchitecture.gRPC.Models;
+using CleanArchitecture.Proto.Tenants;
 using CleanArchitecture.Proto.Users;
 using Grpc.Net.Client;
 using Microsoft.Extensions.Configuration;
@@ -35,19 +36,23 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddCleanArchitectureGrpcClient(
         this IServiceCollection services,
-        string tetraQueryApiUrl)
+        string gRPCUrl)
     {
-        if (string.IsNullOrWhiteSpace(tetraQueryApiUrl))
+        if (string.IsNullOrWhiteSpace(gRPCUrl))
         {
             return services;
         }
 
-        var channel = GrpcChannel.ForAddress(tetraQueryApiUrl);
+        var channel = GrpcChannel.ForAddress(gRPCUrl);
 
         var usersClient = new UsersApi.UsersApiClient(channel);
         services.AddSingleton(usersClient);
 
+        var tenantsClient = new TenantsApi.TenantsApiClient(channel);
+        services.AddSingleton(tenantsClient);
+
         services.AddSingleton<IUsersContext, UsersContext>();
+        services.AddSingleton<ITenantsContext, TenantsContext>();
 
         return services;
     }

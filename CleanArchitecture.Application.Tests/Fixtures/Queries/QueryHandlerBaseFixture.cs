@@ -11,9 +11,9 @@ public class QueryHandlerBaseFixture
     public QueryHandlerBaseFixture VerifyExistingNotification(string key, string errorCode, string message)
     {
         Bus.Received(1).RaiseEventAsync(Arg.Is<DomainNotification>(notification =>
-                        notification.Key == key &&
-                        notification.Code == errorCode &&
-                        notification.Value == message));
+            notification.Key == key &&
+            notification.Code == errorCode &&
+            notification.Value == message));
 
         return this;
     }

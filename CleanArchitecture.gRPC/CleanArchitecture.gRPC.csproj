@@ -6,9 +6,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\CleanArchitecture.Domain\CleanArchitecture.Domain.csproj" />
-        <ProjectReference Include="..\CleanArchitecture.Proto\CleanArchitecture.Proto.csproj" />
-        <ProjectReference Include="..\CleanArchitecture.Shared\CleanArchitecture.Shared.csproj" />
+        <ProjectReference Include="..\CleanArchitecture.Domain\CleanArchitecture.Domain.csproj"/>
+        <ProjectReference Include="..\CleanArchitecture.Proto\CleanArchitecture.Proto.csproj"/>
+        <ProjectReference Include="..\CleanArchitecture.Shared\CleanArchitecture.Shared.csproj"/>
     </ItemGroup>
 
 </Project>

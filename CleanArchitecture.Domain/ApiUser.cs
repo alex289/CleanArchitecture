@@ -55,21 +55,24 @@ public sealed class ApiUser : IUser
     {
         get
         {
-            if (_name != null)
+            if (_name is not null)
             {
                 return _name;
             }
+
             var identity = _httpContextAccessor.HttpContext?.User.Identity;
-            if (identity == null)
+            if (identity is null)
             {
                 _name = string.Empty;
                 return string.Empty;
             }
+
             if (!string.IsNullOrWhiteSpace(identity.Name))
             {
                 _name = identity.Name;
                 return identity.Name;
             }
+
             var claim = _httpContextAccessor.HttpContext!.User.Claims
                 .FirstOrDefault(c => string.Equals(c.Type, ClaimTypes.Name, StringComparison.OrdinalIgnoreCase))?
                 .Value;

@@ -9,6 +9,9 @@ namespace CleanArchitecture.Domain.Tests.CommandHandler.User.ChangePassword;
 
 public sealed class ChangePasswordCommandTestFixture : CommandHandlerFixtureBase
 {
+    public ChangePasswordCommandHandler CommandHandler { get; }
+    private IUserRepository UserRepository { get; }
+
     public ChangePasswordCommandTestFixture()
     {
         UserRepository = Substitute.For<IUserRepository>();
@@ -21,12 +24,10 @@ public sealed class ChangePasswordCommandTestFixture : CommandHandlerFixtureBase
             User);
     }
 
-    public ChangePasswordCommandHandler CommandHandler { get; }
-    private IUserRepository UserRepository { get; }
-
     public Entities.User SetupUser()
     {
         var user = new Entities.User(
+            Guid.NewGuid(),
             Guid.NewGuid(),
             "max@mustermann.com",
             "Max",

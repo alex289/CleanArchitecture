@@ -13,6 +13,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace CleanArchitecture.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("/api/v1/[controller]")]
 public sealed class UserController : ApiController
 {
@@ -25,7 +26,6 @@ public sealed class UserController : ApiController
         _userService = userService;
     }
 
-    [Authorize]
     [HttpGet]
     [SwaggerOperation("Get a list of all users")]
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<IEnumerable<UserViewModel>>))]
@@ -35,7 +35,6 @@ public sealed class UserController : ApiController
         return Response(users);
     }
 
-    [Authorize]
     [HttpGet("{id:guid}")]
     [SwaggerOperation("Get a user by id")]
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<UserViewModel>))]
@@ -47,7 +46,6 @@ public sealed class UserController : ApiController
         return Response(user);
     }
 
-    [Authorize]
     [HttpGet("me")]
     [SwaggerOperation("Get the current active user")]
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<UserViewModel>))]
@@ -66,7 +64,6 @@ public sealed class UserController : ApiController
         return Response(userId);
     }
 
-    [Authorize]
     [HttpDelete("{id:guid}")]
     [SwaggerOperation("Delete a user")]
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<Guid>))]
@@ -76,7 +73,6 @@ public sealed class UserController : ApiController
         return Response(id);
     }
 
-    [Authorize]
     [HttpPut]
     [SwaggerOperation("Update a user")]
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<UpdateUserViewModel>))]
@@ -86,7 +82,6 @@ public sealed class UserController : ApiController
         return Response(viewModel);
     }
 
-    [Authorize]
     [HttpPost("changePassword")]
     [SwaggerOperation("Change a password for the current active user")]
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<ChangePasswordViewModel>))]
@@ -97,6 +92,7 @@ public sealed class UserController : ApiController
     }
 
     [HttpPost("login")]
+    [AllowAnonymous]
     [SwaggerOperation("Get a signed token for a user")]
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<string>))]
     public async Task<IActionResult> LoginUserAsync([FromBody] LoginUserViewModel viewModel)

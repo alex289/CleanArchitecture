@@ -11,11 +11,11 @@ namespace CleanArchitecture.IntegrationTests.UtilityTests;
 
 [Collection("IntegrationTests")]
 [TestCaseOrderer(PriorityOrderer.Name, PriorityOrderer.Assembly)]
-public sealed class HealthChecksTests : IClassFixture<TestFixtureBase>
+public sealed class HealthChecksTests : IClassFixture<AuthTestFixure>
 {
-    private readonly TestFixtureBase _fixture;
+    private readonly AuthTestFixure _fixture;
 
-    public HealthChecksTests(TestFixtureBase fixture)
+    public HealthChecksTests(AuthTestFixure fixture)
     {
         _fixture = fixture;
     }

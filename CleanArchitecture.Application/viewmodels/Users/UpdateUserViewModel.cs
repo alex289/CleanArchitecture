@@ -8,4 +8,5 @@ public sealed record UpdateUserViewModel(
     string Email,
     string FirstName,
     string LastName,
-    UserRole Role);
+    UserRole Role,
+    Guid TenantId);

@@ -8,6 +8,9 @@ namespace CleanArchitecture.Domain.Tests.CommandHandler.User.DeleteUser;
 
 public sealed class DeleteUserCommandTestFixture : CommandHandlerFixtureBase
 {
+    public DeleteUserCommandHandler CommandHandler { get; }
+    private IUserRepository UserRepository { get; }
+
     public DeleteUserCommandTestFixture()
     {
         UserRepository = Substitute.For<IUserRepository>();
@@ -20,12 +23,10 @@ public sealed class DeleteUserCommandTestFixture : CommandHandlerFixtureBase
             User);
     }
 
-    public DeleteUserCommandHandler CommandHandler { get; }
-    private IUserRepository UserRepository { get; }
-
     public Entities.User SetupUser()
     {
         var user = new Entities.User(
+            Guid.NewGuid(),
             Guid.NewGuid(),
             "max@mustermann.com",
             "Max",
@@ -38,5 +39,10 @@ public sealed class DeleteUserCommandTestFixture : CommandHandlerFixtureBase
             .Returns(user);
 
         return user;
+    }
+    
+    public void SetupCurrentUser()
+    {
+        User.GetUserRole().Returns(UserRole.User);
     }
 }

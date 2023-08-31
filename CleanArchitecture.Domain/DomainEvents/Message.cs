@@ -5,6 +5,9 @@ namespace CleanArchitecture.Domain.DomainEvents;
 
 public abstract class Message : IRequest
 {
+    public Guid AggregateId { get; private set; }
+    public string MessageType { get; protected set; }
+
     protected Message(Guid aggregateId)
     {
         AggregateId = aggregateId;
@@ -16,7 +19,4 @@ public abstract class Message : IRequest
         AggregateId = aggregateId;
         MessageType = messageType ?? string.Empty;
     }
-
-    public Guid AggregateId { get; private set; }
-    public string MessageType { get; protected set; }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using CleanArchitecture.Domain.Commands.Users.CreateUser;
+using CleanArchitecture.Domain.Constants;
 using CleanArchitecture.Domain.Errors;
 using Xunit;
 
@@ -29,7 +30,7 @@ public sealed class CreateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserEmptyId,
+            DomainErrorCodes.User.UserEmptyId,
             "User id may not be empty");
     }
 
@@ -40,7 +41,7 @@ public sealed class CreateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserInvalidEmail,
+            DomainErrorCodes.User.UserInvalidEmail,
             "Email is not a valid email address");
     }
 
@@ -51,19 +52,19 @@ public sealed class CreateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserInvalidEmail,
+            DomainErrorCodes.User.UserInvalidEmail,
             "Email is not a valid email address");
     }
 
     [Fact]
     public void Should_Be_Invalid_For_Email_Exceeds_Max_Length()
     {
-        var command = CreateTestCommand(email: new string('a', 320) + "@test.com");
+        var command = CreateTestCommand(email: new string('a', MaxLengths.User.Email) + "@test.com");
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserEmailExceedsMaxLength,
-            "Email may not be longer than 320 characters");
+            DomainErrorCodes.User.UserEmailExceedsMaxLength,
+            $"Email may not be longer than {MaxLengths.User.Email} characters");
     }
 
     [Fact]
@@ -73,19 +74,19 @@ public sealed class CreateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserEmptyFirstName,
+            DomainErrorCodes.User.UserEmptyFirstName,
             "FirstName may not be empty");
     }
 
     [Fact]
     public void Should_Be_Invalid_For_First_Name_Exceeds_Max_Length()
     {
-        var command = CreateTestCommand(firstName: new string('a', 101));
+        var command = CreateTestCommand(firstName: new string('a', MaxLengths.User.FirstName + 1));
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserFirstNameExceedsMaxLength,
-            "FirstName may not be longer than 100 characters");
+            DomainErrorCodes.User.UserFirstNameExceedsMaxLength,
+            $"FirstName may not be longer than {MaxLengths.User.FirstName} characters");
     }
 
     [Fact]
@@ -95,19 +96,19 @@ public sealed class CreateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserEmptyLastName,
+            DomainErrorCodes.User.UserEmptyLastName,
             "LastName may not be empty");
     }
 
     [Fact]
     public void Should_Be_Invalid_For_Last_Name_Exceeds_Max_Length()
     {
-        var command = CreateTestCommand(lastName: new string('a', 101));
+        var command = CreateTestCommand(lastName: new string('a', MaxLengths.User.LastName + 1));
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserLastNameExceedsMaxLength,
-            "LastName may not be longer than 100 characters");
+            DomainErrorCodes.User.UserLastNameExceedsMaxLength,
+            $"LastName may not be longer than {MaxLengths.User.LastName} characters");
     }
 
     [Fact]
@@ -117,12 +118,12 @@ public sealed class CreateUserCommandValidationTests :
 
         var errors = new List<string>
         {
-            DomainErrorCodes.UserEmptyPassword,
-            DomainErrorCodes.UserSpecialCharPassword,
-            DomainErrorCodes.UserNumberPassword,
-            DomainErrorCodes.UserLowercaseLetterPassword,
-            DomainErrorCodes.UserUppercaseLetterPassword,
-            DomainErrorCodes.UserShortPassword
+            DomainErrorCodes.User.UserEmptyPassword,
+            DomainErrorCodes.User.UserSpecialCharPassword,
+            DomainErrorCodes.User.UserNumberPassword,
+            DomainErrorCodes.User.UserLowercaseLetterPassword,
+            DomainErrorCodes.User.UserUppercaseLetterPassword,
+            DomainErrorCodes.User.UserShortPassword
         };
 
         ShouldHaveExpectedErrors(command, errors.ToArray());
@@ -133,7 +134,7 @@ public sealed class CreateUserCommandValidationTests :
     {
         var command = CreateTestCommand(password: "z8tnayvd5FNLU9AQm");
 
-        ShouldHaveSingleError(command, DomainErrorCodes.UserSpecialCharPassword);
+        ShouldHaveSingleError(command, DomainErrorCodes.User.UserSpecialCharPassword);
     }
 
     [Fact]
@@ -141,7 +142,7 @@ public sealed class CreateUserCommandValidationTests :
     {
         var command = CreateTestCommand(password: "z]tnayvdFNLU:]AQm");
 
-        ShouldHaveSingleError(command, DomainErrorCodes.UserNumberPassword);
+        ShouldHaveSingleError(command, DomainErrorCodes.User.UserNumberPassword);
     }
 
     [Fact]
@@ -149,7 +150,7 @@ public sealed class CreateUserCommandValidationTests :
     {
         var command = CreateTestCommand(password: "Z8]TNAYVDFNLU:]AQM");
 
-        ShouldHaveSingleError(command, DomainErrorCodes.UserLowercaseLetterPassword);
+        ShouldHaveSingleError(command, DomainErrorCodes.User.UserLowercaseLetterPassword);
     }
 
     [Fact]
@@ -157,7 +158,7 @@ public sealed class CreateUserCommandValidationTests :
     {
         var command = CreateTestCommand(password: "z8]tnayvd5fnlu9:]aqm");
 
-        ShouldHaveSingleError(command, DomainErrorCodes.UserUppercaseLetterPassword);
+        ShouldHaveSingleError(command, DomainErrorCodes.User.UserUppercaseLetterPassword);
     }
 
     [Fact]
@@ -165,7 +166,7 @@ public sealed class CreateUserCommandValidationTests :
     {
         var command = CreateTestCommand(password: "zA6{");
 
-        ShouldHaveSingleError(command, DomainErrorCodes.UserShortPassword);
+        ShouldHaveSingleError(command, DomainErrorCodes.User.UserShortPassword);
     }
 
     [Fact]
@@ -173,18 +174,28 @@ public sealed class CreateUserCommandValidationTests :
     {
         var command = CreateTestCommand(password: string.Concat(Enumerable.Repeat("zA6{", 12), 12));
 
-        ShouldHaveSingleError(command, DomainErrorCodes.UserLongPassword);
+        ShouldHaveSingleError(command, DomainErrorCodes.User.UserLongPassword);
+    }
+
+    [Fact]
+    public void Should_Be_Invalid_For_Empty_Tenant_Id()
+    {
+        var command = CreateTestCommand(tenantId: Guid.Empty);
+
+        ShouldHaveSingleError(command, DomainErrorCodes.Tenant.TenantEmptyId);
     }
 
     private static CreateUserCommand CreateTestCommand(
         Guid? userId = null,
+        Guid? tenantId = null,
         string? email = null,
         string? firstName = null,
         string? lastName = null,
         string? password = null)
     {
-        return new(
+        return new CreateUserCommand(
             userId ?? Guid.NewGuid(),
+            tenantId ?? Guid.NewGuid(),
             email ?? "test@email.com",
             firstName ?? "test",
             lastName ?? "email",

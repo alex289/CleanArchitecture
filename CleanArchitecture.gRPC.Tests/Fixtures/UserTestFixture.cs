@@ -9,13 +9,20 @@ using NSubstitute;
 
 namespace CleanArchitecture.gRPC.Tests.Fixtures;
 
-public sealed class UserTestsFixture
+public sealed class UserTestFixture
 {
-    public UserTestsFixture()
+    private IUserRepository UserRepository { get; } = Substitute.For<IUserRepository>();
+
+    public UsersApiImplementation UsersApiImplementation { get; }
+
+    public IEnumerable<User> ExistingUsers { get; }
+
+    public UserTestFixture()
     {
         ExistingUsers = new List<User>
         {
             new(
+                Guid.NewGuid(),
                 Guid.NewGuid(),
                 "test@test.de",
                 "Test First Name",
@@ -24,12 +31,14 @@ public sealed class UserTestsFixture
                 UserRole.User),
             new(
                 Guid.NewGuid(),
+                Guid.NewGuid(),
                 "email@Email.de",
                 "Email First Name",
                 "Email Last Name",
                 "Email Password",
                 UserRole.Admin),
             new(
+                Guid.NewGuid(),
                 Guid.NewGuid(),
                 "user@user.de",
                 "User First Name",
@@ -44,10 +53,4 @@ public sealed class UserTestsFixture
 
         UsersApiImplementation = new UsersApiImplementation(UserRepository);
     }
-
-    private IUserRepository UserRepository { get; } = Substitute.For<IUserRepository>();
-
-    public UsersApiImplementation UsersApiImplementation { get; }
-
-    public IEnumerable<User> ExistingUsers { get; }
 }

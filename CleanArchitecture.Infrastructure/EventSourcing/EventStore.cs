@@ -9,9 +9,9 @@ namespace CleanArchitecture.Infrastructure.EventSourcing;
 
 public sealed class DomainEventStore : IDomainEventStore
 {
-    private readonly EventStoreDbContext _eventStoreDbContext;
-    private readonly DomainNotificationStoreDbContext _domainNotificationStoreDbContext;
     private readonly IEventStoreContext _context;
+    private readonly DomainNotificationStoreDbContext _domainNotificationStoreDbContext;
+    private readonly EventStoreDbContext _eventStoreDbContext;
 
     public DomainEventStore(
         EventStoreDbContext eventStoreDbContext,

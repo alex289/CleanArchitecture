@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Domain.Errors;
+﻿using CleanArchitecture.Domain.Constants;
+using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Domain.Extensions.Validation;
 using FluentValidation;
 
@@ -16,11 +17,11 @@ public sealed class LoginUserCommandValidation : AbstractValidator<LoginUserComm
     {
         RuleFor(cmd => cmd.Email)
             .EmailAddress()
-            .WithErrorCode(DomainErrorCodes.UserInvalidEmail)
+            .WithErrorCode(DomainErrorCodes.User.UserInvalidEmail)
             .WithMessage("Email is not a valid email address")
-            .MaximumLength(320)
-            .WithErrorCode(DomainErrorCodes.UserEmailExceedsMaxLength)
-            .WithMessage("Email may not be longer than 320 characters");
+            .MaximumLength(MaxLengths.User.Email)
+            .WithErrorCode(DomainErrorCodes.User.UserEmailExceedsMaxLength)
+            .WithMessage($"Email may not be longer than {MaxLengths.User.Email} characters");
     }
 
     private void AddRuleForPassword()

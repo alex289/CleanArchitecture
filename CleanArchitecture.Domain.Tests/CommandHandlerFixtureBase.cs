@@ -10,6 +10,11 @@ namespace CleanArchitecture.Domain.Tests;
 
 public class CommandHandlerFixtureBase
 {
+    protected IMediatorHandler Bus { get; }
+    protected IUnitOfWork UnitOfWork { get; }
+    protected DomainNotificationHandler NotificationHandler { get; }
+    protected IUser User { get; }
+
     protected CommandHandlerFixtureBase()
     {
         Bus = Substitute.For<IMediatorHandler>();
@@ -22,11 +27,6 @@ public class CommandHandlerFixtureBase
 
         UnitOfWork.CommitAsync().Returns(true);
     }
-
-    protected IMediatorHandler Bus { get; }
-    protected IUnitOfWork UnitOfWork { get; }
-    protected DomainNotificationHandler NotificationHandler { get; }
-    protected IUser User { get; }
 
     public CommandHandlerFixtureBase VerifyExistingNotification(string errorCode, string message)
     {

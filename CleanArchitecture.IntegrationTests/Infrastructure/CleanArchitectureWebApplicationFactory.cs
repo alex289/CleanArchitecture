@@ -2,6 +2,7 @@
 using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.Infrastructure.Extensions;
 using CleanArchitecture.IntegrationTests.Extensions;
+using CleanArchitecture.IntegrationTests.Infrastructure.Auth;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
@@ -21,16 +22,19 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
         IServiceProvider scopedServices);
 
     private readonly AddCustomSeedDataHandler? _addCustomSeedDataHandler;
+    private readonly bool _addTestAuthentication;
 
     private readonly SqliteConnection _connection = new("DataSource=:memory:");
     private readonly RegisterCustomServicesHandler? _registerCustomServicesHandler;
 
     public CleanArchitectureWebApplicationFactory(
         AddCustomSeedDataHandler? addCustomSeedDataHandler,
-        RegisterCustomServicesHandler? registerCustomServicesHandler)
+        RegisterCustomServicesHandler? registerCustomServicesHandler,
+        bool addTestAuthentication)
     {
         _addCustomSeedDataHandler = addCustomSeedDataHandler;
         _registerCustomServicesHandler = registerCustomServicesHandler;
+        _addTestAuthentication = addTestAuthentication;
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -47,19 +51,28 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
             services.SetupTestDatabase<EventStoreDbContext>(_connection);
             services.SetupTestDatabase<DomainNotificationStoreDbContext>(_connection);
 
-            ServiceProvider sp = services.BuildServiceProvider();
+            if (_addTestAuthentication)
+            {
+                services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = "Testing";
+                    options.DefaultChallengeScheme = "Testing";
+                }).AddTestAuthentication(_ => { });
+            }
 
-            using IServiceScope scope = sp.CreateScope();
-            IServiceProvider scopedServices = scope.ServiceProvider;
+            var sp = services.BuildServiceProvider();
 
-            ApplicationDbContext applicationDbContext = scopedServices.GetRequiredService<ApplicationDbContext>();
-            EventStoreDbContext storeDbContext = scopedServices.GetRequiredService<EventStoreDbContext>();
-            DomainNotificationStoreDbContext domainStoreDbContext = scopedServices.GetRequiredService<DomainNotificationStoreDbContext>();
+            using var scope = sp.CreateScope();
+            var scopedServices = scope.ServiceProvider;
+
+            var applicationDbContext = scopedServices.GetRequiredService<ApplicationDbContext>();
+            var storeDbContext = scopedServices.GetRequiredService<EventStoreDbContext>();
+            var domainStoreDbContext = scopedServices.GetRequiredService<DomainNotificationStoreDbContext>();
 
             applicationDbContext.EnsureMigrationsApplied();
 
             var creator2 = (RelationalDatabaseCreator)storeDbContext.Database
-                    .GetService<IRelationalDatabaseCreator>();
+                .GetService<IRelationalDatabaseCreator>();
             creator2.CreateTables();
 
             var creator3 = (RelationalDatabaseCreator)domainStoreDbContext

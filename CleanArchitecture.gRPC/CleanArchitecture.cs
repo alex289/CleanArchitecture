@@ -4,12 +4,15 @@ namespace CleanArchitecture.gRPC;
 
 public sealed class CleanArchitecture : ICleanArchitecture
 {
-    private readonly IUsersContext _users;
-
-    public IUsersContext Users => _users;
-
-    public CleanArchitecture(IUsersContext users)
+    public CleanArchitecture(
+        IUsersContext users,
+        ITenantsContext tenants)
     {
-        _users = users;
+        Users = users;
+        Tenants = tenants;
     }
+
+    public IUsersContext Users { get; }
+
+    public ITenantsContext Tenants { get; }
 }

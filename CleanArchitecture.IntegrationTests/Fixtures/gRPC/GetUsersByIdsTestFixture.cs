@@ -1,4 +1,5 @@
 using System;
+using CleanArchitecture.Domain.Constants;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Infrastructure.Database;
@@ -33,6 +34,7 @@ public sealed class GetUsersByIdsTestFixture : TestFixtureBase
     {
         return new User(
             CreatedUserId,
+            Ids.Seed.TenantId,
             "user@user.de",
             "User First Name",
             "User Last Name",

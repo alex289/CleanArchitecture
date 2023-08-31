@@ -27,12 +27,12 @@ public sealed class DeleteUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.UserEmptyId,
+            DomainErrorCodes.User.UserEmptyId,
             "User id may not be empty");
     }
 
     private static DeleteUserCommand CreateTestCommand(Guid? userId = null)
     {
-        return new(userId ?? Guid.NewGuid());
+        return new DeleteUserCommand(userId ?? Guid.NewGuid());
     }
 }

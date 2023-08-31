@@ -24,5 +24,6 @@ public class StoredDomainEvent : DomainEvent
 
     // EF Constructor
     protected StoredDomainEvent() : base(Guid.NewGuid())
-    { }
+    {
+    }
 }

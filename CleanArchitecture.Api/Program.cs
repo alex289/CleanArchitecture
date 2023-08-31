@@ -61,9 +61,9 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    ApplicationDbContext appDbContext = services.GetRequiredService<ApplicationDbContext>();
-    EventStoreDbContext storeDbContext = services.GetRequiredService<EventStoreDbContext>();
-    DomainNotificationStoreDbContext domainStoreDbContext = services.GetRequiredService<DomainNotificationStoreDbContext>();
+    var appDbContext = services.GetRequiredService<ApplicationDbContext>();
+    var storeDbContext = services.GetRequiredService<EventStoreDbContext>();
+    var domainStoreDbContext = services.GetRequiredService<DomainNotificationStoreDbContext>();
 
     appDbContext.EnsureMigrationsApplied();
 
@@ -91,6 +91,7 @@ app.MapHealthChecks("/healthz", new HealthCheckOptions
 });
 app.MapControllers();
 app.MapGrpcService<UsersApiImplementation>();
+app.MapGrpcService<TenantsApiImplementation>();
 
 app.Run();
 

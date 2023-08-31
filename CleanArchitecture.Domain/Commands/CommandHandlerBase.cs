@@ -9,9 +9,9 @@ namespace CleanArchitecture.Domain.Commands;
 
 public abstract class CommandHandlerBase
 {
-    protected readonly IMediatorHandler Bus;
     private readonly DomainNotificationHandler _notifications;
     private readonly IUnitOfWork _unitOfWork;
+    protected readonly IMediatorHandler Bus;
 
     protected CommandHandlerBase(
         IMediatorHandler bus,
@@ -62,7 +62,7 @@ public abstract class CommandHandlerBase
             return true;
         }
 
-        if (command.ValidationResult == null)
+        if (command.ValidationResult is null)
         {
             throw new InvalidOperationException("Command is invalid and should therefore have a validation result");
         }

@@ -13,6 +13,7 @@ namespace CleanArchitecture.Domain.Commands.Users.UpdateUser;
 public sealed class UpdateUserCommandHandler : CommandHandlerBase,
     IRequestHandler<UpdateUserCommand>
 {
+    private readonly ITenantRepository _tenantRepository;
     private readonly IUser _user;
     private readonly IUserRepository _userRepository;
 
@@ -21,10 +22,12 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
         IUnitOfWork unitOfWork,
         INotificationHandler<DomainNotification> notifications,
         IUserRepository userRepository,
-        IUser user) : base(bus, unitOfWork, notifications)
+        IUser user,
+        ITenantRepository tenantRepository) : base(bus, unitOfWork, notifications)
     {
         _userRepository = userRepository;
         _user = user;
+        _tenantRepository = tenantRepository;
     }
 
     public async Task Handle(UpdateUserCommand request, CancellationToken cancellationToken)
@@ -36,12 +39,12 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
 
         var user = await _userRepository.GetByIdAsync(request.UserId);
 
-        if (user == null)
+        if (user is null)
         {
-            await Bus.RaiseEventAsync(
+            await NotifyAsync(
                 new DomainNotification(
                     request.MessageType,
-                    $"There is no User with Id {request.UserId}",
+                    $"There is no user with Id {request.UserId}",
                     ErrorCodes.ObjectNotFound));
             return;
         }
@@ -61,13 +64,13 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
         {
             var existingUser = await _userRepository.GetByEmailAsync(request.Email);
 
-            if (existingUser != null)
+            if (existingUser is not null)
             {
-                await Bus.RaiseEventAsync(
+                await NotifyAsync(
                     new DomainNotification(
                         request.MessageType,
-                        $"There is already a User with Email {request.Email}",
-                        DomainErrorCodes.UserAlreadyExists));
+                        $"There is already a user with email {request.Email}",
+                        DomainErrorCodes.User.UserAlreadyExists));
                 return;
             }
         }
@@ -75,6 +78,18 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
         if (_user.GetUserRole() == UserRole.Admin)
         {
             user.SetRole(request.Role);
+
+            if (!await _tenantRepository.ExistsAsync(request.TenantId))
+            {
+                await NotifyAsync(
+                    new DomainNotification(
+                        request.MessageType,
+                        $"There is no tenant with Id {request.TenantId}",
+                        ErrorCodes.ObjectNotFound));
+                return;
+            }
+
+            user.SetTenant(request.TenantId);
         }
 
         user.SetEmail(request.Email);

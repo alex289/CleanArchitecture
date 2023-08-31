@@ -4,9 +4,11 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using CleanArchitecture.Application.ViewModels.Users;
+using CleanArchitecture.Domain.Constants;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.IntegrationTests.Extensions;
 using CleanArchitecture.IntegrationTests.Fixtures;
+using CleanArchitecture.IntegrationTests.Infrastructure.Auth;
 using FluentAssertions;
 using Xunit;
 using Xunit.Priority;
@@ -26,50 +28,33 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
 
     [Fact]
     [Priority(0)]
-    public async Task Should_Create_User()
+    public async Task Should_Get_All_User()
     {
-        var user = new CreateUserViewModel(
-            _fixture.CreatedUserEmail,
-            "Test",
-            "Email",
-            _fixture.CreatedUserPassword);
-
-        var response = await _fixture.ServerClient.PostAsJsonAsync("/api/v1/user", user);
+        var response = await _fixture.ServerClient.GetAsync("/api/v1/user");
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
-        var message = await response.Content.ReadAsJsonAsync<Guid>();
+        var message = await response.Content.ReadAsJsonAsync<IEnumerable<UserViewModel>>();
 
-        message?.Data.Should().NotBeEmpty();
+        message?.Data.Should().NotBeNull();
 
-        _fixture.CreatedUserId = message!.Data;
+        var content = message!.Data!.ToList();
+
+        content.Count.Should().Be(2);
+
+        var currentUser = content.First(x => x.Id == TestAuthenticationOptions.TestUserId);
+
+        currentUser.Role.Should().Be(UserRole.Admin);
+        currentUser.Email.Should().Be(TestAuthenticationOptions.Email);
+        currentUser.FirstName.Should().Be(TestAuthenticationOptions.FirstName);
+        currentUser.LastName.Should().Be(TestAuthenticationOptions.LastName);
     }
 
     [Fact]
     [Priority(5)]
-    public async Task Should_Login_User()
+    public async Task Should_Get_User_By_Id()
     {
-        var user = new LoginUserViewModel(
-            _fixture.CreatedUserEmail,
-            _fixture.CreatedUserPassword);
-
-        var response = await _fixture.ServerClient.PostAsJsonAsync("/api/v1/user/login", user);
-
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-        var message = await response.Content.ReadAsJsonAsync<string>();
-
-        message?.Data.Should().NotBeEmpty();
-
-        _fixture.CreatedUserToken = message!.Data!;
-        _fixture.EnableAuthentication();
-    }
-
-    [Fact]
-    [Priority(10)]
-    public async Task Should_Get_Created_Users()
-    {
-        var response = await _fixture.ServerClient.GetAsync("/api/v1/user/" + _fixture.CreatedUserId);
+        var response = await _fixture.ServerClient.GetAsync("/api/v1/user/" + TestAuthenticationOptions.TestUserId);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -79,14 +64,49 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
 
         var content = message!.Data!;
 
-        content.Id.Should().Be(_fixture.CreatedUserId);
-        content.Email.Should().Be("test@email.com");
-        content.FirstName.Should().Be("Test");
-        content.LastName.Should().Be("Email");
+        content.Id.Should().Be(TestAuthenticationOptions.TestUserId);
+        content.Email.Should().Be(TestAuthenticationOptions.Email);
+        content.FirstName.Should().Be(TestAuthenticationOptions.FirstName);
+        content.LastName.Should().Be(TestAuthenticationOptions.LastName);
     }
 
     [Fact]
     [Priority(10)]
+    public async Task Should_Create_User()
+    {
+        var user = new CreateUserViewModel(
+            "some@user.com",
+            "Test",
+            "Email",
+            "1234#KSAD23s",
+            Ids.Seed.TenantId);
+
+        var response = await _fixture.ServerClient.PostAsJsonAsync("/api/v1/user", user);
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var message = await response.Content.ReadAsJsonAsync<Guid>();
+        message?.Data.Should().NotBeEmpty();
+    }
+
+    [Fact]
+    [Priority(15)]
+    public async Task Should_Login_User()
+    {
+        var user = new LoginUserViewModel(
+            "admin@email.com",
+            "!Password123#");
+
+        var response = await _fixture.ServerClient.PostAsJsonAsync("/api/v1/user/login", user);
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var message = await response.Content.ReadAsJsonAsync<string>();
+        message?.Data.Should().NotBeEmpty();
+    }
+
+    [Fact]
+    [Priority(20)]
     public async Task Should_Get_The_Current_Active_Users()
     {
         var response = await _fixture.ServerClient.GetAsync("/api/v1/user/me");
@@ -99,22 +119,23 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
 
         var content = message!.Data!;
 
-        content.Id.Should().Be(_fixture.CreatedUserId);
-        content.Email.Should().Be("test@email.com");
-        content.FirstName.Should().Be("Test");
-        content.LastName.Should().Be("Email");
+        content.Id.Should().Be(TestAuthenticationOptions.TestUserId);
+        content.Email.Should().Be(TestAuthenticationOptions.Email);
+        content.FirstName.Should().Be(TestAuthenticationOptions.FirstName);
+        content.LastName.Should().Be(TestAuthenticationOptions.LastName);
     }
 
     [Fact]
-    [Priority(15)]
+    [Priority(25)]
     public async Task Should_Update_User()
     {
         var user = new UpdateUserViewModel(
-            _fixture.CreatedUserId,
+            Ids.Seed.UserId,
             "newtest@email.com",
             "NewTest",
             "NewEmail",
-            UserRole.User);
+            UserRole.User,
+            Ids.Seed.TenantId);
 
         var response = await _fixture.ServerClient.PutAsJsonAsync("/api/v1/user", user);
 
@@ -127,37 +148,32 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         var content = message!.Data;
 
         content.Should().BeEquivalentTo(user);
+
+        // Check if user is really updated
+        var userResponse = await _fixture.ServerClient.GetAsync("/api/v1/user/" + user.Id);
+
+        userResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var userMessage = await userResponse.Content.ReadAsJsonAsync<UserViewModel>();
+
+        userMessage?.Data.Should().NotBeNull();
+
+        var userContent = userMessage!.Data!;
+
+        userContent.Id.Should().Be(user.Id);
+        userContent.Email.Should().Be(user.Email);
+        userContent.FirstName.Should().Be(user.FirstName);
+        userContent.LastName.Should().Be(user.LastName);
+        userContent.Role.Should().Be(user.Role);
     }
 
     [Fact]
-    [Priority(20)]
-    public async Task Should_Get_Updated_Users()
-    {
-        var response = await _fixture.ServerClient.GetAsync("/api/v1/user/" + _fixture.CreatedUserId);
-
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-        var message = await response.Content.ReadAsJsonAsync<UserViewModel>();
-
-        message?.Data.Should().NotBeNull();
-
-        var content = message!.Data!;
-
-        content.Id.Should().Be(_fixture.CreatedUserId);
-        content.Email.Should().Be("newtest@email.com");
-        content.FirstName.Should().Be("NewTest");
-        content.LastName.Should().Be("NewEmail");
-
-        _fixture.CreatedUserEmail = content.Email;
-    }
-
-    [Fact]
-    [Priority(25)]
+    [Priority(30)]
     public async Task Should_Change_User_Password()
     {
         var user = new ChangePasswordViewModel(
-            _fixture.CreatedUserPassword,
-            _fixture.CreatedUserPassword + "1");
+            "!Password123#",
+            "!Password123#1");
 
         var response = await _fixture.ServerClient.PostAsJsonAsync("/api/v1/user/changePassword", user);
 
@@ -173,8 +189,8 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
 
         // Verify the user can login with the new password
         var login = new LoginUserViewModel(
-            _fixture.CreatedUserEmail,
-            _fixture.CreatedUserPassword + "1");
+            TestAuthenticationOptions.Email,
+            user.NewPassword);
 
         var loginResponse = await _fixture.ServerClient.PostAsJsonAsync("/api/v1/user/login", login);
 
@@ -186,41 +202,10 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
     }
 
     [Fact]
-    [Priority(30)]
-    public async Task Should_Get_All_User()
-    {
-        var response = await _fixture.ServerClient.GetAsync("/api/v1/user");
-
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
-
-        var message = await response.Content.ReadAsJsonAsync<IEnumerable<UserViewModel>>();
-
-        message?.Data.Should().NotBeNull();
-
-        var content = message!.Data!.ToList();
-
-        content.Count.Should().Be(2);
-
-        var currentUser = content.First(x => x.Id == _fixture.CreatedUserId);
-
-        currentUser.Id.Should().Be(_fixture.CreatedUserId);
-        currentUser.Role.Should().Be(UserRole.User);
-        currentUser.Email.Should().Be("newtest@email.com");
-        currentUser.FirstName.Should().Be("NewTest");
-        currentUser.LastName.Should().Be("NewEmail");
-
-        var adminUser = content.First(x => x.Role == UserRole.Admin);
-
-        adminUser.Email.Should().Be("admin@email.com");
-        adminUser.FirstName.Should().Be("Admin");
-        adminUser.LastName.Should().Be("User");
-    }
-
-    [Fact]
     [Priority(35)]
     public async Task Should_Delete_User()
     {
-        var response = await _fixture.ServerClient.DeleteAsync("/api/v1/user/" + _fixture.CreatedUserId);
+        var response = await _fixture.ServerClient.DeleteAsync("/api/v1/user/" + TestAuthenticationOptions.TestUserId);
 
         response.StatusCode.Should().Be(HttpStatusCode.OK);
 
@@ -229,6 +214,10 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         message?.Data.Should().NotBeEmpty();
 
         var content = message!.Data;
-        content.Should().Be(_fixture.CreatedUserId);
+        content.Should().Be(TestAuthenticationOptions.TestUserId);
+
+        var userResponse = await _fixture.ServerClient.GetAsync("/api/v1/user/" + TestAuthenticationOptions.TestUserId);
+
+        userResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
     }
 }

@@ -15,15 +15,21 @@ namespace CleanArchitecture.Domain.Commands.Users.CreateUser;
 public sealed class CreateUserCommandHandler : CommandHandlerBase,
     IRequestHandler<CreateUserCommand>
 {
+    private readonly ITenantRepository _tenantRepository;
+    private readonly IUser _user;
     private readonly IUserRepository _userRepository;
 
     public CreateUserCommandHandler(
         IMediatorHandler bus,
         IUnitOfWork unitOfWork,
         INotificationHandler<DomainNotification> notifications,
-        IUserRepository userRepository) : base(bus, unitOfWork, notifications)
+        IUserRepository userRepository,
+        ITenantRepository tenantRepository,
+        IUser user) : base(bus, unitOfWork, notifications)
     {
         _userRepository = userRepository;
+        _tenantRepository = tenantRepository;
+        _user = user;
     }
 
     public async Task Handle(CreateUserCommand request, CancellationToken cancellationToken)
@@ -33,27 +39,49 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
             return;
         }
 
-        var existingUser = await _userRepository.GetByIdAsync(request.UserId);
+        var currentUser = await _userRepository.GetByIdAsync(_user.GetUserId());
 
-        if (existingUser != null)
+        if (currentUser is null || currentUser.Role != UserRole.Admin)
         {
-            await Bus.RaiseEventAsync(
+            await NotifyAsync(
                 new DomainNotification(
                     request.MessageType,
-                    $"There is already a User with Id {request.UserId}",
-                    DomainErrorCodes.UserAlreadyExists));
+                    "You are not allowed to create users",
+                    ErrorCodes.InsufficientPermissions));
+            return;
+        }
+
+        var existingUser = await _userRepository.GetByIdAsync(request.UserId);
+
+        if (existingUser is not null)
+        {
+            await NotifyAsync(
+                new DomainNotification(
+                    request.MessageType,
+                    $"There is already a user with Id {request.UserId}",
+                    DomainErrorCodes.User.UserAlreadyExists));
             return;
         }
 
         existingUser = await _userRepository.GetByEmailAsync(request.Email);
 
-        if (existingUser != null)
+        if (existingUser is not null)
         {
-            await Bus.RaiseEventAsync(
+            await NotifyAsync(
                 new DomainNotification(
                     request.MessageType,
-                    $"There is already a User with Email {request.Email}",
-                    DomainErrorCodes.UserAlreadyExists));
+                    $"There is already a user with email {request.Email}",
+                    DomainErrorCodes.User.UserAlreadyExists));
+            return;
+        }
+
+        if (!await _tenantRepository.ExistsAsync(request.TenantId))
+        {
+            await NotifyAsync(
+                new DomainNotification(
+                    request.MessageType,
+                    $"There is no tenant with Id {request.TenantId}",
+                    ErrorCodes.ObjectNotFound));
             return;
         }
 
@@ -61,6 +89,7 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
 
         var user = new User(
             request.UserId,
+            request.TenantId,
             request.Email,
             request.FirstName,
             request.LastName,

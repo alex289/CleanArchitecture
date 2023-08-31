@@ -5,5 +5,5 @@ option csharp_namespace = "CleanArchitecture.Proto.Users";
 import "Users/Models.proto";
 
 service UsersApi {
-  rpc GetByIds(GetByIdsRequest) returns (GetByIdsResult);
+  rpc GetByIds(GetUsersByIdsRequest) returns (GetUsersByIdsResult);
 }

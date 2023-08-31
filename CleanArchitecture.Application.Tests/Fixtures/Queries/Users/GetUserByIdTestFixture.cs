@@ -11,6 +11,10 @@ namespace CleanArchitecture.Application.Tests.Fixtures.Queries.Users;
 
 public sealed class GetUserByIdTestFixture : QueryHandlerBaseFixture
 {
+    private IUserRepository UserRepository { get; }
+    public GetUserByIdQueryHandler Handler { get; }
+    public Guid ExistingUserId { get; } = Guid.NewGuid();
+
     public GetUserByIdTestFixture()
     {
         UserRepository = Substitute.For<IUserRepository>();
@@ -18,19 +22,16 @@ public sealed class GetUserByIdTestFixture : QueryHandlerBaseFixture
         Handler = new GetUserByIdQueryHandler(UserRepository, Bus);
     }
 
-    private IUserRepository UserRepository { get; }
-    public GetUserByIdQueryHandler Handler { get; }
-    public Guid ExistingUserId { get; } = Guid.NewGuid();
-
     public void SetupUserAsync()
     {
         var user = new User(
-                ExistingUserId,
-                "max@mustermann.com",
-                "Max",
-                "Mustermann",
-                "Password",
-                UserRole.User);
+            ExistingUserId,
+            Guid.NewGuid(),
+            "max@mustermann.com",
+            "Max",
+            "Mustermann",
+            "Password",
+            UserRole.User);
 
         var query = new[] { user }.BuildMock();
 
@@ -40,12 +41,13 @@ public sealed class GetUserByIdTestFixture : QueryHandlerBaseFixture
     public void SetupDeletedUserAsync()
     {
         var user = new User(
-                ExistingUserId,
-                "max@mustermann.com",
-                "Max",
-                "Mustermann",
-                "Password",
-                UserRole.User);
+            ExistingUserId,
+            Guid.NewGuid(),
+            "max@mustermann.com",
+            "Max",
+            "Mustermann",
+            "Password",
+            UserRole.User);
 
         user.Delete();
 

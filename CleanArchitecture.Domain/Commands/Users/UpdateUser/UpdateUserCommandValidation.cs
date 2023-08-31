@@ -1,3 +1,4 @@
+using CleanArchitecture.Domain.Constants;
 using CleanArchitecture.Domain.Errors;
 using FluentValidation;
 
@@ -8,6 +9,7 @@ public sealed class UpdateUserCommandValidation : AbstractValidator<UpdateUserCo
     public UpdateUserCommandValidation()
     {
         AddRuleForId();
+        AddRuleForTenantId();
         AddRuleForEmail();
         AddRuleForFirstName();
         AddRuleForLastName();
@@ -18,48 +20,56 @@ public sealed class UpdateUserCommandValidation : AbstractValidator<UpdateUserCo
     {
         RuleFor(cmd => cmd.UserId)
             .NotEmpty()
-            .WithErrorCode(DomainErrorCodes.UserEmptyId)
+            .WithErrorCode(DomainErrorCodes.User.UserEmptyId)
             .WithMessage("User id may not be empty");
+    }
+
+    private void AddRuleForTenantId()
+    {
+        RuleFor(cmd => cmd.TenantId)
+            .NotEmpty()
+            .WithErrorCode(DomainErrorCodes.Tenant.TenantEmptyId)
+            .WithMessage("Tenant id may not be empty");
     }
 
     private void AddRuleForEmail()
     {
         RuleFor(cmd => cmd.Email)
             .EmailAddress()
-            .WithErrorCode(DomainErrorCodes.UserInvalidEmail)
+            .WithErrorCode(DomainErrorCodes.User.UserInvalidEmail)
             .WithMessage("Email is not a valid email address")
-            .MaximumLength(320)
-            .WithErrorCode(DomainErrorCodes.UserEmailExceedsMaxLength)
-            .WithMessage("Email may not be longer than 320 characters");
+            .MaximumLength(MaxLengths.User.Email)
+            .WithErrorCode(DomainErrorCodes.User.UserEmailExceedsMaxLength)
+            .WithMessage($"Email may not be longer than {MaxLengths.User.Email} characters");
     }
 
     private void AddRuleForFirstName()
     {
         RuleFor(cmd => cmd.FirstName)
             .NotEmpty()
-            .WithErrorCode(DomainErrorCodes.UserEmptyFirstName)
+            .WithErrorCode(DomainErrorCodes.User.UserEmptyFirstName)
             .WithMessage("FirstName may not be empty")
-            .MaximumLength(100)
-            .WithErrorCode(DomainErrorCodes.UserFirstNameExceedsMaxLength)
-            .WithMessage("FirstName may not be longer than 100 characters");
+            .MaximumLength(MaxLengths.User.FirstName)
+            .WithErrorCode(DomainErrorCodes.User.UserFirstNameExceedsMaxLength)
+            .WithMessage($"FirstName may not be longer than {MaxLengths.User.FirstName} characters");
     }
 
     private void AddRuleForLastName()
     {
         RuleFor(cmd => cmd.LastName)
             .NotEmpty()
-            .WithErrorCode(DomainErrorCodes.UserEmptyLastName)
+            .WithErrorCode(DomainErrorCodes.User.UserEmptyLastName)
             .WithMessage("LastName may not be empty")
-            .MaximumLength(100)
-            .WithErrorCode(DomainErrorCodes.UserLastNameExceedsMaxLength)
-            .WithMessage("LastName may not be longer than 100 characters");
+            .MaximumLength(MaxLengths.User.LastName)
+            .WithErrorCode(DomainErrorCodes.User.UserLastNameExceedsMaxLength)
+            .WithMessage($"LastName may not be longer than {MaxLengths.User.LastName} characters");
     }
 
     private void AddRuleForRole()
     {
         RuleFor(cmd => cmd.Role)
             .IsInEnum()
-            .WithErrorCode(DomainErrorCodes.UserInvalidRole)
+            .WithErrorCode(DomainErrorCodes.User.UserInvalidRole)
             .WithMessage("Role is not a valid role");
     }
 }

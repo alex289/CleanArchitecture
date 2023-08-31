@@ -22,4 +22,5 @@ public interface IRepository<TEntity> : IDisposable where TEntity : Entity
 
     Task<bool> ExistsAsync(Guid id);
     public void Remove(TEntity entity, bool hardDelete = false);
+    void RemoveRange(IEnumerable<TEntity> entities, bool hardDelete = false);
 }

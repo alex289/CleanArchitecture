@@ -8,23 +8,28 @@ namespace CleanArchitecture.Domain.Tests.CommandHandler.User.CreateUser;
 
 public sealed class CreateUserCommandTestFixture : CommandHandlerFixtureBase
 {
+    public CreateUserCommandHandler CommandHandler { get; }
+    public IUserRepository UserRepository { get; }
+    private ITenantRepository TenantRepository { get; }
+
     public CreateUserCommandTestFixture()
     {
         UserRepository = Substitute.For<IUserRepository>();
+        TenantRepository = Substitute.For<ITenantRepository>();
 
         CommandHandler = new CreateUserCommandHandler(
             Bus,
             UnitOfWork,
             NotificationHandler,
-            UserRepository);
+            UserRepository,
+            TenantRepository,
+            User);
     }
-
-    public CreateUserCommandHandler CommandHandler { get; }
-    private IUserRepository UserRepository { get; }
 
     public Entities.User SetupUser()
     {
         var user = new Entities.User(
+            Guid.NewGuid(),
             Guid.NewGuid(),
             "max@mustermann.com",
             "Max",
@@ -37,5 +42,30 @@ public sealed class CreateUserCommandTestFixture : CommandHandlerFixtureBase
             .Returns(user);
 
         return user;
+    }
+
+    public void SetupCurrentUser()
+    {
+        var userId = Guid.NewGuid();
+
+        User.GetUserId().Returns(userId);
+
+        UserRepository
+            .GetByIdAsync(Arg.Is<Guid>(y => y == userId))
+            .Returns(new Entities.User(
+                userId,
+                Guid.NewGuid(),
+                "some email",
+                "some first name",
+                "some last name",
+                "some password",
+                UserRole.Admin));
+    }
+
+    public void SetupTenant(Guid tenantId)
+    {
+        TenantRepository
+            .ExistsAsync(Arg.Is<Guid>(y => y == tenantId))
+            .Returns(true);
     }
 }

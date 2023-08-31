@@ -55,9 +55,9 @@ public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : Enti
         DbSet.Update(entity);
     }
 
-    public Task<bool> ExistsAsync(Guid id)
+    public virtual async Task<bool> ExistsAsync(Guid id)
     {
-        return DbSet.AnyAsync(entity => entity.Id == id);
+        return await DbSet.AnyAsync(entity => entity.Id == id);
     }
 
     public void Remove(TEntity entity, bool hardDelete = false)
@@ -70,6 +70,20 @@ public class BaseRepository<TEntity> : IRepository<TEntity> where TEntity : Enti
         {
             entity.Delete();
             DbSet.Update(entity);
+        }
+    }
+
+    public void RemoveRange(IEnumerable<TEntity> entities, bool hardDelete = false)
+    {
+        if (hardDelete)
+        {
+            DbSet.RemoveRange(entities);
+            return;
+        }
+
+        foreach (var entity in entities)
+        {
+            entity.Delete();
         }
     }
 

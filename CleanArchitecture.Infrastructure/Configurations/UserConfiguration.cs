@@ -1,4 +1,4 @@
-using System;
+using CleanArchitecture.Domain.Constants;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -13,25 +13,26 @@ public sealed class UserConfiguration : IEntityTypeConfiguration<User>
         builder
             .Property(user => user.Email)
             .IsRequired()
-            .HasMaxLength(320);
+            .HasMaxLength(MaxLengths.User.Email);
 
         builder
             .Property(user => user.FirstName)
             .IsRequired()
-            .HasMaxLength(100);
+            .HasMaxLength(MaxLengths.User.FirstName);
 
         builder
             .Property(user => user.LastName)
             .IsRequired()
-            .HasMaxLength(100);
+            .HasMaxLength(MaxLengths.User.LastName);
 
         builder
             .Property(user => user.Password)
             .IsRequired()
-            .HasMaxLength(128);
+            .HasMaxLength(MaxLengths.User.Password);
 
         builder.HasData(new User(
-            Guid.NewGuid(),
+            Ids.Seed.UserId,
+            Ids.Seed.TenantId,
             "admin@email.com",
             "Admin",
             "User",

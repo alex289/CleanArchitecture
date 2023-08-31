@@ -15,11 +15,11 @@ public class StoredDomainNotification : DomainNotification
         string data,
         string user,
         string correlationId) : base(
-            domainNotification.Key,
-            domainNotification.Value,
-            domainNotification.Code,
-            null,
-            domainNotification.AggregateId)
+        domainNotification.Key,
+        domainNotification.Value,
+        domainNotification.Code,
+        null,
+        domainNotification.AggregateId)
     {
         Id = Guid.NewGuid();
         User = user;
@@ -31,5 +31,6 @@ public class StoredDomainNotification : DomainNotification
 
     // EF Constructor
     protected StoredDomainNotification() : base(string.Empty, string.Empty, string.Empty)
-    { }
+    {
+    }
 }

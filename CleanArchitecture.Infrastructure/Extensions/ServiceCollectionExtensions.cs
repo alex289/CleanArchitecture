@@ -16,18 +16,18 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
-            IConfiguration configuration,
-            string migrationsAssemblyName,
-            string connectionStringName = "DefaultConnection")
+        IConfiguration configuration,
+        string migrationsAssemblyName,
+        string connectionStringName = "DefaultConnection")
     {
         // Add event store db context
         services.AddDbContext<EventStoreDbContext>(
-                options =>
-                {
-                    options.UseSqlServer(
-                        configuration.GetConnectionString(connectionStringName),
-                        b => b.MigrationsAssembly(migrationsAssemblyName));
-                });
+            options =>
+            {
+                options.UseSqlServer(
+                    configuration.GetConnectionString(connectionStringName),
+                    b => b.MigrationsAssembly(migrationsAssemblyName));
+            });
 
         services.AddDbContext<DomainNotificationStoreDbContext>(
             options =>
@@ -46,6 +46,7 @@ public static class ServiceCollectionExtensions
 
         // Repositories
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ITenantRepository, TenantRepository>();
 
         return services;
     }

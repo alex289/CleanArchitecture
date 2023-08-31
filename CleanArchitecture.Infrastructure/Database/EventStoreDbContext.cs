@@ -6,11 +6,11 @@ namespace CleanArchitecture.Infrastructure.Database;
 
 public class EventStoreDbContext : DbContext
 {
+    public virtual DbSet<StoredDomainEvent> StoredDomainEvents { get; set; } = null!;
+
     public EventStoreDbContext(DbContextOptions<EventStoreDbContext> options) : base(options)
     {
     }
-
-    public virtual DbSet<StoredDomainEvent> StoredDomainEvents { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

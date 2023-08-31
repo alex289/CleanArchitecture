@@ -9,11 +9,11 @@ using Xunit;
 
 namespace CleanArchitecture.gRPC.Tests.Users;
 
-public sealed class GetUsersByIdsTests : IClassFixture<UserTestsFixture>
+public sealed class GetUsersByIdsTests : IClassFixture<UserTestFixture>
 {
-    private readonly UserTestsFixture _fixture;
+    private readonly UserTestFixture _fixture;
 
-    public GetUsersByIdsTests(UserTestsFixture fixture)
+    public GetUsersByIdsTests(UserTestFixture fixture)
     {
         _fixture = fixture;
     }
@@ -23,13 +23,13 @@ public sealed class GetUsersByIdsTests : IClassFixture<UserTestsFixture>
     {
         var result = await _fixture.UsersApiImplementation.GetByIds(
             SetupRequest(Enumerable.Empty<Guid>()),
-            null!);
+            default!);
 
         result.Users.Should().HaveCount(0);
     }
 
     [Fact]
-    public async Task Should_Get_Requested_Asked_Ids()
+    public async Task Should_Get_Requested_Users()
     {
         var nonExistingId = Guid.NewGuid();
 
@@ -42,7 +42,7 @@ public sealed class GetUsersByIdsTests : IClassFixture<UserTestsFixture>
 
         var result = await _fixture.UsersApiImplementation.GetByIds(
             SetupRequest(ids),
-            null!);
+            default!);
 
         result.Users.Should().HaveCount(2);
 
@@ -62,9 +62,9 @@ public sealed class GetUsersByIdsTests : IClassFixture<UserTestsFixture>
         }
     }
 
-    private static GetByIdsRequest SetupRequest(IEnumerable<Guid> ids)
+    private static GetUsersByIdsRequest SetupRequest(IEnumerable<Guid> ids)
     {
-        var request = new GetByIdsRequest();
+        var request = new GetUsersByIdsRequest();
 
         request.Ids.AddRange(ids.Select(id => id.ToString()));
         request.Ids.Add("Not a guid");

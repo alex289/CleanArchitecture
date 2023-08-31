@@ -46,6 +46,7 @@ public sealed class UserService : IUserService
 
         await _bus.SendCommandAsync(new CreateUserCommand(
             userId,
+            user.TenantId,
             user.Email,
             user.FirstName,
             user.LastName,
@@ -61,7 +62,8 @@ public sealed class UserService : IUserService
             user.Email,
             user.FirstName,
             user.LastName,
-            user.Role));
+            user.Role,
+            user.TenantId));
     }
 
     public async Task DeleteUserAsync(Guid userId)
