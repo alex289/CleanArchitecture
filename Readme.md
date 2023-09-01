@@ -38,6 +38,19 @@ To run the project, follow these steps:
 
 ### Using docker
 
+Requirements
+> This is only needed if running the API locally or only the docker image
+1. Redis: `docker run --name redis -d -p 6379:6379 -e ALLOW_EMPTY_PASSWORD=yes redis:latest`
+2. Add this to the redis configuration in the Program.cs
+```csharp
+options.ConfigurationOptions = new ConfigurationOptions
+        {
+            AbortOnConnectFail = false,
+            EndPoints = { "localhost", "6379" }
+        };
+```
+
+Running the container
 1. Build the Dockerfile: `docker build -t clean-architecture .`
 2. Run the Container: `docker run -p 80:80 clean-architecture`
 
