@@ -51,11 +51,11 @@ public sealed class TenantService : ITenantService
         await _bus.SendCommandAsync(new DeleteTenantCommand(tenantId));
     }
 
-    public async Task<TenantViewModel?> GetTenantByIdAsync(Guid tenantId, bool deleted)
+    public async Task<TenantViewModel?> GetTenantByIdAsync(Guid tenantId)
     {
         var cachedTenant = await _distributedCache.GetOrCreateJsonAsync(
             CacheKeyGenerator.GetEntityCacheKey<Tenant>(tenantId),
-            async () => await _bus.QueryAsync(new GetTenantByIdQuery(tenantId, deleted)),
+            async () => await _bus.QueryAsync(new GetTenantByIdQuery(tenantId)),
             new DistributedCacheEntryOptions
             {
                 SlidingExpiration = TimeSpan.FromDays(3),

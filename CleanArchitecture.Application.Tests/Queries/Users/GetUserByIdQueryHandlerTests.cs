@@ -18,7 +18,7 @@ public sealed class GetUserByIdQueryHandlerTests
         _fixture.SetupUserAsync();
 
         var result = await _fixture.Handler.Handle(
-            new GetUserByIdQuery(_fixture.ExistingUserId, false),
+            new GetUserByIdQuery(_fixture.ExistingUserId),
             default);
 
         _fixture.VerifyNoDomainNotification();
@@ -32,7 +32,7 @@ public sealed class GetUserByIdQueryHandlerTests
     {
         _fixture.SetupUserAsync();
 
-        var request = new GetUserByIdQuery(Guid.NewGuid(), false);
+        var request = new GetUserByIdQuery(Guid.NewGuid());
         var result = await _fixture.Handler.Handle(
             request,
             default);
@@ -51,7 +51,7 @@ public sealed class GetUserByIdQueryHandlerTests
         _fixture.SetupDeletedUserAsync();
 
         var result = await _fixture.Handler.Handle(
-            new GetUserByIdQuery(_fixture.ExistingUserId, false),
+            new GetUserByIdQuery(_fixture.ExistingUserId),
             default);
 
         _fixture.VerifyExistingNotification(

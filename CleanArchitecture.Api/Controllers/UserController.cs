@@ -42,11 +42,9 @@ public sealed class UserController : ApiController
     [HttpGet("{id:guid}")]
     [SwaggerOperation("Get a user by id")]
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<UserViewModel>))]
-    public async Task<IActionResult> GetUserByIdAsync(
-        [FromRoute] Guid id,
-        [FromQuery] bool isDeleted = false)
+    public async Task<IActionResult> GetUserByIdAsync([FromRoute] Guid id)
     {
-        var user = await _userService.GetUserByUserIdAsync(id, isDeleted);
+        var user = await _userService.GetUserByUserIdAsync(id);
         return Response(user);
     }
 

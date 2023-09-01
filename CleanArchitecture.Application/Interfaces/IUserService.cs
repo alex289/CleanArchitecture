@@ -8,7 +8,7 @@ namespace CleanArchitecture.Application.Interfaces;
 
 public interface IUserService
 {
-    public Task<UserViewModel?> GetUserByUserIdAsync(Guid userId, bool isDeleted);
+    public Task<UserViewModel?> GetUserByUserIdAsync(Guid userId);
     public Task<UserViewModel?> GetCurrentUserAsync();
     public Task<PagedResult<UserViewModel>> GetAllUsersAsync(PageQuery query, string searchTerm = "");
     public Task<Guid> CreateUserAsync(CreateUserViewModel user);

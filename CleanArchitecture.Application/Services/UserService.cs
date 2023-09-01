@@ -26,14 +26,14 @@ public sealed class UserService : IUserService
         _user = user;
     }
 
-    public async Task<UserViewModel?> GetUserByUserIdAsync(Guid userId, bool isDeleted)
+    public async Task<UserViewModel?> GetUserByUserIdAsync(Guid userId)
     {
-        return await _bus.QueryAsync(new GetUserByIdQuery(userId, isDeleted));
+        return await _bus.QueryAsync(new GetUserByIdQuery(userId));
     }
 
     public async Task<UserViewModel?> GetCurrentUserAsync()
     {
-        return await _bus.QueryAsync(new GetUserByIdQuery(_user.GetUserId(), false));
+        return await _bus.QueryAsync(new GetUserByIdQuery(_user.GetUserId()));
     }
 
     public async Task<PagedResult<UserViewModel>> GetAllUsersAsync(PageQuery query, string searchTerm = "")

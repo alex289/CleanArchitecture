@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Application.ViewModels.Tenants;
@@ -11,6 +10,6 @@ public interface ITenantService
     public Task<Guid> CreateTenantAsync(CreateTenantViewModel tenant);
     public Task UpdateTenantAsync(UpdateTenantViewModel tenant);
     public Task DeleteTenantAsync(Guid tenantId);
-    public Task<TenantViewModel?> GetTenantByIdAsync(Guid tenantId, bool deleted);
+    public Task<TenantViewModel?> GetTenantByIdAsync(Guid tenantId);
     public Task<PagedResult<TenantViewModel>> GetAllTenantsAsync(PageQuery query, string searchTerm = "");
 }

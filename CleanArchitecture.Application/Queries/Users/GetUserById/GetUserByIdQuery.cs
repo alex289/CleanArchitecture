@@ -4,4 +4,4 @@ using MediatR;
 
 namespace CleanArchitecture.Application.Queries.Users.GetUserById;
 
-public sealed record GetUserByIdQuery(Guid UserId, bool IsDeleted) : IRequest<UserViewModel?>;
+public sealed record GetUserByIdQuery(Guid UserId) : IRequest<UserViewModel?>;

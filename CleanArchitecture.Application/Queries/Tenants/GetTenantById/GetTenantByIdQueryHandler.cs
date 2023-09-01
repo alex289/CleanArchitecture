@@ -28,9 +28,7 @@ public sealed class GetTenantByIdQueryHandler :
         var tenant = _tenantRepository
             .GetAllNoTracking()
             .Include(x => x.Users)
-            .FirstOrDefault(x =>
-                x.Id == request.TenantId &&
-                x.Deleted == request.IsDeleted);
+            .FirstOrDefault(x => x.Id == request.TenantId && !x.Deleted);
 
         if (tenant is null)
         {

@@ -17,21 +17,7 @@ public sealed class GetTenantByIdQueryHandlerTests
         var tenant = _fixture.SetupTenant();
 
         var result = await _fixture.QueryHandler.Handle(
-            new GetTenantByIdQuery(tenant.Id, false),
-            default);
-
-        _fixture.VerifyNoDomainNotification();
-
-        tenant.Should().BeEquivalentTo(result);
-    }
-
-    [Fact]
-    public async Task Should_Get_Deleted_Tenant()
-    {
-        var tenant = _fixture.SetupTenant(true);
-
-        var result = await _fixture.QueryHandler.Handle(
-            new GetTenantByIdQuery(tenant.Id, true),
+            new GetTenantByIdQuery(tenant.Id),
             default);
 
         _fixture.VerifyNoDomainNotification();
@@ -45,7 +31,7 @@ public sealed class GetTenantByIdQueryHandlerTests
         var tenant = _fixture.SetupTenant(true);
 
         var result = await _fixture.QueryHandler.Handle(
-            new GetTenantByIdQuery(tenant.Id, false),
+            new GetTenantByIdQuery(tenant.Id),
             default);
 
         _fixture.VerifyExistingNotification(

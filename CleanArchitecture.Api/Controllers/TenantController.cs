@@ -42,11 +42,9 @@ public sealed class TenantController : ApiController
     [HttpGet("{id:guid}")]
     [SwaggerOperation("Get a tenant by id")]
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<TenantViewModel>))]
-    public async Task<IActionResult> GetTenantByIdAsync(
-        [FromRoute] Guid id,
-        [FromQuery] bool isDeleted = false)
+    public async Task<IActionResult> GetTenantByIdAsync([FromRoute] Guid id)
     {
-        var tenant = await _tenantService.GetTenantByIdAsync(id, isDeleted);
+        var tenant = await _tenantService.GetTenantByIdAsync(id);
         return Response(tenant);
     }
 
