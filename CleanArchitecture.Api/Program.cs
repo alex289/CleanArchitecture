@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +25,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services
     .AddHealthChecks()
     .AddDbContextCheck<ApplicationDbContext>()
-    .AddApplicationStatus();
+    .AddApplicationStatus()
+    .AddRedis(builder.Configuration["RedisHostName"]!, "Redis");
 
 if (builder.Environment.IsProduction())
 {
