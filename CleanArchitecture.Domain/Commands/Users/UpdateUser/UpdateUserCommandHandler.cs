@@ -100,7 +100,7 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
 
         if (await CommitAsync())
         {
-            await Bus.RaiseEventAsync(new UserUpdatedEvent(user.Id));
+            await Bus.RaiseEventAsync(new UserUpdatedEvent(user.Id, user.TenantId));
         }
     }
 }

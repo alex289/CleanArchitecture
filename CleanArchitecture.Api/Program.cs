@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +31,8 @@ if (builder.Environment.IsProduction())
 {
     builder.Services
         .AddHealthChecks()
-        .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
+        .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!)
+        .AddRedis(builder.Configuration["RedisHostName"]!, "Redis");
 }
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -58,6 +60,19 @@ builder.Services.AddLogging(x => x.AddSimpleConsole(console =>
     console.TimestampFormat = "[yyyy-MM-ddTHH:mm:ss.fff] ";
     console.IncludeScopes = true;
 }));
+
+if (builder.Environment.IsProduction())
+{
+    builder.Services.AddStackExchangeRedisCache(options =>
+    {
+        options.Configuration = builder.Configuration["RedisHostName"];
+        options.InstanceName = "clean-architecture";
+    });
+}
+else
+{
+    builder.Services.AddDistributedMemoryCache();
+}
 
 var app = builder.Build();
 

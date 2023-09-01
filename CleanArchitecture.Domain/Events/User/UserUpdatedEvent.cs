@@ -5,7 +5,10 @@ namespace CleanArchitecture.Domain.Events.User;
 
 public sealed class UserUpdatedEvent : DomainEvent
 {
-    public UserUpdatedEvent(Guid userId) : base(userId)
+    public Guid TenantId { get; }
+
+    public UserUpdatedEvent(Guid userId, Guid tenantId) : base(userId)
     {
+        TenantId = tenantId;
     }
 }

@@ -38,6 +38,19 @@ To run the project, follow these steps:
 
 ### Using docker
 
+Requirements
+> This is only needed if running the API locally or only the docker image
+1. Redis: `docker run --name redis -d -p 6379:6379 -e ALLOW_EMPTY_PASSWORD=yes redis:latest`
+2. Add this to the redis configuration in the Program.cs
+```csharp
+options.ConfigurationOptions = new ConfigurationOptions
+        {
+            AbortOnConnectFail = false,
+            EndPoints = { "localhost", "6379" }
+        };
+```
+
+Running the container
 1. Build the Dockerfile: `docker build -t clean-architecture .`
 2. Run the Container: `docker run -p 80:80 clean-architecture`
 
@@ -50,7 +63,8 @@ To run the project, follow these steps:
 ### Using Kubernetes
 
 1. Change the ConnectionString in the appsettings.json to `Server=clean-architecture-db-service;Database=clean-architecture;Trusted_Connection=False;MultipleActiveResultSets=true;TrustServerCertificate=True;User Id=SA;Password=Password123!#`
-2. Build the docker image and push it to the docker hub (Change the image name in the `k8s-deployment.yml` to your own)
+2. Change the RedisHostName in the appsettings.json to `redis-service`
+3. Build the docker image and push it to the docker hub (Change the image name in the `k8s-deployment.yml` to your own)
 Apply the deployment file: `kubectl apply -f k8s-deployment.yml` (Delete: `kubectl delete -f k8s-deployment.yml`)
 
 

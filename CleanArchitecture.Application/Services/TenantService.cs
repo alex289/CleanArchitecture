@@ -6,20 +6,26 @@ using CleanArchitecture.Application.Queries.Tenants.GetAll;
 using CleanArchitecture.Application.Queries.Tenants.GetTenantById;
 using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Application.ViewModels.Tenants;
+using CleanArchitecture.Domain;
 using CleanArchitecture.Domain.Commands.Tenants.CreateTenant;
 using CleanArchitecture.Domain.Commands.Tenants.DeleteTenant;
 using CleanArchitecture.Domain.Commands.Tenants.UpdateTenant;
+using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Extensions;
 using CleanArchitecture.Domain.Interfaces;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace CleanArchitecture.Application.Services;
 
 public sealed class TenantService : ITenantService
 {
     private readonly IMediatorHandler _bus;
+    private readonly IDistributedCache _distributedCache;
 
-    public TenantService(IMediatorHandler bus)
+    public TenantService(IMediatorHandler bus, IDistributedCache distributedCache)
     {
         _bus = bus;
+        _distributedCache = distributedCache;
     }
 
     public async Task<Guid> CreateTenantAsync(CreateTenantViewModel tenant)
@@ -47,7 +53,16 @@ public sealed class TenantService : ITenantService
 
     public async Task<TenantViewModel?> GetTenantByIdAsync(Guid tenantId, bool deleted)
     {
-        return await _bus.QueryAsync(new GetTenantByIdQuery(tenantId, deleted));
+        var cachedTenant = await _distributedCache.GetOrCreateJsonAsync(
+            CacheKeyGenerator.GetEntityCacheKey<Tenant>(tenantId),
+            async () => await _bus.QueryAsync(new GetTenantByIdQuery(tenantId, deleted)),
+            new DistributedCacheEntryOptions
+            {
+                SlidingExpiration = TimeSpan.FromDays(3),
+                AbsoluteExpiration = DateTimeOffset.Now.AddDays(30)
+            });
+        
+        return cachedTenant;
     }
 
     public async Task<PagedResult<TenantViewModel>> GetAllTenantsAsync(PageQuery query, string searchTerm = "")

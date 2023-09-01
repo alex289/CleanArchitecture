@@ -18,7 +18,7 @@ public sealed class TenantViewModel
         {
             Id = tenant.Id,
             Name = tenant.Name,
-            Users = tenant.Users.Select(UserViewModel.FromUser)
+            Users = tenant.Users.Select(UserViewModel.FromUser).ToList()
         };
     }
 }
