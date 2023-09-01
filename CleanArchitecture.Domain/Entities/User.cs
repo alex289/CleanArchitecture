@@ -10,6 +10,8 @@ public class User : Entity
     public string LastName { get; private set; }
     public string Password { get; private set; }
     public UserRole Role { get; private set; }
+    public UserStatus Status { get; private set; }
+    public DateTimeOffset? LastLoggedinDate { get; private set; }
 
     public string FullName => $"{FirstName}, {LastName}";
 
@@ -23,7 +25,8 @@ public class User : Entity
         string firstName,
         string lastName,
         string password,
-        UserRole role) : base(id)
+        UserRole role,
+        UserStatus status = UserStatus.Active) : base(id)
     {
         Email = email;
         TenantId = tenantId;
@@ -31,6 +34,7 @@ public class User : Entity
         LastName = lastName;
         Password = password;
         Role = role;
+        Status = status;
     }
 
     public void SetEmail(string email)
@@ -61,5 +65,20 @@ public class User : Entity
     public void SetTenant(Guid tenantId)
     {
         TenantId = tenantId;
+    }
+    
+    public void SetLastLoggedinDate(DateTimeOffset lastLoggedinDate)
+    {
+        LastLoggedinDate = lastLoggedinDate;
+    }
+
+    public void SetInactive()
+    {
+        Status = UserStatus.Inactive;
+    }
+    
+    public void SetActive()
+    {
+        Status = UserStatus.Active;
     }
 }
