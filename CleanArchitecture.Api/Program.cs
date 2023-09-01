@@ -25,14 +25,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services
     .AddHealthChecks()
     .AddDbContextCheck<ApplicationDbContext>()
-    .AddApplicationStatus()
-    .AddRedis(builder.Configuration["RedisHostName"]!, "Redis");
+    .AddApplicationStatus();
 
 if (builder.Environment.IsProduction())
 {
     builder.Services
         .AddHealthChecks()
-        .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!);
+        .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!)
+        .AddRedis(builder.Configuration["RedisHostName"]!, "Redis");
 }
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
