@@ -37,9 +37,11 @@ public sealed class SetInactiveUsersService : BackgroundService
 
             try
             {
+                var cutoffDate = DateTimeOffset.UtcNow.AddDays(-30);
+
                 inactiveUsers = await context.Users
                     .Where(user =>
-                        user.LastLoggedinDate < DateTime.UtcNow.AddDays(-30) &&
+                        user.LastLoggedinDate < cutoffDate &&
                         user.Status == UserStatus.Active)
                     .Take(250)
                     .ToListAsync(stoppingToken);
