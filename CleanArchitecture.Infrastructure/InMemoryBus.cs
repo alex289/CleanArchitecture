@@ -3,6 +3,7 @@ using CleanArchitecture.Domain.Commands;
 using CleanArchitecture.Domain.DomainEvents;
 using CleanArchitecture.Domain.EventHandler.Fanout;
 using CleanArchitecture.Domain.Interfaces;
+using CleanArchitecture.Shared.Events;
 using MediatR;
 
 namespace CleanArchitecture.Infrastructure;

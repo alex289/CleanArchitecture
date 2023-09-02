@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using CleanArchitecture.Domain.DomainEvents;
+using CleanArchitecture.Shared.Events;
 
 namespace CleanArchitecture.Domain.EventHandler.Fanout;
 

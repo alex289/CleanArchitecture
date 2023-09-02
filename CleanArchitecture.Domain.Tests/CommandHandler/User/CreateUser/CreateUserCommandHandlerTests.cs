@@ -2,7 +2,7 @@ using System;
 using CleanArchitecture.Domain.Commands.Users.CreateUser;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Errors;
-using CleanArchitecture.Domain.Events.User;
+using CleanArchitecture.Shared.Events.User;
 using NSubstitute;
 using Xunit;
 

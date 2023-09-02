@@ -1,7 +1,7 @@
 using System;
 using CleanArchitecture.Domain.Commands.Users.DeleteUser;
 using CleanArchitecture.Domain.Errors;
-using CleanArchitecture.Domain.Events.User;
+using CleanArchitecture.Shared.Events.User;
 using Xunit;
 
 namespace CleanArchitecture.Domain.Tests.CommandHandler.User.DeleteUser;

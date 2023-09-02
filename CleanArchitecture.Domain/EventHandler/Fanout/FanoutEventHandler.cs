@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Constants;
-using CleanArchitecture.Domain.DomainEvents;
 using CleanArchitecture.Domain.Rabbitmq;
+using CleanArchitecture.Shared.Events;
 
 namespace CleanArchitecture.Domain.EventHandler.Fanout;
 

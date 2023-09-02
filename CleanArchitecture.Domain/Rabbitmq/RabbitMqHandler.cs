@@ -23,9 +23,6 @@ public sealed class RabbitMqHandler : BackgroundService
 
     private readonly IModel? _channel;
 
-    private readonly IConnection? _connection;
-
-
     public RabbitMqHandler(
         RabbitMqConfiguration configuration,
         ILogger<RabbitMqHandler> logger)
@@ -48,8 +45,8 @@ public sealed class RabbitMqHandler : BackgroundService
             DispatchConsumersAsync = true
         };
 
-        _connection = factory.CreateConnection();
-        _channel = _connection.CreateModel();
+        var connection = factory.CreateConnection();
+        _channel = connection.CreateModel();
     }
 
     public void InitializeExchange(string exchangeName, string type = ExchangeType.Fanout)

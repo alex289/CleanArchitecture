@@ -2,10 +2,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Errors;
-using CleanArchitecture.Domain.Events.Tenant;
 using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Domain.Interfaces.Repositories;
 using CleanArchitecture.Domain.Notifications;
+using CleanArchitecture.Shared.Events.Tenant;
 using MediatR;
 
 namespace CleanArchitecture.Domain.Commands.Tenants.UpdateTenant;

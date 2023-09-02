@@ -1,7 +1,7 @@
 using System;
 using CleanArchitecture.Domain.Commands.Tenants.UpdateTenant;
 using CleanArchitecture.Domain.Errors;
-using CleanArchitecture.Domain.Events.Tenant;
+using CleanArchitecture.Shared.Events.Tenant;
 using Xunit;
 
 namespace CleanArchitecture.Domain.Tests.CommandHandler.Tenant.UpdateTenant;

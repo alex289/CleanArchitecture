@@ -6,12 +6,11 @@ using CleanArchitecture.Domain.Commands.Users.CreateUser;
 using CleanArchitecture.Domain.Commands.Users.DeleteUser;
 using CleanArchitecture.Domain.Commands.Users.LoginUser;
 using CleanArchitecture.Domain.Commands.Users.UpdateUser;
-using CleanArchitecture.Domain.DomainEvents;
 using CleanArchitecture.Domain.EventHandler;
 using CleanArchitecture.Domain.EventHandler.Fanout;
-using CleanArchitecture.Domain.Events.Tenant;
-using CleanArchitecture.Domain.Events.User;
 using CleanArchitecture.Domain.Interfaces;
+using CleanArchitecture.Shared.Events.Tenant;
+using CleanArchitecture.Shared.Events.User;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
