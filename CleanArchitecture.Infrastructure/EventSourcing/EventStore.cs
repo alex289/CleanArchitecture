@@ -3,6 +3,7 @@ using CleanArchitecture.Domain.DomainEvents;
 using CleanArchitecture.Domain.DomainNotifications;
 using CleanArchitecture.Domain.Notifications;
 using CleanArchitecture.Infrastructure.Database;
+using CleanArchitecture.Shared.Events;
 using Newtonsoft.Json;
 
 namespace CleanArchitecture.Infrastructure.EventSourcing;

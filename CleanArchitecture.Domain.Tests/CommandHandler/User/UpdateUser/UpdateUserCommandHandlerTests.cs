@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CleanArchitecture.Domain.Commands.Users.UpdateUser;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Errors;
-using CleanArchitecture.Domain.Events.User;
+using CleanArchitecture.Shared.Events.User;
 using NSubstitute;
 using Xunit;
 

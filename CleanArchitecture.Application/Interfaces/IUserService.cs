@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Application.ViewModels.Users;

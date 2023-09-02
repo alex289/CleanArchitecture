@@ -1,7 +1,6 @@
 using System;
-using CleanArchitecture.Domain.DomainEvents;
 
-namespace CleanArchitecture.Domain.Events.Tenant;
+namespace CleanArchitecture.Shared.Events.Tenant;
 
 public sealed class TenantCreatedEvent : DomainEvent
 {

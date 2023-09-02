@@ -49,6 +49,7 @@ options.ConfigurationOptions = new ConfigurationOptions
             EndPoints = { "localhost", "6379" }
         };
 ```
+3. RabbitMq: `docker run --name rabbitmq -d -p 5672:5672 -p 15672:15672 rabbitmq:3-management`
 
 Running the container
 1. Build the Dockerfile: `docker build -t clean-architecture .`
@@ -64,7 +65,8 @@ Running the container
 
 1. Change the ConnectionString in the appsettings.json to `Server=clean-architecture-db-service;Database=clean-architecture;Trusted_Connection=False;MultipleActiveResultSets=true;TrustServerCertificate=True;User Id=SA;Password=Password123!#`
 2. Change the RedisHostName in the appsettings.json to `redis-service`
-3. Build the docker image and push it to the docker hub (Change the image name in the `k8s-deployment.yml` to your own)
+3. Change the RabbitMQ Host in the appsettings.json to `rabbitmq-service`
+4. Build the docker image and push it to the docker hub (Change the image name in the `k8s-deployment.yml` to your own)
 Apply the deployment file: `kubectl apply -f k8s-deployment.yml` (Delete: `kubectl delete -f k8s-deployment.yml`)
 
 

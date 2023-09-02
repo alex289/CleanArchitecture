@@ -15,8 +15,8 @@ namespace CleanArchitecture.Api.BackgroundServices;
 
 public sealed class SetInactiveUsersService : BackgroundService
 {
-    private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<SetInactiveUsersService> _logger;
+    private readonly IServiceProvider _serviceProvider;
 
     public SetInactiveUsersService(
         IServiceProvider serviceProvider,
@@ -55,7 +55,7 @@ public sealed class SetInactiveUsersService : BackgroundService
             {
                 user.SetInactive();
             }
-            
+
             try
             {
                 await context.SaveChangesAsync(stoppingToken);
@@ -64,7 +64,7 @@ public sealed class SetInactiveUsersService : BackgroundService
             {
                 _logger.LogError(ex, "Error while setting users to inactive");
             }
-            
+
             await Task.Delay(TimeSpan.FromDays(1), stoppingToken);
         }
     }

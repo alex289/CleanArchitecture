@@ -1,7 +1,7 @@
 using System;
 using MediatR;
 
-namespace CleanArchitecture.Domain.DomainEvents;
+namespace CleanArchitecture.Shared.Events;
 
 public abstract class DomainEvent : Message, INotification
 {

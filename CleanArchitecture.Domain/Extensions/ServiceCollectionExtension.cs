@@ -7,9 +7,10 @@ using CleanArchitecture.Domain.Commands.Users.DeleteUser;
 using CleanArchitecture.Domain.Commands.Users.LoginUser;
 using CleanArchitecture.Domain.Commands.Users.UpdateUser;
 using CleanArchitecture.Domain.EventHandler;
-using CleanArchitecture.Domain.Events.Tenant;
-using CleanArchitecture.Domain.Events.User;
+using CleanArchitecture.Domain.EventHandler.Fanout;
 using CleanArchitecture.Domain.Interfaces;
+using CleanArchitecture.Shared.Events.Tenant;
+using CleanArchitecture.Shared.Events.User;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -36,6 +37,9 @@ public static class ServiceCollectionExtension
 
     public static IServiceCollection AddNotificationHandlers(this IServiceCollection services)
     {
+        // Fanout
+        services.AddScoped<IFanoutEventHandler, FanoutEventHandler>();
+
         // User
         services.AddScoped<INotificationHandler<UserCreatedEvent>, UserEventHandler>();
         services.AddScoped<INotificationHandler<UserUpdatedEvent>, UserEventHandler>();

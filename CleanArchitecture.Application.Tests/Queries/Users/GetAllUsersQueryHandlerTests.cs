@@ -16,7 +16,7 @@ public sealed class GetAllUsersQueryHandlerTests
     public async Task Should_Get_All_Users()
     {
         var user = _fixture.SetupUserAsync();
-        
+
         var query = new PageQuery
         {
             PageSize = 1,
@@ -28,7 +28,7 @@ public sealed class GetAllUsersQueryHandlerTests
             default);
 
         _fixture.VerifyNoDomainNotification();
-        
+
         result.PageSize.Should().Be(query.PageSize);
         result.Page.Should().Be(query.Page);
         result.Count.Should().Be(1);
@@ -43,7 +43,7 @@ public sealed class GetAllUsersQueryHandlerTests
     public async Task Should_Not_Get_Deleted_Users()
     {
         _fixture.SetupDeletedUserAsync();
-        
+
         var query = new PageQuery
         {
             PageSize = 10,
@@ -55,7 +55,7 @@ public sealed class GetAllUsersQueryHandlerTests
             default);
 
         _fixture.VerifyNoDomainNotification();
-        
+
         result.PageSize.Should().Be(query.PageSize);
         result.Page.Should().Be(query.Page);
         result.Count.Should().Be(0);

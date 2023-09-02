@@ -1,5 +1,5 @@
 using System;
-using CleanArchitecture.Domain.DomainEvents;
+using CleanArchitecture.Shared.Events;
 
 namespace CleanArchitecture.Domain.Notifications;
 

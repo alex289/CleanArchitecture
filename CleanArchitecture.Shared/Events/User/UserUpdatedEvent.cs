@@ -1,7 +1,6 @@
 using System;
-using CleanArchitecture.Domain.DomainEvents;
 
-namespace CleanArchitecture.Domain.Events.User;
+namespace CleanArchitecture.Shared.Events.User;
 
 public sealed class UserUpdatedEvent : DomainEvent
 {

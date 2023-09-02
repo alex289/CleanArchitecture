@@ -7,7 +7,10 @@ services:
     ports:
       - 80:80
     depends_on:
-      - db
+      db:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
     links:
       - db
     healthcheck:
@@ -15,6 +18,7 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
+
   db:
     image: mcr.microsoft.com/mssql/server
     environment:
@@ -22,6 +26,7 @@ services:
       - SA_PASSWORD=Password123!#
     ports:
       - 1433:1433
+
   redis:
     image: docker.io/bitnami/redis:7.2
     environment:
@@ -32,6 +37,24 @@ services:
       - '6379:6379'
     volumes:
       - 'redis_data:/bitnami/redis/data'
+
+  rabbitmq:
+    image: "rabbitmq:3-management"
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=DOIA9234JF
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
 volumes:
+  rabbitmq_data:
   redis_data:
     driver: local

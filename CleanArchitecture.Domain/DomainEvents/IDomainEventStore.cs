@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using CleanArchitecture.Shared.Events;
 
 namespace CleanArchitecture.Domain.DomainEvents;
 

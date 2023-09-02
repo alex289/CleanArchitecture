@@ -1,7 +1,7 @@
 using System;
 using CleanArchitecture.Domain.Commands.Users.DeleteUser;
 using CleanArchitecture.Domain.Errors;
-using CleanArchitecture.Domain.Events.User;
+using CleanArchitecture.Shared.Events.User;
 using Xunit;
 
 namespace CleanArchitecture.Domain.Tests.CommandHandler.User.DeleteUser;
@@ -42,7 +42,7 @@ public sealed class DeleteUserCommandHandlerTests
                 ErrorCodes.ObjectNotFound,
                 $"There is no user with Id {command.UserId}");
     }
-    
+
     [Fact]
     public void Should_Not_Delete_User_Insufficient_Permissions()
     {

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Application.Queries.Tenants.GetAll;
@@ -61,7 +60,7 @@ public sealed class TenantService : ITenantService
                 SlidingExpiration = TimeSpan.FromDays(3),
                 AbsoluteExpiration = DateTimeOffset.Now.AddDays(30)
             });
-        
+
         return cachedTenant;
     }
 

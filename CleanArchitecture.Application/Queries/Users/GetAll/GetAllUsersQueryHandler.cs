@@ -29,14 +29,14 @@ public sealed class GetAllUsersQueryHandler :
 
         if (!string.IsNullOrWhiteSpace(request.SearchTerm))
         {
-            usersQuery = usersQuery.Where(user => 
+            usersQuery = usersQuery.Where(user =>
                 user.Email.Contains(request.SearchTerm) ||
                 user.FirstName.Contains(request.SearchTerm) ||
                 user.LastName.Contains(request.SearchTerm));
         }
-        
+
         var totalCount = await usersQuery.CountAsync(cancellationToken);
-        
+
         var users = await usersQuery
             .Skip((request.Query.Page - 1) * request.Query.PageSize)
             .Take(request.Query.PageSize)

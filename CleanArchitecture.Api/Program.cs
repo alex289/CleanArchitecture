@@ -3,6 +3,7 @@ using CleanArchitecture.Api.Extensions;
 using CleanArchitecture.Application.Extensions;
 using CleanArchitecture.Application.gRPC;
 using CleanArchitecture.Domain.Extensions;
+using CleanArchitecture.Domain.Rabbitmq.Extensions;
 using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.Infrastructure.Extensions;
 using HealthChecks.ApplicationStatus.DependencyInjection;
@@ -14,7 +15,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,10 +29,17 @@ builder.Services
 
 if (builder.Environment.IsProduction())
 {
+    var rabbitHost = builder.Configuration["RabbitMQ:Host"];
+    var rabbitUser = builder.Configuration["RabbitMQ:Username"];
+    var rabbitPass = builder.Configuration["RabbitMQ:Password"];
+
     builder.Services
         .AddHealthChecks()
         .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!)
-        .AddRedis(builder.Configuration["RedisHostName"]!, "Redis");
+        .AddRedis(builder.Configuration["RedisHostName"]!, "Redis")
+        .AddRabbitMQ(
+            rabbitConnectionString: $"amqp://{rabbitUser}:{rabbitPass}@{rabbitHost}",
+            name: "RabbitMQ");
 }
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -50,6 +57,8 @@ builder.Services.AddServices();
 builder.Services.AddCommandHandlers();
 builder.Services.AddNotificationHandlers();
 builder.Services.AddApiUser();
+
+builder.Services.AddRabbitMqHandler(builder.Configuration, "RabbitMQ");
 
 builder.Services.AddHostedService<SetInactiveUsersService>();
 

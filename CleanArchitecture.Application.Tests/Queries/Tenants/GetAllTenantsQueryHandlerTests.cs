@@ -32,7 +32,7 @@ public sealed class GetAllTenantsQueryHandlerTests
         result.PageSize.Should().Be(query.PageSize);
         result.Page.Should().Be(query.Page);
         result.Count.Should().Be(1);
-        
+
         tenant.Should().BeEquivalentTo(result.Items.First());
     }
 
@@ -40,7 +40,7 @@ public sealed class GetAllTenantsQueryHandlerTests
     public async Task Should_Not_Get_Deleted_Tenant()
     {
         _fixture.SetupTenant(true);
-        
+
         var query = new PageQuery
         {
             PageSize = 10,
@@ -50,7 +50,7 @@ public sealed class GetAllTenantsQueryHandlerTests
         var result = await _fixture.QueryHandler.Handle(
             new GetAllTenantsQuery(query),
             default);
-        
+
         result.PageSize.Should().Be(query.PageSize);
         result.Page.Should().Be(query.Page);
         result.Count.Should().Be(0);

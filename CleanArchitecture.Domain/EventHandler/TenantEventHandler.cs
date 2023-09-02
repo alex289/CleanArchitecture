@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Entities;
-using CleanArchitecture.Domain.Events.Tenant;
+using CleanArchitecture.Shared.Events.Tenant;
 using MediatR;
 using Microsoft.Extensions.Caching.Distributed;
 

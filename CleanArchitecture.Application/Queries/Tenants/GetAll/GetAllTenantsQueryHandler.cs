@@ -27,21 +27,21 @@ public sealed class GetAllTenantsQueryHandler :
             .GetAllNoTracking()
             .Include(x => x.Users)
             .Where(x => !x.Deleted);
-        
+
         if (!string.IsNullOrWhiteSpace(request.SearchTerm))
         {
-            tenantsQuery = tenantsQuery.Where(tenant => 
+            tenantsQuery = tenantsQuery.Where(tenant =>
                 tenant.Name.Contains(request.SearchTerm));
         }
-        
+
         var totalCount = await tenantsQuery.CountAsync(cancellationToken);
-        
+
         var tenants = await tenantsQuery
             .Skip((request.Query.Page - 1) * request.Query.PageSize)
             .Take(request.Query.PageSize)
             .Select(tenant => TenantViewModel.FromTenant(tenant))
             .ToListAsync(cancellationToken);
-        
+
         return new PagedResult<TenantViewModel>(
             totalCount, tenants, request.Query.Page, request.Query.PageSize);
     }

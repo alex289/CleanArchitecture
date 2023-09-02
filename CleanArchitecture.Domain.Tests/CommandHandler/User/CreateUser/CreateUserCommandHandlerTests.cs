@@ -2,7 +2,7 @@ using System;
 using CleanArchitecture.Domain.Commands.Users.CreateUser;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Errors;
-using CleanArchitecture.Domain.Events.User;
+using CleanArchitecture.Shared.Events.User;
 using NSubstitute;
 using Xunit;
 
@@ -61,7 +61,7 @@ public sealed class CreateUserCommandHandlerTests
                 DomainErrorCodes.User.UserAlreadyExists,
                 $"There is already a user with Id {command.UserId}");
     }
-    
+
     [Fact]
     public void Should_Not_Create_Already_Existing_Email()
     {
