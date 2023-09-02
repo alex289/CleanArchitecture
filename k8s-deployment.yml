@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: clean-architecture-app
+  name: clean-architecture-deployment
 spec:
   replicas: 1
   selector:
@@ -15,7 +15,7 @@ spec:
       containers:
       - name: clean-architecture-app
         # Replace this with the path to your built image
-        image: alexdev28/clean-architecture
+        image: alexdev28/clean-architecture:latest
         ports:
         - containerPort: 80
 
@@ -23,7 +23,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: clean-architecture-service
+  name: clean-architecture
 spec:
   selector:
     app: clean-architecture-app
@@ -37,7 +37,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sql-server
+  name: sql-server-deployment
 spec:
   replicas: 1
   selector:
@@ -50,7 +50,7 @@ spec:
     spec:
       containers:
       - name: sql-server
-        image: mcr.microsoft.com/mssql/server
+        image: mcr.microsoft.com/mssql/server:latest
         env:
         - name: ACCEPT_EULA
           value: "Y"
@@ -63,7 +63,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: clean-architecture-db-service
+  name: sql-server
 spec:
   selector:
     app: sql-server
@@ -71,7 +71,6 @@ spec:
     - protocol: TCP
       port: 1433
       targetPort: 1433
-  type: ClusterIP
 
 ---
 apiVersion: apps/v1
@@ -110,7 +109,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: redis-service
+  name: redis
 spec:
   selector:
     app: redis
@@ -156,7 +155,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: rabbitmq-service
+  name: rabbitmq
 spec:
   selector:
     app: rabbitmq
