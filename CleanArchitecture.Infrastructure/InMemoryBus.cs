@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Commands;
 using CleanArchitecture.Domain.DomainEvents;
+using CleanArchitecture.Domain.EventHandler.Fanout;
 using CleanArchitecture.Domain.Interfaces;
 using MediatR;
 
@@ -10,13 +11,16 @@ public sealed class InMemoryBus : IMediatorHandler
 {
     private readonly IDomainEventStore _domainEventStore;
     private readonly IMediator _mediator;
+    private readonly IFanoutEventHandler _fanoutEventHandler;
 
     public InMemoryBus(
         IMediator mediator,
-        IDomainEventStore domainEventStore)
+        IDomainEventStore domainEventStore,
+        IFanoutEventHandler fanoutEventHandler)
     {
         _mediator = mediator;
         _domainEventStore = domainEventStore;
+        _fanoutEventHandler = fanoutEventHandler;
     }
 
     public Task<TResponse> QueryAsync<TResponse>(IRequest<TResponse> query)
@@ -29,6 +33,8 @@ public sealed class InMemoryBus : IMediatorHandler
         await _domainEventStore.SaveAsync(@event);
 
         await _mediator.Publish(@event);
+        
+        await _fanoutEventHandler.HandleDomainEventAsync(@event);
     }
 
     public Task SendCommandAsync<T>(T command) where T : CommandBase

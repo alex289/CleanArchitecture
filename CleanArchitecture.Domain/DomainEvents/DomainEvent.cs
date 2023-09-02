@@ -3,6 +3,7 @@ using MediatR;
 
 namespace CleanArchitecture.Domain.DomainEvents;
 
+// Todo: Move this and all events to shared
 public abstract class DomainEvent : Message, INotification
 {
     public DateTime Timestamp { get; private set; }
