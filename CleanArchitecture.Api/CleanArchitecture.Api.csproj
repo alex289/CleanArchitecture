@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="AspNetCore.HealthChecks.ApplicationStatus" Version="7.0.0" />
+        <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="7.0.0" />
         <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="7.0.0" />
         <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="7.0.0" />
         <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="7.1.0" />
