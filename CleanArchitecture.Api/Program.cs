@@ -3,6 +3,7 @@ using CleanArchitecture.Api.Extensions;
 using CleanArchitecture.Application.Extensions;
 using CleanArchitecture.Application.gRPC;
 using CleanArchitecture.Domain.Extensions;
+using CleanArchitecture.Domain.Rabbitmq.Extensions;
 using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.Infrastructure.Extensions;
 using HealthChecks.ApplicationStatus.DependencyInjection;
@@ -50,6 +51,8 @@ builder.Services.AddServices();
 builder.Services.AddCommandHandlers();
 builder.Services.AddNotificationHandlers();
 builder.Services.AddApiUser();
+
+builder.Services.AddRabbitMqHandler(builder.Configuration, "RabbitMQ");
 
 builder.Services.AddHostedService<SetInactiveUsersService>();
 
