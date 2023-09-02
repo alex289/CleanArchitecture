@@ -29,18 +29,17 @@ builder.Services
 
 if (builder.Environment.IsProduction())
 {
-    var rabbitMqConfig = builder.Configuration.GetSection("RabbitMQ");
-
-    // Todo: Check if this works
-    var host = rabbitMqConfig["Host"]!;
-    var username = rabbitMqConfig["Username"]!;
-    var password = rabbitMqConfig["Password"]!;
+    var rabbitHost = builder.Configuration["RabbitMQ:Host"];
+    var rabbitUser = builder.Configuration["RabbitMQ:Username"];
+    var rabbitPass = builder.Configuration["RabbitMQ:Password"];
 
     builder.Services
         .AddHealthChecks()
         .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!)
         .AddRedis(builder.Configuration["RedisHostName"]!, "Redis")
-        .AddRabbitMQ($"amqp://{username}:{password}@{host}:5672", null, "RabbitMQ");
+        .AddRabbitMQ(
+            rabbitConnectionString: $"amqp://{rabbitUser}:{rabbitPass}@{rabbitHost}",
+            name: "RabbitMQ");
 }
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
