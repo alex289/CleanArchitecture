@@ -49,6 +49,7 @@ options.ConfigurationOptions = new ConfigurationOptions
             EndPoints = { "localhost", "6379" }
         };
 ```
+3. RabbitMq: `docker run --name rabbitmq -d -p 5672:5672 -p 15672:15672 rabbitmq:3-management`
 
 Running the container
 1. Build the Dockerfile: `docker build -t clean-architecture .`
