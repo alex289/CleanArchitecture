@@ -142,9 +142,9 @@ spec:
             - containerPort: 15672
           env:
             - name: RABBITMQ_DEFAULT_USER
-              value: guest
+              value: admin
             - name: RABBITMQ_DEFAULT_PASS
-              value: guest
+              value: DOIA9234JF
           volumeMounts:
             - name: rabbitmq-data
               mountPath: /var/lib/rabbitmq
@@ -161,9 +161,11 @@ spec:
   selector:
     app: rabbitmq
   ports:
-    - protocol: TCP
+    - name: rabbitmq-port
+      protocol: TCP
       port: 5672
       targetPort: 5672
-    - protocol: TCP
+    - name: rabbitmq-management-port
+      protocol: TCP
       port: 15672
       targetPort: 15672

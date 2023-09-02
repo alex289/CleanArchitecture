@@ -13,6 +13,7 @@ public sealed class FanoutEventHandler : IFanoutEventHandler
         RabbitMqHandler rabbitMqHandler)
     {
         _rabbitMqHandler = rabbitMqHandler;
+        _rabbitMqHandler.InitializeExchange(Messaging.ExchangeNameNotifications);
     }
 
     public Task<DomainEvent> HandleDomainEventAsync(DomainEvent @event)
