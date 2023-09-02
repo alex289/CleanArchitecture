@@ -23,7 +23,6 @@ public sealed class PagedResult<T>
     // used by json deserializer
     private PagedResult()
     {
-
     }
 
     public static PagedResult<T> Empty()

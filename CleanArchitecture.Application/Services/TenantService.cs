@@ -60,7 +60,7 @@ public sealed class TenantService : ITenantService
                 SlidingExpiration = TimeSpan.FromDays(3),
                 AbsoluteExpiration = DateTimeOffset.Now.AddDays(30)
             });
-        
+
         return cachedTenant;
     }
 

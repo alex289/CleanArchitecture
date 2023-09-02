@@ -66,7 +66,7 @@ public class User : Entity
     {
         TenantId = tenantId;
     }
-    
+
     public void SetLastLoggedinDate(DateTimeOffset lastLoggedinDate)
     {
         LastLoggedinDate = lastLoggedinDate;
@@ -76,7 +76,7 @@ public class User : Entity
     {
         Status = UserStatus.Inactive;
     }
-    
+
     public void SetActive()
     {
         Status = UserStatus.Active;

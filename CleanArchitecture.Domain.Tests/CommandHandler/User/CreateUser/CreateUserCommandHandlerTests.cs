@@ -61,7 +61,7 @@ public sealed class CreateUserCommandHandlerTests
                 DomainErrorCodes.User.UserAlreadyExists,
                 $"There is already a user with Id {command.UserId}");
     }
-    
+
     [Fact]
     public void Should_Not_Create_Already_Existing_Email()
     {

@@ -39,7 +39,7 @@ public static class ServiceCollectionExtension
     {
         // Fanout
         services.AddScoped<IFanoutEventHandler, FanoutEventHandler>();
-        
+
         // User
         services.AddScoped<INotificationHandler<UserCreatedEvent>, UserEventHandler>();
         services.AddScoped<INotificationHandler<UserUpdatedEvent>, UserEventHandler>();

@@ -35,7 +35,7 @@ if (builder.Environment.IsProduction())
     var host = rabbitMqConfig["Host"]!;
     var username = rabbitMqConfig["Username"]!;
     var password = rabbitMqConfig["Password"]!;
-    
+
     builder.Services
         .AddHealthChecks()
         .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!)

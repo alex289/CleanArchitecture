@@ -13,6 +13,7 @@ namespace CleanArchitecture.Domain.Rabbitmq;
 
 public sealed class RabbitMqHandler : BackgroundService
 {
+    private readonly IModel? _channel;
     private readonly RabbitMqConfiguration _configuration;
 
     private readonly ConcurrentDictionary<string, List<ConsumeEventHandler>> _consumers = new();
@@ -20,8 +21,6 @@ public sealed class RabbitMqHandler : BackgroundService
     private readonly ILogger<RabbitMqHandler> _logger;
 
     private readonly ConcurrentQueue<IRabbitMqAction> _pendingActions = new();
-
-    private readonly IModel? _channel;
 
     public RabbitMqHandler(
         RabbitMqConfiguration configuration,

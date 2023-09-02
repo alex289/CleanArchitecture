@@ -11,8 +11,8 @@ namespace CleanArchitecture.Infrastructure;
 public sealed class InMemoryBus : IMediatorHandler
 {
     private readonly IDomainEventStore _domainEventStore;
-    private readonly IMediator _mediator;
     private readonly IFanoutEventHandler _fanoutEventHandler;
+    private readonly IMediator _mediator;
 
     public InMemoryBus(
         IMediator mediator,
@@ -34,7 +34,7 @@ public sealed class InMemoryBus : IMediatorHandler
         await _domainEventStore.SaveAsync(@event);
 
         await _mediator.Publish(@event);
-        
+
         await _fanoutEventHandler.HandleDomainEventAsync(@event);
     }
 

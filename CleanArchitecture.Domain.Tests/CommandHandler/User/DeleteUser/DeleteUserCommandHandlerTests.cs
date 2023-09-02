@@ -42,7 +42,7 @@ public sealed class DeleteUserCommandHandlerTests
                 ErrorCodes.ObjectNotFound,
                 $"There is no user with Id {command.UserId}");
     }
-    
+
     [Fact]
     public void Should_Not_Delete_User_Insufficient_Permissions()
     {

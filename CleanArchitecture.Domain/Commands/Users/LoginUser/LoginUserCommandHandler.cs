@@ -68,7 +68,7 @@ public sealed class LoginUserCommandHandler : CommandHandlerBase,
 
             return "";
         }
-        
+
         user.SetActive();
         user.SetLastLoggedinDate(DateTimeOffset.Now);
 
