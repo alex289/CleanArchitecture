@@ -36,7 +36,9 @@ spec:
               value: "FLUSHDB,FLUSHALL"
           ports:
             - containerPort: 6379
-          resources:
-            requests:
-              cpu: 100m
-              memory: 100Mi
+          volumeMounts:
+            - name: redis-data
+              mountPath: /bitnami/redis/data
+      volumes:
+        - name: redis-data
+          emptyDir: {}
