@@ -24,7 +24,7 @@ public sealed class GetAllTenantsQueryHandlerTests
         };
 
         var result = await _fixture.QueryHandler.Handle(
-            new GetAllTenantsQuery(query),
+            new GetAllTenantsQuery(query, false),
             default);
 
         _fixture.VerifyNoDomainNotification();
@@ -48,7 +48,7 @@ public sealed class GetAllTenantsQueryHandlerTests
         };
 
         var result = await _fixture.QueryHandler.Handle(
-            new GetAllTenantsQuery(query),
+            new GetAllTenantsQuery(query, false),
             default);
 
         result.PageSize.Should().Be(query.PageSize);

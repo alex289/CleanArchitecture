@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using CleanArchitecture.Application.Queries.Tenants.GetAll;
+using CleanArchitecture.Application.SortProviders;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Interfaces.Repositories;
 using MockQueryable.NSubstitute;
@@ -16,8 +17,9 @@ public sealed class GetAllTenantsTestFixture : QueryHandlerBaseFixture
     public GetAllTenantsTestFixture()
     {
         TenantRepository = Substitute.For<ITenantRepository>();
+        var sortingProvider = new TenantViewModelSortProvider();
 
-        QueryHandler = new GetAllTenantsQueryHandler(TenantRepository);
+        QueryHandler = new GetAllTenantsQueryHandler(TenantRepository, sortingProvider);
     }
 
     public Tenant SetupTenant(bool deleted = false)

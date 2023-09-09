@@ -4,6 +4,7 @@ using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Application.Queries.Users.GetAll;
 using CleanArchitecture.Application.Queries.Users.GetUserById;
 using CleanArchitecture.Application.ViewModels;
+using CleanArchitecture.Application.ViewModels.Sorting;
 using CleanArchitecture.Application.ViewModels.Users;
 using CleanArchitecture.Domain.Commands.Users.ChangePassword;
 using CleanArchitecture.Domain.Commands.Users.CreateUser;
@@ -35,9 +36,13 @@ public sealed class UserService : IUserService
         return await _bus.QueryAsync(new GetUserByIdQuery(_user.GetUserId()));
     }
 
-    public async Task<PagedResult<UserViewModel>> GetAllUsersAsync(PageQuery query, string searchTerm = "")
+    public async Task<PagedResult<UserViewModel>> GetAllUsersAsync(
+        PageQuery query,
+        bool includeDeleted,
+        string searchTerm = "",
+        SortQuery? sortQuery = null)
     {
-        return await _bus.QueryAsync(new GetAllUsersQuery(query, searchTerm));
+        return await _bus.QueryAsync(new GetAllUsersQuery(query, includeDeleted, searchTerm, sortQuery));
     }
 
     public async Task<Guid> CreateUserAsync(CreateUserViewModel user)

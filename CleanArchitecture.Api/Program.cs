@@ -54,6 +54,7 @@ builder.Services.AddAuth(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration, "CleanArchitecture.Infrastructure");
 builder.Services.AddQueryHandlers();
 builder.Services.AddServices();
+builder.Services.AddSortProviders();
 builder.Services.AddCommandHandlers();
 builder.Services.AddNotificationHandlers();
 builder.Services.AddApiUser();

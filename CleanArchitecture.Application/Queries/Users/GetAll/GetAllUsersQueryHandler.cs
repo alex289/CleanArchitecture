@@ -1,8 +1,11 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CleanArchitecture.Application.Extensions;
 using CleanArchitecture.Application.ViewModels;
+using CleanArchitecture.Application.ViewModels.Sorting;
 using CleanArchitecture.Application.ViewModels.Users;
+using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Interfaces.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +16,14 @@ public sealed class GetAllUsersQueryHandler :
     IRequestHandler<GetAllUsersQuery, PagedResult<UserViewModel>>
 {
     private readonly IUserRepository _userRepository;
+    private readonly ISortingExpressionProvider<UserViewModel, User> _sortingExpressionProvider;
 
-    public GetAllUsersQueryHandler(IUserRepository userRepository)
+    public GetAllUsersQueryHandler(
+        IUserRepository userRepository,
+        ISortingExpressionProvider<UserViewModel, User> sortingExpressionProvider)
     {
         _userRepository = userRepository;
+        _sortingExpressionProvider = sortingExpressionProvider;
     }
 
     public async Task<PagedResult<UserViewModel>> Handle(
@@ -25,7 +32,7 @@ public sealed class GetAllUsersQueryHandler :
     {
         var usersQuery = _userRepository
             .GetAllNoTracking()
-            .Where(x => !x.Deleted);
+            .Where(x => request.IncludeDeleted || !x.Deleted);
 
         if (!string.IsNullOrWhiteSpace(request.SearchTerm))
         {
@@ -36,6 +43,8 @@ public sealed class GetAllUsersQueryHandler :
         }
 
         var totalCount = await usersQuery.CountAsync(cancellationToken);
+
+        usersQuery = usersQuery.GetOrderedQueryable(request.SortQuery, _sortingExpressionProvider);
 
         var users = await usersQuery
             .Skip((request.Query.Page - 1) * request.Query.PageSize)
