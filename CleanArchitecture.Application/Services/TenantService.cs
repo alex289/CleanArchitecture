@@ -4,6 +4,7 @@ using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Application.Queries.Tenants.GetAll;
 using CleanArchitecture.Application.Queries.Tenants.GetTenantById;
 using CleanArchitecture.Application.ViewModels;
+using CleanArchitecture.Application.ViewModels.Sorting;
 using CleanArchitecture.Application.ViewModels.Tenants;
 using CleanArchitecture.Domain;
 using CleanArchitecture.Domain.Commands.Tenants.CreateTenant;
@@ -64,8 +65,12 @@ public sealed class TenantService : ITenantService
         return cachedTenant;
     }
 
-    public async Task<PagedResult<TenantViewModel>> GetAllTenantsAsync(PageQuery query, string searchTerm = "")
+    public async Task<PagedResult<TenantViewModel>> GetAllTenantsAsync(
+        PageQuery query,
+        bool includeDeleted,
+        string searchTerm = "",
+        SortQuery? sortQuery = null)
     {
-        return await _bus.QueryAsync(new GetAllTenantsQuery(query, searchTerm));
+        return await _bus.QueryAsync(new GetAllTenantsQuery(query, includeDeleted, searchTerm, sortQuery));
     }
 }

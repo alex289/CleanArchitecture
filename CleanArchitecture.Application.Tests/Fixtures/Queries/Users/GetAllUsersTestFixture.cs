@@ -1,5 +1,6 @@
 using System;
 using CleanArchitecture.Application.Queries.Users.GetAll;
+using CleanArchitecture.Application.SortProviders;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Interfaces.Repositories;
@@ -17,8 +18,9 @@ public sealed class GetAllUsersTestFixture : QueryHandlerBaseFixture
     public GetAllUsersTestFixture()
     {
         UserRepository = Substitute.For<IUserRepository>();
+        var sortingProvider = new UserViewModelSortProvider();
 
-        Handler = new GetAllUsersQueryHandler(UserRepository);
+        Handler = new GetAllUsersQueryHandler(UserRepository, sortingProvider);
     }
 
     public User SetupUserAsync()

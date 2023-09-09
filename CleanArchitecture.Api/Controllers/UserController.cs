@@ -1,9 +1,13 @@
 using System;
 using System.Threading.Tasks;
 using CleanArchitecture.Api.Models;
+using CleanArchitecture.Api.Swagger;
 using CleanArchitecture.Application.Interfaces;
+using CleanArchitecture.Application.SortProviders;
 using CleanArchitecture.Application.ViewModels;
+using CleanArchitecture.Application.ViewModels.Sorting;
 using CleanArchitecture.Application.ViewModels.Users;
+using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Notifications;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -31,11 +35,15 @@ public sealed class UserController : ApiController
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<PagedResult<UserViewModel>>))]
     public async Task<IActionResult> GetAllUsersAsync(
         [FromQuery] PageQuery query,
-        [FromQuery] string searchTerm = "")
+        [FromQuery] string searchTerm = "",
+        [FromQuery] bool includeDeleted = false,
+        [FromQuery, SortableFieldsAttribute<UserViewModelSortProvider, UserViewModel, User>] SortQuery? sortQuery = null)
     {
         var users = await _userService.GetAllUsersAsync(
             query,
-            searchTerm);
+            includeDeleted,
+            searchTerm,
+            sortQuery);
         return Response(users);
     }
 

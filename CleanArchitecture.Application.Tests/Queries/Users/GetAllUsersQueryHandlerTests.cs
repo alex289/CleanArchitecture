@@ -24,7 +24,7 @@ public sealed class GetAllUsersQueryHandlerTests
         };
 
         var result = await _fixture.Handler.Handle(
-            new GetAllUsersQuery(query, user.Email),
+            new GetAllUsersQuery(query, false, user.Email),
             default);
 
         _fixture.VerifyNoDomainNotification();
@@ -51,7 +51,7 @@ public sealed class GetAllUsersQueryHandlerTests
         };
 
         var result = await _fixture.Handler.Handle(
-            new GetAllUsersQuery(query),
+            new GetAllUsersQuery(query, false),
             default);
 
         _fixture.VerifyNoDomainNotification();
