@@ -1,10 +1,13 @@
 using System;
 using System.Threading.Tasks;
 using CleanArchitecture.Api.Models;
+using CleanArchitecture.Api.Swagger;
 using CleanArchitecture.Application.Interfaces;
+using CleanArchitecture.Application.SortProviders;
 using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Application.ViewModels.Sorting;
 using CleanArchitecture.Application.ViewModels.Tenants;
+using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Notifications;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -34,7 +37,7 @@ public sealed class TenantController : ApiController
         [FromQuery] PageQuery query,
         [FromQuery] string searchTerm = "",
         [FromQuery] bool includeDeleted = false,
-        [FromQuery] SortQuery? sortQuery = null)
+        [FromQuery, SortableFieldsAttribute<TenantViewModelSortProvider, TenantViewModel, Tenant>] SortQuery? sortQuery = null)
     {
         var tenants = await _tenantService.GetAllTenantsAsync(
             query,

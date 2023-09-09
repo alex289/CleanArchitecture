@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using CleanArchitecture.Api.Swagger;
 using CleanArchitecture.Domain.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -33,6 +34,10 @@ public static class ServiceCollectionExtension
                 Type = SecuritySchemeType.Http,
                 Scheme = "bearer"
             });
+
+            c.ParameterFilter<SortableFieldsAttributeFilter>();
+
+            c.SupportNonNullableReferenceTypes();
 
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
             {

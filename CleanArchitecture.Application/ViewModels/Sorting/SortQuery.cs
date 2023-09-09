@@ -10,6 +10,7 @@ public sealed class SortQuery
 
     public ReadOnlyCollection<SortParameter> Parameters { get; private set; } = new(Array.Empty<SortParameter>());
 
+
     [FromQuery(Name = "order_by")]
     public string? Query
     {
