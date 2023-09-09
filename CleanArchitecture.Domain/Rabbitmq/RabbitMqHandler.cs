@@ -52,7 +52,7 @@ public sealed class RabbitMqHandler : BackgroundService
     {
         if (!_configuration.Enabled)
         {
-            _logger.LogInformation($"RabbitMQ is disabled. Skipping the creation of exchange {exchangeName}.");
+            _logger.LogInformation("RabbitMQ is disabled. Skipping the creation of exchange {exchangeName}.", exchangeName);
             return;
         }
 
@@ -159,7 +159,7 @@ public sealed class RabbitMqHandler : BackgroundService
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Error while handling event in queue {ea.RoutingKey}");
+                _logger.LogError(ex, "Error while handling event in queue {RoutingKey}", ea.RoutingKey);
             }
         }
 

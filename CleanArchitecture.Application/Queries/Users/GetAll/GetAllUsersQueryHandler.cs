@@ -15,8 +15,8 @@ namespace CleanArchitecture.Application.Queries.Users.GetAll;
 public sealed class GetAllUsersQueryHandler :
     IRequestHandler<GetAllUsersQuery, PagedResult<UserViewModel>>
 {
-    private readonly IUserRepository _userRepository;
     private readonly ISortingExpressionProvider<UserViewModel, User> _sortingExpressionProvider;
+    private readonly IUserRepository _userRepository;
 
     public GetAllUsersQueryHandler(
         IUserRepository userRepository,

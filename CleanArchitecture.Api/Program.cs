@@ -38,7 +38,7 @@ if (builder.Environment.IsProduction())
         .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!)
         .AddRedis(builder.Configuration["RedisHostName"]!, "Redis")
         .AddRabbitMQ(
-            rabbitConnectionString: $"amqp://{rabbitUser}:{rabbitPass}@{rabbitHost}",
+            $"amqp://{rabbitUser}:{rabbitPass}@{rabbitHost}",
             name: "RabbitMQ");
 }
 

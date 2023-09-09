@@ -12,9 +12,9 @@ public sealed class TenantViewModelSortProvider : ISortingExpressionProvider<Ten
     private static readonly Dictionary<string, Expression<Func<Tenant, object>>> s_expressions = new()
     {
         { "id", tenant => tenant.Id },
-        { "name", tenant => tenant.Name },
+        { "name", tenant => tenant.Name }
     };
-    
+
     public Dictionary<string, Expression<Func<Tenant, object>>> GetSortingExpressions()
     {
         return s_expressions;

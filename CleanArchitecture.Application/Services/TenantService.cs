@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using CleanArchitecture.Application.Interfaces;
 using CleanArchitecture.Application.Queries.Tenants.GetAll;
 using CleanArchitecture.Application.Queries.Tenants.GetTenantById;
-using CleanArchitecture.Application.SortProviders;
 using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Application.ViewModels.Sorting;
 using CleanArchitecture.Application.ViewModels.Tenants;

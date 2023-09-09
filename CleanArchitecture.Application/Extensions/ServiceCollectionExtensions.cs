@@ -43,7 +43,7 @@ public static class ServiceCollectionExtensions
     {
         services.AddScoped<ISortingExpressionProvider<TenantViewModel, Tenant>, TenantViewModelSortProvider>();
         services.AddScoped<ISortingExpressionProvider<UserViewModel, User>, UserViewModelSortProvider>();
-        
+
         return services;
     }
 }

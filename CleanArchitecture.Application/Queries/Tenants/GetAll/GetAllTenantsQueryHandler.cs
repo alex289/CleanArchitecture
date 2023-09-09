@@ -15,8 +15,8 @@ namespace CleanArchitecture.Application.Queries.Tenants.GetAll;
 public sealed class GetAllTenantsQueryHandler :
     IRequestHandler<GetAllTenantsQuery, PagedResult<TenantViewModel>>
 {
-    private readonly ITenantRepository _tenantRepository;
     private readonly ISortingExpressionProvider<TenantViewModel, Tenant> _sortingExpressionProvider;
+    private readonly ITenantRepository _tenantRepository;
 
     public GetAllTenantsQueryHandler(
         ITenantRepository tenantRepository,

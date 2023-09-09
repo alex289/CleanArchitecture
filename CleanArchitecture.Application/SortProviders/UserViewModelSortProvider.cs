@@ -19,7 +19,7 @@ public sealed class UserViewModelSortProvider : ISortingExpressionProvider<UserV
         { "role", user => user.Role },
         { "status", user => user.Status }
     };
-        
+
     public Dictionary<string, Expression<Func<User, object>>> GetSortingExpressions()
     {
         return s_expressions;

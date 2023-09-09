@@ -28,7 +28,7 @@ public static class QueryableExtensions
 
         var sorted = GetFirstOrderLevelQuery(query, sort.Parameters.First(), fieldExpressions);
 
-        for (int i = 1; i < sort.Parameters.Count; i++)
+        for (var i = 1; i < sort.Parameters.Count; i++)
         {
             sorted = GetMultiLevelOrderedQuery(sorted, sort.Parameters[i], fieldExpressions);
         }
@@ -38,7 +38,7 @@ public static class QueryableExtensions
 
     private static IOrderedQueryable<TEntity> GetFirstOrderLevelQuery<TEntity>(
         IQueryable<TEntity> query,
-        SortParameter @param,
+        SortParameter param,
         Dictionary<string, Expression<Func<TEntity, object>>> fieldExpressions)
     {
         if (!fieldExpressions.TryGetValue(param.ParameterName, out var fieldExpression))
@@ -56,7 +56,7 @@ public static class QueryableExtensions
 
     private static IOrderedQueryable<TEntity> GetMultiLevelOrderedQuery<TEntity>(
         IOrderedQueryable<TEntity> query,
-        SortParameter @param,
+        SortParameter param,
         Dictionary<string, Expression<Func<TEntity, object>>> fieldExpressions)
     {
         if (!fieldExpressions.TryGetValue(param.ParameterName, out var fieldExpression))

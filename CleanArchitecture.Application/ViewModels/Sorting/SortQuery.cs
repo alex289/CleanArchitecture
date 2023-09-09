@@ -6,34 +6,9 @@ namespace CleanArchitecture.Application.ViewModels.Sorting;
 
 public sealed class SortQuery
 {
-    private readonly struct QueryInfo
-    {
-        public readonly short PlusSignIndex;
-        public readonly short MinusSignIndex;
-        public readonly short FirstSpaceIndex;
-        public readonly short OpeningBracketIndex;
-        public readonly short ClosingBracketIndex;
-
-        public QueryInfo(
-            short plusSignIndex,
-            short minusSignIndex,
-            short firstSpaceIndex,
-            short openingBracketIndex,
-            short closingBracketIndex)
-        {
-            PlusSignIndex = plusSignIndex;
-            MinusSignIndex = minusSignIndex;
-            FirstSpaceIndex = firstSpaceIndex;
-            OpeningBracketIndex = openingBracketIndex;
-            ClosingBracketIndex = closingBracketIndex;
-        }
-    }
-
     private string? _query = string.Empty;
 
-    private ReadOnlyCollection<SortParameter> _parameters = new(Array.Empty<SortParameter>());
-
-    public ReadOnlyCollection<SortParameter> Parameters => _parameters;
+    public ReadOnlyCollection<SortParameter> Parameters { get; private set; } = new(Array.Empty<SortParameter>());
 
     [FromQuery(Name = "order_by")]
     public string? Query
@@ -42,7 +17,7 @@ public sealed class SortQuery
         set
         {
             _query = value;
-            _parameters = ParseQuery(_query);
+            Parameters = ParseQuery(_query);
         }
     }
 
@@ -68,7 +43,7 @@ public sealed class SortQuery
         var @params = value.Split(',');
         var parsedParams = new SortParameter[@params.Length];
 
-        for (int i = 0; i < @params.Length; i++)
+        for (var i = 0; i < @params.Length; i++)
         {
             parsedParams[i] = GetParam(@params[i]);
         }
@@ -114,7 +89,8 @@ public sealed class SortQuery
         {
             return new SortParameter(paramName, SortOrder.Ascending);
         }
-        else if (orderName == "desc" || orderName == "descending")
+
+        if (orderName == "desc" || orderName == "descending")
         {
             return new SortParameter(paramName, SortOrder.Descending);
         }
@@ -137,10 +113,8 @@ public sealed class SortQuery
         {
             return new SortParameter(value[1..], order);
         }
-        else
-        {
-            return new SortParameter(value[..indicatorIndex], order);
-        }
+
+        return new SortParameter(value[..indicatorIndex], order);
     }
 
     private static SortParameter GetSortParamFromFunctionalStyle(string value, QueryInfo info)
@@ -158,7 +132,8 @@ public sealed class SortQuery
         {
             return new SortParameter(param, SortOrder.Ascending);
         }
-        else if (value.StartsWith("desc(") || value.StartsWith("descending("))
+
+        if (value.StartsWith("desc(") || value.StartsWith("descending("))
         {
             return new SortParameter(param, SortOrder.Descending);
         }
@@ -288,7 +263,7 @@ public sealed class SortQuery
 
     private static int FindNextNonWhitespaceCharacter(string value, int startIndex)
     {
-        for (int i = startIndex; i < value.Length; i++)
+        for (var i = startIndex; i < value.Length; i++)
         {
             if (!char.IsWhiteSpace(value[i]))
             {
@@ -297,5 +272,28 @@ public sealed class SortQuery
         }
 
         return -1;
+    }
+
+    private readonly struct QueryInfo
+    {
+        public readonly short PlusSignIndex;
+        public readonly short MinusSignIndex;
+        public readonly short FirstSpaceIndex;
+        public readonly short OpeningBracketIndex;
+        public readonly short ClosingBracketIndex;
+
+        public QueryInfo(
+            short plusSignIndex,
+            short minusSignIndex,
+            short firstSpaceIndex,
+            short openingBracketIndex,
+            short closingBracketIndex)
+        {
+            PlusSignIndex = plusSignIndex;
+            MinusSignIndex = minusSignIndex;
+            FirstSpaceIndex = firstSpaceIndex;
+            OpeningBracketIndex = openingBracketIndex;
+            ClosingBracketIndex = closingBracketIndex;
+        }
     }
 }
