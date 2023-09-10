@@ -7,8 +7,6 @@ export default function Home() {
 
   if (!localStorage.getItem('auth_token')) {
     router.push('/login');
-  } else {
-    router.push('/dashboard');
   }
   return <main></main>;
 }
