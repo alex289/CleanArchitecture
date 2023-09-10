@@ -1,0 +1,7 @@
+{
+  "files.exclude": {
+    ".next": true,
+    ".contentlayer": true
+  },
+  "editor.formatOnSave": true
+}
