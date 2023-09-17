@@ -6,15 +6,35 @@ import { Label } from './ui/label';
 import { Input } from './ui/input';
 import { Icons } from './icons';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { ApiResponse } from '@/types/api-response';
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
     setIsLoading(true);
+
+    const res = await fetch('/api/v1/user/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: (event.target as any).email.value,
+        password: (event.target as any).password.value,
+      }),
+    });
+
+    if (res.ok) {
+      const body = await res.json() as ApiResponse<string>;
+      localStorage.setItem('auth_token', body.data!);
+      router.push('/dashboard');
+    }
 
     setTimeout(() => {
       setIsLoading(false);
@@ -25,36 +45,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     <div className={cn('grid gap-6', className)} {...props}>
       <form onSubmit={onSubmit}>
         <div className="grid gap-2">
-          <div className="grid grid-cols-2 gap-1">
-            <div>
-              <Label className="sr-only" htmlFor="firstname">
-                Firstname
-              </Label>
-              <Input
-                id="firstname"
-                placeholder="Firstname"
-                type="text"
-                autoCapitalize="none"
-                autoComplete="firstname"
-                autoCorrect="off"
-                disabled={isLoading}
-              />
-            </div>
-            <div>
-              <Label className="sr-only" htmlFor="lastname">
-                Lastname
-              </Label>
-              <Input
-                id="lastname"
-                placeholder="Lastname"
-                type="text"
-                autoCapitalize="none"
-                autoComplete="lastname"
-                autoCorrect="off"
-                disabled={isLoading}
-              />
-            </div>
-          </div>
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
               Email
@@ -87,7 +77,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
-            Sign In with Email
+            Sign In
           </Button>
         </div>
       </form>
