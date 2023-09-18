@@ -19,7 +19,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     event.preventDefault();
     setIsLoading(true);
 
-    const res = await fetch('/api/v1/user/login', {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -18,7 +18,7 @@ export function useAuth() {
   );
 
   const loading = !data && !error;
-  const loggedOut = error && error.status === 403;
+  const loggedOut = !!error;
 
   return {
     loading,

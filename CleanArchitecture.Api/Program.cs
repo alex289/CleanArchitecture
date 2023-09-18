@@ -65,6 +65,19 @@ builder.Services.AddHostedService<SetInactiveUsersService>();
 
 builder.Services.AddMediatR(cfg => { cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly); });
 
+builder.Services.AddCors(
+    options =>
+    {
+        options.AddPolicy("default", options =>
+        {
+            options
+            .AllowCredentials()
+            .WithOrigins(builder.Configuration.GetRequiredSection("AllowedOrigins").Get<string[]>()!)
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+        });
+    });
+
 builder.Services.AddLogging(x => x.AddSimpleConsole(console =>
 {
     console.TimestampFormat = "[yyyy-MM-ddTHH:mm:ss.fff] ";
@@ -107,6 +120,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("default");
 
 app.UseHttpsRedirection();
 

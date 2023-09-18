@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const router = useRouter();
-  const { loading, loggedOut, user } = useAuth();
+  const { loading, loggedOut } = useAuth();
 
   if (loading) {
     return <main>Loading...</main>;
@@ -14,5 +14,7 @@ export default function Home() {
   if (loggedOut) {
     router.push('/login');
   }
+
+  router.push('/dashboard');
   return <main></main>;
 }

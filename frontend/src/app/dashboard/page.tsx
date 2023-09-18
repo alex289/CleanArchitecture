@@ -15,5 +15,15 @@ export default function Home() {
     router.push('/login');
   }
 
-  return <main>{JSON.stringify(user)}</main>;
+  return (
+    <main>
+      <div className="flex items-center justify-between space-y-2">
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">
+            Welcome back, {user?.firstName}!
+          </h2>
+        </div>
+      </div>
+    </main>
+  );
 }
