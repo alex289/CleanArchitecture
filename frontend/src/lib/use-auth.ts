@@ -1,8 +1,9 @@
 'use client';
 
-import { ApiResponse } from '@/types/api-response';
-import { UserModel } from '@/types/user.model';
 import useSWR from 'swr';
+
+import type { ApiResponse } from '@/types/api-response';
+import type { UserModel } from '@/types/user.model';
 
 const authFetcher = (url: string) =>
   fetch(url, {

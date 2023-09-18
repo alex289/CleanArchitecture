@@ -1,4 +1,6 @@
-type IconProps = React.HTMLAttributes<SVGElement>;
+import type { HTMLAttributes } from 'react';
+
+type IconProps = HTMLAttributes<SVGElement>;
 
 export const Icons = {
   spinner: (props: IconProps) => (

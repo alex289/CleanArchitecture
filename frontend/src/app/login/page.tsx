@@ -1,5 +1,6 @@
-import { Metadata } from 'next';
 import { UserAuthForm } from '@/components/user-auth-form';
+
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Login',

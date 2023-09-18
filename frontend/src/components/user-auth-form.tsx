@@ -1,15 +1,17 @@
 'use client';
 
+import { type HTMLAttributes, useState } from 'react';
+import { useRouter } from 'next/navigation';
+
 import { cn } from '@/lib/utils';
 import { Button } from './ui/button';
 import { Label } from './ui/label';
 import { Input } from './ui/input';
 import { Icons } from './icons';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { ApiResponse } from '@/types/api-response';
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+import type { ApiResponse } from '@/types/api-response';
+
+interface UserAuthFormProps extends HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const router = useRouter();
@@ -19,19 +21,22 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     event.preventDefault();
     setIsLoading(true);
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user/login`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: (event.target as any).email.value,
+          password: (event.target as any).password.value,
+        }),
       },
-      body: JSON.stringify({
-        email: (event.target as any).email.value,
-        password: (event.target as any).password.value,
-      }),
-    });
+    );
 
     if (res.ok) {
-      const body = await res.json() as ApiResponse<string>;
+      const body = (await res.json()) as ApiResponse<string>;
       localStorage.setItem('auth_token', body.data!);
       router.push('/dashboard');
     }

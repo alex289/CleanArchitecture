@@ -1,20 +1,19 @@
 'use client';
 
 import { useAuth } from '@/lib/use-auth';
-import { useRouter } from 'next/navigation';
+import { redirect } from 'next/navigation';
 
 export default function Home() {
-  const router = useRouter();
   const { loading, loggedOut } = useAuth();
 
   if (loading) {
-    return <main>Loading...</main>;
+    return <main className="p-4">Loading...</main>;
   }
 
   if (loggedOut) {
-    router.push('/login');
+    redirect('/login');
   }
 
-  router.push('/dashboard');
-  return <main></main>;
+  redirect('/dashboard');
+  return <main className="p-4">Redirecting</main>;
 }

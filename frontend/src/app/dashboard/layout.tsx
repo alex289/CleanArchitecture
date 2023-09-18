@@ -1,12 +1,11 @@
-import { MainNav } from '@/components/main-nav';
-import { ModeToggle } from '@/components/theme-toggle';
 import { Settings } from 'lucide-react';
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+import { MainNav } from '@/components/main-nav';
+import { ModeToggle } from '@/components/theme-toggle';
+
+import type { ReactNode } from 'react';
+
+export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <div>
       <div className="border-b">

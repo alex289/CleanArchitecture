@@ -1,7 +1,10 @@
 import './globals.css';
-import type { Metadata } from 'next';
+
 import { Inter } from 'next/font/google';
 import dynamic from 'next/dynamic';
+
+import type { Metadata } from 'next';
+
 const ThemeProvider = dynamic(() => import('@/components/theme-provider'), {
   ssr: false,
 });
