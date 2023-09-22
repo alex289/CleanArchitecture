@@ -2,20 +2,15 @@
 
 import useSWR from 'swr';
 
+import { fetcher } from './fetcher';
+
 import type { ApiResponse } from '@/types/api-response';
 import type { UserModel } from '@/types/user.model';
-
-const authFetcher = (url: string) =>
-  fetch(url, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
-    },
-  }).then((r) => r.json());
 
 export function useAuth() {
   const { data, error, mutate } = useSWR<ApiResponse<UserModel>>(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user/me`,
-    authFetcher,
+    fetcher,
   );
 
   const loading = !data && !error;
