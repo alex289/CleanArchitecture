@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { ArrowUpDown } from 'lucide-react';
 import { MoreHorizontal } from 'lucide-react';
 import {
@@ -39,6 +40,7 @@ import { Button } from '@/components/ui/button';
 import type { TenantModel } from '@/types/tenant.model';
 
 export default function TenantTable({ data }: { data: TenantModel[] }) {
+  const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -64,9 +66,17 @@ export default function TenantTable({ data }: { data: TenantModel[] }) {
       },
     },
     {
+      header: 'Users',
+      cell: ({ row }) => {
+        const tenant = row.original;
+
+        return tenant.users.length;
+      },
+    },
+    {
       id: 'actions',
       cell: ({ row }) => {
-        const payment = row.original;
+        const tenant = row.original;
 
         return (
           <DropdownMenu>
@@ -79,12 +89,14 @@ export default function TenantTable({ data }: { data: TenantModel[] }) {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Actions</DropdownMenuLabel>
               <DropdownMenuItem
-                onClick={() => navigator.clipboard.writeText(payment.id)}>
-                Copy payment ID
+                onClick={() => navigator.clipboard.writeText(tenant.id)}>
+                Copy tenant ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>View customer</DropdownMenuItem>
-              <DropdownMenuItem>View payment details</DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() => router.push(`/dashboard/tenant/${tenant.id}`)}>
+                View tenant
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         );
@@ -110,40 +122,47 @@ export default function TenantTable({ data }: { data: TenantModel[] }) {
   });
 
   return (
-    <div>
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter names..."
-          value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
-          onChange={(event) =>
-            table.getColumn('name')?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
+    <>
+      <div className="flex justify-between">
+        <div className="flex items-center py-4">
+          <Input
+            placeholder="Filter names..."
+            value={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
+            onChange={(event) =>
+              table.getColumn('name')?.setFilterValue(event.target.value)
+            }
+            className="max-w-sm"
+          />
+        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <div className="py-4">
+              <Button variant="outline" className="ml-auto">
+                Columns
+              </Button>
+            </div>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            {table
+              .getAllColumns()
+              .filter((column) => column.getCanHide())
+              .map((column) => {
+                return (
+                  <DropdownMenuCheckboxItem
+                    key={column.id}
+                    className="capitalize"
+                    checked={column.getIsVisible()}
+                    onCheckedChange={(value) =>
+                      column.toggleVisibility(!!value)
+                    }>
+                    {column.id}
+                  </DropdownMenuCheckboxItem>
+                );
+              })}
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" className="ml-auto">
-            Columns
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          {table
-            .getAllColumns()
-            .filter((column) => column.getCanHide())
-            .map((column) => {
-              return (
-                <DropdownMenuCheckboxItem
-                  key={column.id}
-                  className="capitalize"
-                  checked={column.getIsVisible()}
-                  onCheckedChange={(value) => column.toggleVisibility(!!value)}>
-                  {column.id}
-                </DropdownMenuCheckboxItem>
-              );
-            })}
-        </DropdownMenuContent>
-      </DropdownMenu>
+
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -192,7 +211,7 @@ export default function TenantTable({ data }: { data: TenantModel[] }) {
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
+      <div className="flex items-center justify-center space-x-2 py-4">
         <Button
           variant="outline"
           size="sm"
@@ -208,6 +227,6 @@ export default function TenantTable({ data }: { data: TenantModel[] }) {
           Next
         </Button>
       </div>
-    </div>
+    </>
   );
 }

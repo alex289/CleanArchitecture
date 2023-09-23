@@ -1,0 +1,12 @@
+Tenant:
+- One tenant page
+- fix table stuff
+- create, update, delete tenants
+
+User:
+- User list
+- One user page
+- create, update, delete users
+
+General:
+- User settings (change password, etc)
