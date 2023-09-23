@@ -1,5 +1,6 @@
 'use client';
 
+import UserTable from '@/components/tables/user-table';
 import { useAPI } from '@/lib/use-api';
 
 import type { TenantModel } from '@/types/tenant.model';
@@ -26,6 +27,7 @@ export default function TenantPage({
           {tenant.data.data?.name}
         </h2>
       </div>
+      <UserTable data={tenant.data.data?.users ?? []} />
     </main>
   );
 }
