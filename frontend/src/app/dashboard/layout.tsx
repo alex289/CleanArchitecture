@@ -1,11 +1,21 @@
+'use client';
+
+import { redirect } from 'next/navigation';
 import { Settings } from 'lucide-react';
 
+import { useAuth } from '@/lib/use-auth';
 import { MainNav } from '@/components/main-nav';
 import { ModeToggle } from '@/components/theme-toggle';
 
 import type { ReactNode } from 'react';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
+  const { loading, loggedOut } = useAuth();
+
+  if (loggedOut) {
+    redirect('/login');
+  }
+
   return (
     <div>
       <div className="border-b">
@@ -19,7 +29,9 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
           </div>
         </div>
       </div>
-      <div className="mt-4 px-4">{children}</div>
+      <div className="mt-4 px-4">
+        {loading ? <div className="m-4">Loading...</div> : children}
+      </div>
     </div>
   );
 }

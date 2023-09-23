@@ -1,14 +1,11 @@
 'use client';
 
-import { redirect } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import useSWR from 'swr';
 
+import { useAPI } from '@/lib/use-api';
 import { useAuth } from '@/lib/use-auth';
-import { fetcher } from '@/lib/fetcher';
 
 import type { TenantModel } from '@/types/tenant.model';
-import type { ApiResponse } from '@/types/api-response';
 import type { PagedResult } from '@/types/paged-result';
 
 const TenantTable = dynamic(() => import('@/components/tables/tenant-table'), {
@@ -16,22 +13,15 @@ const TenantTable = dynamic(() => import('@/components/tables/tenant-table'), {
 });
 
 export default function Home() {
-  const { loading, loggedOut, user } = useAuth();
-  const tenants = useSWR<ApiResponse<PagedResult<TenantModel>>>(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/tenant`,
-    fetcher,
-  );
+  const { user } = useAuth();
+  const tenants = useAPI<PagedResult<TenantModel>>('tenant');
 
-  if (loading || tenants.isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  if (loggedOut) {
-    redirect('/login');
+  if (tenants.isLoading) {
+    return <div className="m-4">Loading tenants...</div>;
   }
 
   if (tenants.error || !tenants.data?.success) {
-    return <div>Error loading tenants :(</div>;
+    return <div className="m-4">Error loading tenants :(</div>;
   }
 
   return (

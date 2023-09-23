@@ -10,3 +10,4 @@ User:
 
 General:
 - User settings (change password, etc)
+- Responsiveness

@@ -1,17 +1,11 @@
 'use client';
 
-import useSWR from 'swr';
+import { useAPI } from './use-api';
 
-import { fetcher } from './fetcher';
-
-import type { ApiResponse } from '@/types/api-response';
 import type { UserModel } from '@/types/user.model';
 
 export function useAuth() {
-  const { data, error, mutate } = useSWR<ApiResponse<UserModel>>(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/user/me`,
-    fetcher,
-  );
+  const { data, error, mutate } = useAPI<UserModel>('user/me');
 
   const loading = !data && !error;
   const loggedOut = !!error;
