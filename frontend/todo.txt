@@ -1,13 +1,10 @@
 Tenant:
-- One tenant page
-- fix table stuff
 - create, update, delete tenants
 
 User:
-- User list
-- One user page
 - create, update, delete users
 
 General:
+- fix table stuff
 - User settings (change password, etc)
 - Responsiveness

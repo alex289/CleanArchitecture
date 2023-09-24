@@ -43,7 +43,9 @@ export default function TenantTable({ data }: { data: TenantModel[] }) {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    id: false,
+  });
 
   const columns: ColumnDef<TenantModel>[] = [
     {
@@ -51,6 +53,7 @@ export default function TenantTable({ data }: { data: TenantModel[] }) {
       header: 'Id',
     },
     {
+      id: 'name',
       accessorKey: 'name',
       header: ({ column }) => {
         return (
@@ -162,7 +165,6 @@ export default function TenantTable({ data }: { data: TenantModel[] }) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-
       <div className="rounded-md border">
         <Table>
           <TableHeader>

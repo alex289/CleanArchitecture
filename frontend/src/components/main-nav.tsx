@@ -15,8 +15,8 @@ export function MainNav({ className, ...props }: HTMLAttributes<HTMLElement>) {
         Tenants
       </Link>
       <Link
-        href="/dashboard/users"
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+        href="/dashboard/user"
+        className="text-sm font-medium transition-colors hover:text-primary">
         Users
       </Link>
     </nav>

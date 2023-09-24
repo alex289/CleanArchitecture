@@ -10,7 +10,7 @@ export default function TenantPage({
 }: {
   params: { tenantId: string };
 }) {
-  const tenant = useAPI<TenantModel>(`/tenant/${params.tenantId}`);
+  const tenant = useAPI<TenantModel>(`tenant/${params.tenantId}`);
 
   if (tenant.isLoading) {
     return <div className="m-4">Loading tenant...</div>;
@@ -27,7 +27,9 @@ export default function TenantPage({
           {tenant.data.data?.name}
         </h2>
       </div>
-      <UserTable data={tenant.data.data?.users ?? []} />
+      <div className="container mx-auto py-10">
+        <UserTable data={tenant.data.data?.users ?? []} />
+      </div>
     </main>
   );
 }

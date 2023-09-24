@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { MoreHorizontal } from 'lucide-react';
+import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -36,13 +36,17 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
+import { UserRole } from '@/types/user-role.enum';
+import { UserStatus } from '@/types/user-status.enum';
 import type { UserModel } from '@/types/user.model';
 
 export default function UserTable({ data }: { data: UserModel[] }) {
   const router = useRouter();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    id: false,
+  });
 
   const columns: ColumnDef<UserModel>[] = [
     {
@@ -51,30 +55,79 @@ export default function UserTable({ data }: { data: UserModel[] }) {
     },
     {
       accessorKey: 'email',
-      header: 'Email',
-    },
-    {
-      header: 'Name',
-      cell: ({ row }) => {
-        const user = row.original;
-
-        return user.firstName + ' ' + user.lastName;
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() =>
+              column.toggleSorting(column.getIsSorted() === 'asc')
+            }>
+            Email
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
       },
     },
     {
-      header: 'Role',
-      cell: ({ row }) => {
-        const user = row.original;
-
-        return user.role;
+      id: 'name',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() =>
+              column.toggleSorting(column.getIsSorted() === 'asc')
+            }>
+            Name
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      accessorFn: (user) => user.firstName + ' ' + user.lastName,
+    },
+    {
+      id: 'role',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() =>
+              column.toggleSorting(column.getIsSorted() === 'asc')
+            }>
+            Role
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      accessorFn: (user) => {
+        switch (user.role) {
+          case UserRole.Admin:
+            return 'Admin';
+          case UserRole.User:
+            return 'User';
+        }
       },
     },
     {
-      header: 'Status',
-      cell: ({ row }) => {
-        const user = row.original;
-
-        return user.status;
+      id: 'status',
+      header: ({ column }) => {
+        return (
+          <Button
+            variant="ghost"
+            onClick={() =>
+              column.toggleSorting(column.getIsSorted() === 'asc')
+            }>
+            Status
+            <ArrowUpDown className="ml-2 h-4 w-4" />
+          </Button>
+        );
+      },
+      accessorFn: (user) => {
+        switch (user.status) {
+          case UserStatus.Active:
+            return 'Active';
+          case UserStatus.Inactive:
+            return 'Inactive';
+        }
       },
     },
     {
