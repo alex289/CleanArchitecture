@@ -1,8 +1,8 @@
 Tenant:
-- create, update, delete tenants
+- create, update tenants
 
 User:
-- create, update, delete users
+- create, update users
 
 General:
 - fix table stuff
