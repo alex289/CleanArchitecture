@@ -11,6 +11,12 @@ import type { PagedResult } from '@/types/paged-result';
 const TenantTable = dynamic(() => import('@/components/tables/tenant-table'), {
   ssr: false,
 });
+const UpsertTenantDialog = dynamic(
+  () => import('@/components/dialogs/upsert-tenant-dialog'),
+  {
+    ssr: false,
+  },
+);
 
 export default function Home() {
   const { user } = useAuth();
@@ -30,6 +36,7 @@ export default function Home() {
         <h2 className="text-2xl font-bold tracking-tight">
           Welcome back, {user?.firstName}!
         </h2>
+        <UpsertTenantDialog isUpdating={false} />
       </div>
       {tenants?.data?.data && (
         <div className="container mx-auto py-10">

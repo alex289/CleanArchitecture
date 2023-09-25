@@ -1,6 +1,7 @@
 'use client';
 
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
 
 import {
   AlertDialog,
@@ -22,19 +23,27 @@ import { UserStatus } from '@/types/user-status.enum';
 
 import type { UserModel } from '@/types/user.model';
 
+const UpsertUserDialog = dynamic(
+  () => import('@/components/dialogs/upsert-user-dialog'),
+  {
+    ssr: false,
+  },
+);
+
 export default function UserPage({ params }: { params: { userId: string } }) {
-  const tenant = useAPI<UserModel>(`user/${params.userId}`);
+  const router = useRouter();
+  const user = useAPI<UserModel>(`user/${params.userId}`);
 
-  if (tenant.isLoading) {
-    return <div className="m-4">Loading tenant...</div>;
+  if (user.isLoading) {
+    return <div className="m-4">Loading user...</div>;
   }
 
-  if (tenant.error || !tenant.data?.success) {
-    return <div className="m-4">Error loading tenant :(</div>;
+  if (user.error || !user.data?.success) {
+    return <div className="m-4">Error loading user :(</div>;
   }
 
-  const role = UserRole[tenant.data.data?.role!];
-  const status = UserStatus[tenant.data.data?.status!];
+  const role = UserRole[user.data.data?.role!];
+  const status = UserStatus[user.data.data?.status!];
 
   async function deleteUser(event: React.SyntheticEvent) {
     event.preventDefault();
@@ -51,7 +60,7 @@ export default function UserPage({ params }: { params: { userId: string } }) {
     );
 
     if (res.ok) {
-      redirect('/dashboard');
+      router.push('/dashboard');
     }
   }
 
@@ -59,32 +68,37 @@ export default function UserPage({ params }: { params: { userId: string } }) {
     <main>
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-2xl font-bold tracking-tight">
-          {tenant.data.data?.firstName} {tenant.data.data?.lastName}
+          {user.data.data?.firstName} {user.data.data?.lastName}
         </h2>
 
-        <AlertDialog>
-          <AlertDialogTrigger>
-            <Button variant="destructive">Delete</Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete the
-                tenant and remove your data from our servers.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={deleteUser}>
-                Continue
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        <div>
+          <UpsertUserDialog isUpdating={true} userData={user.data.data} />
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive" className="ml-4">
+                Delete
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete the
+                  tenant and remove your data from our servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={deleteUser}>
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
       </div>
       <div className="container mx-auto py-10">
-        <p>Email: {tenant.data.data?.email}</p>
+        <p>Email: {user.data.data?.email}</p>
         <p>Role: {role}</p>
         <p>Status: {status}</p>
       </div>

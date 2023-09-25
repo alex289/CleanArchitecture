@@ -1,6 +1,7 @@
 'use client';
 
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
 
 import {
   AlertDialog,
@@ -20,11 +21,25 @@ import { useAPI } from '@/lib/use-api';
 
 import type { TenantModel } from '@/types/tenant.model';
 
+const UpsertTenantDialog = dynamic(
+  () => import('@/components/dialogs/upsert-tenant-dialog'),
+  {
+    ssr: false,
+  },
+);
+const UpsertUserDialog = dynamic(
+  () => import('@/components/dialogs/upsert-user-dialog'),
+  {
+    ssr: false,
+  },
+);
+
 export default function TenantPage({
   params,
 }: {
   params: { tenantId: string };
 }) {
+  const router = useRouter();
   const tenant = useAPI<TenantModel>(`tenant/${params.tenantId}`);
 
   if (tenant.isLoading) {
@@ -50,7 +65,7 @@ export default function TenantPage({
     );
 
     if (res.ok) {
-      redirect('/dashboard');
+      router.push('/dashboard');
     }
   }
 
@@ -60,26 +75,35 @@ export default function TenantPage({
         <h2 className="text-2xl font-bold tracking-tight">
           {tenant.data.data?.name}
         </h2>
-        <AlertDialog>
-          <AlertDialogTrigger>
-            <Button variant="destructive">Delete</Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete the
-                tenant and remove your data from our servers.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={deleteTenant}>
-                Continue
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+
+        <div>
+          <UpsertTenantDialog isUpdating={true} tenantData={tenant.data.data} />
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive" className="ml-4">
+                Delete
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete the
+                  tenant and remove your data from our servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={deleteTenant}>
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
+      </div>
+      <div>
+        <UpsertUserDialog isUpdating={false} tenantId={params.tenantId} />
       </div>
       <div className="container mx-auto py-10">
         <UserTable data={tenant.data.data?.users ?? []} />

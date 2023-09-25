@@ -1,9 +1,3 @@
-Tenant:
-- create, update tenants
-
-User:
-- create, update users
-
 General:
 - fix table stuff
 - User settings (change password, etc)
