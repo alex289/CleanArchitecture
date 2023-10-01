@@ -37,7 +37,8 @@ public sealed class TenantController : ApiController
         [FromQuery] PageQuery query,
         [FromQuery] string searchTerm = "",
         [FromQuery] bool includeDeleted = false,
-        [FromQuery, SortableFieldsAttribute<TenantViewModelSortProvider, TenantViewModel, Tenant>] SortQuery? sortQuery = null)
+        [FromQuery] [SortableFieldsAttribute<TenantViewModelSortProvider, TenantViewModel, Tenant>]
+        SortQuery? sortQuery = null)
     {
         var tenants = await _tenantService.GetAllTenantsAsync(
             query,

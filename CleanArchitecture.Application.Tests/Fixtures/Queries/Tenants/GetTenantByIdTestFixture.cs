@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using CleanArchitecture.Application.Queries.Tenants.GetTenantById;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Interfaces.Repositories;
-using MockQueryable.NSubstitute;
 using NSubstitute;
 
 namespace CleanArchitecture.Application.Tests.Fixtures.Queries.Tenants;
@@ -30,9 +28,11 @@ public sealed class GetTenantByIdTestFixture : QueryHandlerBaseFixture
         {
             tenant.Delete();
         }
+        else
+        {
+            TenantRepository.GetByIdAsync(Arg.Is<Guid>(y => y == tenant.Id)).Returns(tenant);
+        }
 
-        var tenantList = new List<Tenant> { tenant }.BuildMock();
-        TenantRepository.GetAllNoTracking().Returns(tenantList);
 
         return tenant;
     }

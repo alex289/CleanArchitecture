@@ -37,7 +37,8 @@ public sealed class UserController : ApiController
         [FromQuery] PageQuery query,
         [FromQuery] string searchTerm = "",
         [FromQuery] bool includeDeleted = false,
-        [FromQuery, SortableFieldsAttribute<UserViewModelSortProvider, UserViewModel, User>] SortQuery? sortQuery = null)
+        [FromQuery] [SortableFieldsAttribute<UserViewModelSortProvider, UserViewModel, User>]
+        SortQuery? sortQuery = null)
     {
         var users = await _userService.GetAllUsersAsync(
             query,

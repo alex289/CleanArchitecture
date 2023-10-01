@@ -34,6 +34,7 @@ public sealed class UsersApiImplementation : UsersApi.UsersApiBase
 
         var users = await _userRepository
             .GetAllNoTracking()
+            .IgnoreQueryFilters()
             .Where(user => idsAsGuids.Contains(user.Id))
             .Select(user => new GrpcUser
             {

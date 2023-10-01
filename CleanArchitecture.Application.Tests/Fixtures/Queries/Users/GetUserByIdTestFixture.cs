@@ -35,7 +35,7 @@ public sealed class GetUserByIdTestFixture : QueryHandlerBaseFixture
 
         var query = new[] { user }.BuildMock();
 
-        UserRepository.GetAllNoTracking().Returns(query);
+        UserRepository.GetByIdAsync(Arg.Is<Guid>(y => y == ExistingUserId)).Returns(user);
     }
 
     public void SetupDeletedUserAsync()

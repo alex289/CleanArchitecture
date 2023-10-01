@@ -12,7 +12,7 @@ public sealed class CreateTenantCommandHandlerTests
     private readonly CreateTenantCommandTestFixture _fixture = new();
 
     [Fact]
-    public async Task  Should_Create_Tenant()
+    public async Task Should_Create_Tenant()
     {
         var command = new CreateTenantCommand(
             Guid.NewGuid(),
@@ -29,7 +29,7 @@ public sealed class CreateTenantCommandHandlerTests
     }
 
     [Fact]
-    public async Task  Should_Not_Create_Tenant_Insufficient_Permissions()
+    public async Task Should_Not_Create_Tenant_Insufficient_Permissions()
     {
         _fixture.SetupUser();
 
@@ -49,7 +49,7 @@ public sealed class CreateTenantCommandHandlerTests
     }
 
     [Fact]
-    public async Task  Should_Not_Create_Tenant_Already_Exists()
+    public async Task Should_Not_Create_Tenant_Already_Exists()
     {
         var command = new CreateTenantCommand(
             Guid.NewGuid(),

@@ -34,6 +34,7 @@ public sealed class TenantsApiImplementation : TenantsApi.TenantsApiBase
 
         var tenants = await _tenantRepository
             .GetAllNoTracking()
+            .IgnoreQueryFilters()
             .Where(tenant => idsAsGuids.Contains(tenant.Id))
             .Select(tenant => new Tenant
             {

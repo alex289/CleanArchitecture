@@ -26,7 +26,6 @@ public sealed class SortableFieldsAttributeFilter : IParameterFilter
         var description = string.Join("<br/>", attribute.GetFields().Order());
 
         parameter.Description = $"{parameter.Description}<br/><br/>" +
-            $"**Allowed values:**<br/>{description}";
+                                $"**Allowed values:**<br/>{description}";
     }
 }
-

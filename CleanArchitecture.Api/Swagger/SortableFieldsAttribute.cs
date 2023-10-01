@@ -4,7 +4,7 @@ using CleanArchitecture.Application.ViewModels.Sorting;
 
 namespace CleanArchitecture.Api.Swagger;
 
-[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false)]
+[AttributeUsage(AttributeTargets.Parameter)]
 public sealed class SortableFieldsAttribute<TSortingProvider, TViewModel, TEntity>
     : SwaggerSortableFieldsAttribute
     where TSortingProvider : ISortingExpressionProvider<TViewModel, TEntity>, new()

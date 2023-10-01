@@ -1,5 +1,6 @@
 using System;
 using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Infrastructure.Database;
 
 namespace CleanArchitecture.IntegrationTests.Fixtures;
@@ -15,6 +16,15 @@ public sealed class TenantTestFixture : TestFixtureBase
         context.Tenants.Add(new Tenant(
             CreatedTenantId,
             "Test Tenant"));
+
+        context.Users.Add(new User(
+            Guid.NewGuid(),
+            CreatedTenantId,
+            "test@user.de",
+            "test",
+            "user",
+            "Test User",
+            UserRole.User));
 
         context.SaveChanges();
     }

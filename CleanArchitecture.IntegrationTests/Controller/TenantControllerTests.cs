@@ -37,6 +37,8 @@ public sealed class TenantControllerTests : IClassFixture<TenantTestFixture>
 
         message!.Data!.Id.Should().Be(_fixture.CreatedTenantId);
         message.Data.Name.Should().Be("Test Tenant");
+
+        message.Data.Users.Count().Should().Be(1);
     }
 
     [Fact]
@@ -55,6 +57,10 @@ public sealed class TenantControllerTests : IClassFixture<TenantTestFixture>
         message.Data!.Items
             .FirstOrDefault(x => x.Id == _fixture.CreatedTenantId)
             .Should().NotBeNull();
+
+        message.Data.Items
+            .FirstOrDefault(x => x.Id == _fixture.CreatedTenantId)!
+            .Users.Count().Should().Be(1);
     }
 
     [Fact]
