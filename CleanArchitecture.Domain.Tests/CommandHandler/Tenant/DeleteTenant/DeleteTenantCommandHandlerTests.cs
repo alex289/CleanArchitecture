@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using CleanArchitecture.Domain.Commands.Tenants.DeleteTenant;
 using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Shared.Events.Tenant;
@@ -11,13 +12,13 @@ public sealed class DeleteTenantCommandHandlerTests
     private readonly DeleteTenantCommandTestFixture _fixture = new();
 
     [Fact]
-    public void Should_Delete_Tenant()
+    public async Task Should_Delete_Tenant()
     {
         var tenant = _fixture.SetupTenant();
 
         var command = new DeleteTenantCommand(tenant.Id);
 
-        _fixture.CommandHandler.Handle(command, default).Wait();
+        await _fixture.CommandHandler.Handle(command, default);
 
         _fixture
             .VerifyNoDomainNotification()
@@ -26,13 +27,13 @@ public sealed class DeleteTenantCommandHandlerTests
     }
 
     [Fact]
-    public void Should_Not_Delete_Non_Existing_Tenant()
+    public async Task Should_Not_Delete_Non_Existing_Tenant()
     {
         _fixture.SetupTenant();
 
         var command = new DeleteTenantCommand(Guid.NewGuid());
 
-        _fixture.CommandHandler.Handle(command, default).Wait();
+        await _fixture.CommandHandler.Handle(command, default);
 
         _fixture
             .VerifyNoCommit()
@@ -44,14 +45,14 @@ public sealed class DeleteTenantCommandHandlerTests
     }
 
     [Fact]
-    public void Should_Not_Delete_Tenant_Insufficient_Permissions()
+    public async Task Should_Not_Delete_Tenant_Insufficient_Permissions()
     {
         var tenant = _fixture.SetupTenant();
         _fixture.SetupUser();
 
         var command = new DeleteTenantCommand(tenant.Id);
 
-        _fixture.CommandHandler.Handle(command, default).Wait();
+        await _fixture.CommandHandler.Handle(command, default);
 
         _fixture
             .VerifyNoCommit()

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using CleanArchitecture.Domain.Commands.Users.CreateUser;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Errors;
@@ -13,7 +14,7 @@ public sealed class CreateUserCommandHandlerTests
     private readonly CreateUserCommandTestFixture _fixture = new();
 
     [Fact]
-    public void Should_Create_User()
+    public async Task Should_Create_User()
     {
         _fixture.SetupCurrentUser();
 
@@ -28,7 +29,7 @@ public sealed class CreateUserCommandHandlerTests
             "Email",
             "Po=PF]PC6t.?8?ks)A6W");
 
-        _fixture.CommandHandler.Handle(command, default).Wait();
+        await _fixture.CommandHandler.Handle(command, default);
 
         _fixture
             .VerifyNoDomainNotification()
@@ -37,7 +38,7 @@ public sealed class CreateUserCommandHandlerTests
     }
 
     [Fact]
-    public void Should_Not_Create_Already_Existing_User()
+    public async Task Should_Not_Create_Already_Existing_User()
     {
         _fixture.SetupCurrentUser();
 
@@ -51,7 +52,7 @@ public sealed class CreateUserCommandHandlerTests
             "Email",
             "Po=PF]PC6t.?8?ks)A6W");
 
-        _fixture.CommandHandler.Handle(command, default).Wait();
+        await _fixture.CommandHandler.Handle(command, default);
 
         _fixture
             .VerifyNoCommit()
@@ -63,7 +64,7 @@ public sealed class CreateUserCommandHandlerTests
     }
 
     [Fact]
-    public void Should_Not_Create_Already_Existing_Email()
+    public async Task Should_Not_Create_Already_Existing_Email()
     {
         _fixture.SetupCurrentUser();
 
@@ -86,7 +87,7 @@ public sealed class CreateUserCommandHandlerTests
             "Email",
             "Po=PF]PC6t.?8?ks)A6W");
 
-        _fixture.CommandHandler.Handle(command, default).Wait();
+        await _fixture.CommandHandler.Handle(command, default);
 
         _fixture
             .VerifyNoCommit()
@@ -98,7 +99,7 @@ public sealed class CreateUserCommandHandlerTests
     }
 
     [Fact]
-    public void Should_Not_Create_User_Tenant_Does_Not_Exist()
+    public async Task Should_Not_Create_User_Tenant_Does_Not_Exist()
     {
         _fixture.SetupCurrentUser();
 
@@ -112,7 +113,7 @@ public sealed class CreateUserCommandHandlerTests
             "Email",
             "Po=PF]PC6t.?8?ks)A6W");
 
-        _fixture.CommandHandler.Handle(command, default).Wait();
+        await _fixture.CommandHandler.Handle(command, default);
 
         _fixture
             .VerifyNoCommit()
@@ -124,7 +125,7 @@ public sealed class CreateUserCommandHandlerTests
     }
 
     [Fact]
-    public void Should_Not_Create_User_Insufficient_Permissions()
+    public async Task Should_Not_Create_User_Insufficient_Permissions()
     {
         _fixture.SetupUser();
 
@@ -136,7 +137,7 @@ public sealed class CreateUserCommandHandlerTests
             "Email",
             "Po=PF]PC6t.?8?ks)A6W");
 
-        _fixture.CommandHandler.Handle(command, default).Wait();
+        await _fixture.CommandHandler.Handle(command, default);
 
         _fixture
             .VerifyNoCommit()

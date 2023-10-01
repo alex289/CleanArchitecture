@@ -6,3 +6,5 @@ riderModule.iml
 .idea
 .vs
 CleanArchitecture.sln.DotSettings.user
+frontend
+.DS_Store
