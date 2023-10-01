@@ -1,4 +1,5 @@
 General:
 - fix table stuff
 - User settings (change password, etc)
+- permissions
 - Responsiveness
