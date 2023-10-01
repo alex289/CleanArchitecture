@@ -53,7 +53,7 @@ jobs:
         branch: "update/${{ env.date }}"
         labels: dependencies
         delete-branch: true
-        commit-message: "Update packages"
+        commit-message: "chore: Update dependencies"
         assignees: ${{ env.assignee }}
         base: ${{ env.baseBranch }}
         title: "Automatic Package Update ${{ env.date }}"
