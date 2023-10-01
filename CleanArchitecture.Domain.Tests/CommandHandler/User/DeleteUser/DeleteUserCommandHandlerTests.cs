@@ -27,7 +27,7 @@ public sealed class DeleteUserCommandHandlerTests
     }
 
     [Fact]
-    public async Task  Should_Not_Delete_Non_Existing_User()
+    public async Task Should_Not_Delete_Non_Existing_User()
     {
         _fixture.SetupUser();
 
@@ -45,7 +45,7 @@ public sealed class DeleteUserCommandHandlerTests
     }
 
     [Fact]
-    public async Task  Should_Not_Delete_User_Insufficient_Permissions()
+    public async Task Should_Not_Delete_User_Insufficient_Permissions()
     {
         var user = _fixture.SetupUser();
 

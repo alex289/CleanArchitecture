@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using CleanArchitecture.Application.ViewModels.Users;
 using CleanArchitecture.Domain.Errors;
@@ -24,9 +23,7 @@ public sealed class GetUserByIdQueryHandler :
 
     public async Task<UserViewModel?> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
-        var user = _userRepository
-            .GetAllNoTracking()
-            .FirstOrDefault(x => x.Id == request.UserId && !x.Deleted);
+        var user = await _userRepository.GetByIdAsync(request.UserId);
 
         if (user is null)
         {

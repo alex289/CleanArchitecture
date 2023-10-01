@@ -32,6 +32,7 @@ public sealed class GetAllTenantsQueryHandler :
     {
         var tenantsQuery = _tenantRepository
             .GetAllNoTracking()
+            .IgnoreQueryFilters()
             .Include(x => x.Users)
             .Where(x => request.IncludeDeleted || !x.Deleted);
 
