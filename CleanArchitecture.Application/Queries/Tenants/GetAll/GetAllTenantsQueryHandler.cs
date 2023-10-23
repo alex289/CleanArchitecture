@@ -33,7 +33,7 @@ public sealed class GetAllTenantsQueryHandler :
         var tenantsQuery = _tenantRepository
             .GetAllNoTracking()
             .IgnoreQueryFilters()
-            .Include(x => x.Users)
+            .Include(x => x.Users.Where(y => request.IncludeDeleted || !y.Deleted))
             .Where(x => request.IncludeDeleted || !x.Deleted);
 
         if (!string.IsNullOrWhiteSpace(request.SearchTerm))

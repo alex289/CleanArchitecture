@@ -23,8 +23,7 @@ public sealed class GetTenantByIdQueryHandler :
 
     public async Task<TenantViewModel?> Handle(GetTenantByIdQuery request, CancellationToken cancellationToken)
     {
-        var tenant = await _tenantRepository
-            .GetByIdAsync(request.TenantId);
+        var tenant = await _tenantRepository.GetByIdAsync(request.TenantId);
 
         if (tenant is null)
         {
