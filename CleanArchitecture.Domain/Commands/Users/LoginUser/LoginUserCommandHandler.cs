@@ -20,7 +20,7 @@ namespace CleanArchitecture.Domain.Commands.Users.LoginUser;
 public sealed class LoginUserCommandHandler : CommandHandlerBase,
     IRequestHandler<LoginUserCommand, string>
 {
-    private const double _expiryDurationMinutes = 30;
+    private const double _expiryDurationMinutes = 60;
     private readonly TokenSettings _tokenSettings;
 
     private readonly IUserRepository _userRepository;

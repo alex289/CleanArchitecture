@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using CleanArchitecture.Domain.Commands.Users.DeleteUser;
 using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Shared.Events.User;
@@ -11,13 +12,13 @@ public sealed class DeleteUserCommandHandlerTests
     private readonly DeleteUserCommandTestFixture _fixture = new();
 
     [Fact]
-    public void Should_Delete_User()
+    public async Task Should_Delete_User()
     {
         var user = _fixture.SetupUser();
 
         var command = new DeleteUserCommand(user.Id);
 
-        _fixture.CommandHandler.Handle(command, default).Wait();
+        await _fixture.CommandHandler.Handle(command, default);
 
         _fixture
             .VerifyNoDomainNotification()
@@ -26,13 +27,13 @@ public sealed class DeleteUserCommandHandlerTests
     }
 
     [Fact]
-    public void Should_Not_Delete_Non_Existing_User()
+    public async Task Should_Not_Delete_Non_Existing_User()
     {
         _fixture.SetupUser();
 
         var command = new DeleteUserCommand(Guid.NewGuid());
 
-        _fixture.CommandHandler.Handle(command, default).Wait();
+        await _fixture.CommandHandler.Handle(command, default);
 
         _fixture
             .VerifyNoCommit()
@@ -44,7 +45,7 @@ public sealed class DeleteUserCommandHandlerTests
     }
 
     [Fact]
-    public void Should_Not_Delete_User_Insufficient_Permissions()
+    public async Task Should_Not_Delete_User_Insufficient_Permissions()
     {
         var user = _fixture.SetupUser();
 
@@ -52,7 +53,7 @@ public sealed class DeleteUserCommandHandlerTests
 
         var command = new DeleteUserCommand(user.Id);
 
-        _fixture.CommandHandler.Handle(command, default).Wait();
+        await _fixture.CommandHandler.Handle(command, default);
 
         _fixture
             .VerifyNoCommit()

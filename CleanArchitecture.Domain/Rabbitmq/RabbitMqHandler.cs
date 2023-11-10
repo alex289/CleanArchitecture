@@ -52,7 +52,8 @@ public sealed class RabbitMqHandler : BackgroundService
     {
         if (!_configuration.Enabled)
         {
-            _logger.LogInformation("RabbitMQ is disabled. Skipping the creation of exchange {exchangeName}.", exchangeName);
+            _logger.LogInformation("RabbitMQ is disabled. Skipping the creation of exchange {exchangeName}.",
+                exchangeName);
             return;
         }
 

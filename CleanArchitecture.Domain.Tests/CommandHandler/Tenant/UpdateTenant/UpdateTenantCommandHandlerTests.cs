@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using CleanArchitecture.Domain.Commands.Tenants.UpdateTenant;
 using CleanArchitecture.Domain.Errors;
 using CleanArchitecture.Shared.Events.Tenant;
@@ -11,7 +12,7 @@ public sealed class UpdateTenantCommandHandlerTests
     private readonly UpdateTenantCommandTestFixture _fixture = new();
 
     [Fact]
-    public void Should_Update_Tenant()
+    public async Task Should_Update_Tenant()
     {
         var command = new UpdateTenantCommand(
             Guid.NewGuid(),
@@ -19,7 +20,7 @@ public sealed class UpdateTenantCommandHandlerTests
 
         _fixture.SetupExistingTenant(command.AggregateId);
 
-        _fixture.CommandHandler.Handle(command, default).Wait();
+        await _fixture.CommandHandler.Handle(command, default);
 
         _fixture
             .VerifyCommit()
@@ -30,7 +31,7 @@ public sealed class UpdateTenantCommandHandlerTests
     }
 
     [Fact]
-    public void Should_Not_Update_Tenant_Insufficient_Permissions()
+    public async Task Should_Not_Update_Tenant_Insufficient_Permissions()
     {
         var command = new UpdateTenantCommand(
             Guid.NewGuid(),
@@ -38,7 +39,7 @@ public sealed class UpdateTenantCommandHandlerTests
 
         _fixture.SetupUser();
 
-        _fixture.CommandHandler.Handle(command, default).Wait();
+        await _fixture.CommandHandler.Handle(command, default);
 
         _fixture
             .VerifyNoCommit()
@@ -50,13 +51,13 @@ public sealed class UpdateTenantCommandHandlerTests
     }
 
     [Fact]
-    public void Should_Not_Update_Tenant_Not_Existing()
+    public async Task Should_Not_Update_Tenant_Not_Existing()
     {
         var command = new UpdateTenantCommand(
             Guid.NewGuid(),
             "Tenant Name");
 
-        _fixture.CommandHandler.Handle(command, default).Wait();
+        await _fixture.CommandHandler.Handle(command, default);
 
         _fixture
             .VerifyNoCommit()
