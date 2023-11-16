@@ -23,7 +23,7 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: |
-          7.x.x
+          8.x.x
     #      6.x.x
     # - name: Check for vulnerabilities
     #   run: |
