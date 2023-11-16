@@ -11,7 +11,7 @@ env:
   DOCKER_IMAGE: alexdev28/clean-architecture
 
 jobs:
-  build:
+  ci:
     runs-on: ubuntu-latest
     env:
       solutionFile: CleanArchitecture.sln
@@ -19,7 +19,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Setup .NET
+    - name: Install .NET Core
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: |
@@ -43,7 +43,7 @@ jobs:
     - name: Test
       run: dotnet test --no-build --verbosity normal
 
-  docker:
+  cd:
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/main'
