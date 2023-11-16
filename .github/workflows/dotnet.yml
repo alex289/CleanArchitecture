@@ -45,7 +45,7 @@ jobs:
 
   cd:
     runs-on: ubuntu-latest
-    needs: build
+    needs: ci
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Set up QEMU
