@@ -28,7 +28,7 @@ jobs:
       run: |
           dotnet new tool-manifest
           dotnet tool install --local liz.tool
-          dotnet liz "${{ env.solutionFile }}" --suppress-progressbar
+          dotnet liz "${{ env.solutionFile }}" --blacklist .github/license-blacklist.json --suppress-progressbar
 
   checkVulnerabilities:
     runs-on: ubuntu-latest
