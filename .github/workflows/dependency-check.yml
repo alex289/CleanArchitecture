@@ -1,0 +1,53 @@
+name: Dependency Check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 1 * *'
+
+env:
+  solutionFile: CleanArchitecture.sln
+  projectName: CleanArchitecture
+
+jobs:
+  checkLicenses:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: |
+          8.x.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Check for license issues
+      run: |
+          dotnet new tool-manifest
+          dotnet tool install --local liz.tool
+          dotnet liz "${{ env.solutionFile }}" --suppress-progressbar
+
+  checkVulnerabilities:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Check for vulnerabilities
+      uses: dependency-check/Dependency-Check_Action@main
+      id: depcheck
+      with:
+        project: ${{ env.projectName }}
+        path: "**/*.csproj"
+        format: "HTML"
+        out: "reports"
+        args: >
+          --failOnCVSS "7"
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v3
+      with:
+        name: Dependency Check Report
+        path: ${{github.workspace}}/reports

@@ -24,18 +24,6 @@ jobs:
       with:
         dotnet-version: |
           8.x.x
-    #      6.x.x
-    # - name: Check for vulnerabilities
-    #   run: |
-    #       VERSION=$(curl -s https://jeremylong.github.io/DependencyCheck/current.txt)
-    #       curl -Ls "https://github.com/jeremylong/DependencyCheck/releases/download/v$VERSION/dependency-check-$VERSION-release.zip" --output dependency-check.zip
-    #       unzip dependency-check.zip
-    #       ./dependency-check/bin/dependency-check.sh -s "**/*.csproj" --project "${{ env.projectName }}" --failOnCVSS "7"
-    # - name: Check for license issues
-    #   run: |
-    #       dotnet new tool-manifest
-    #       dotnet tool install --local liz.tool
-    #       dotnet liz "${{ env.solutionFile }}" --suppress-progressbar
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
