@@ -59,7 +59,7 @@ public sealed class CreateUserCommandHandlerTests
             .VerifyNoRaisedEvent<UserCreatedEvent>()
             .VerifyAnyDomainNotification()
             .VerifyExistingNotification(
-                DomainErrorCodes.User.UserAlreadyExists,
+                DomainErrorCodes.User.AlreadyExists,
                 $"There is already a user with Id {command.UserId}");
     }
 
@@ -94,7 +94,7 @@ public sealed class CreateUserCommandHandlerTests
             .VerifyNoRaisedEvent<UserCreatedEvent>()
             .VerifyAnyDomainNotification()
             .VerifyExistingNotification(
-                DomainErrorCodes.User.UserAlreadyExists,
+                DomainErrorCodes.User.AlreadyExists,
                 $"There is already a user with email {command.Email}");
     }
 

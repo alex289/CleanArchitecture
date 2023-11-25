@@ -74,7 +74,7 @@ public sealed class LoginUserCommandHandlerTests
         _fixture
             .VerifyAnyDomainNotification()
             .VerifyExistingNotification(
-                DomainErrorCodes.User.UserPasswordIncorrect,
+                DomainErrorCodes.User.PasswordIncorrect,
                 "The password is incorrect");
 
         token.Should().BeEmpty();

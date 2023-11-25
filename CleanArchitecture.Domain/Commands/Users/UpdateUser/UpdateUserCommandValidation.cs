@@ -20,7 +20,7 @@ public sealed class UpdateUserCommandValidation : AbstractValidator<UpdateUserCo
     {
         RuleFor(cmd => cmd.UserId)
             .NotEmpty()
-            .WithErrorCode(DomainErrorCodes.User.UserEmptyId)
+            .WithErrorCode(DomainErrorCodes.User.EmptyId)
             .WithMessage("User id may not be empty");
     }
 
@@ -28,7 +28,7 @@ public sealed class UpdateUserCommandValidation : AbstractValidator<UpdateUserCo
     {
         RuleFor(cmd => cmd.TenantId)
             .NotEmpty()
-            .WithErrorCode(DomainErrorCodes.Tenant.TenantEmptyId)
+            .WithErrorCode(DomainErrorCodes.Tenant.EmptyId)
             .WithMessage("Tenant id may not be empty");
     }
 
@@ -36,10 +36,10 @@ public sealed class UpdateUserCommandValidation : AbstractValidator<UpdateUserCo
     {
         RuleFor(cmd => cmd.Email)
             .EmailAddress()
-            .WithErrorCode(DomainErrorCodes.User.UserInvalidEmail)
+            .WithErrorCode(DomainErrorCodes.User.InvalidEmail)
             .WithMessage("Email is not a valid email address")
             .MaximumLength(MaxLengths.User.Email)
-            .WithErrorCode(DomainErrorCodes.User.UserEmailExceedsMaxLength)
+            .WithErrorCode(DomainErrorCodes.User.EmailExceedsMaxLength)
             .WithMessage($"Email may not be longer than {MaxLengths.User.Email} characters");
     }
 
@@ -47,10 +47,10 @@ public sealed class UpdateUserCommandValidation : AbstractValidator<UpdateUserCo
     {
         RuleFor(cmd => cmd.FirstName)
             .NotEmpty()
-            .WithErrorCode(DomainErrorCodes.User.UserEmptyFirstName)
+            .WithErrorCode(DomainErrorCodes.User.EmptyFirstName)
             .WithMessage("FirstName may not be empty")
             .MaximumLength(MaxLengths.User.FirstName)
-            .WithErrorCode(DomainErrorCodes.User.UserFirstNameExceedsMaxLength)
+            .WithErrorCode(DomainErrorCodes.User.FirstNameExceedsMaxLength)
             .WithMessage($"FirstName may not be longer than {MaxLengths.User.FirstName} characters");
     }
 
@@ -58,10 +58,10 @@ public sealed class UpdateUserCommandValidation : AbstractValidator<UpdateUserCo
     {
         RuleFor(cmd => cmd.LastName)
             .NotEmpty()
-            .WithErrorCode(DomainErrorCodes.User.UserEmptyLastName)
+            .WithErrorCode(DomainErrorCodes.User.EmptyLastName)
             .WithMessage("LastName may not be empty")
             .MaximumLength(MaxLengths.User.LastName)
-            .WithErrorCode(DomainErrorCodes.User.UserLastNameExceedsMaxLength)
+            .WithErrorCode(DomainErrorCodes.User.LastNameExceedsMaxLength)
             .WithMessage($"LastName may not be longer than {MaxLengths.User.LastName} characters");
     }
 
@@ -69,7 +69,7 @@ public sealed class UpdateUserCommandValidation : AbstractValidator<UpdateUserCo
     {
         RuleFor(cmd => cmd.Role)
             .IsInEnum()
-            .WithErrorCode(DomainErrorCodes.User.UserInvalidRole)
+            .WithErrorCode(DomainErrorCodes.User.InvalidRole)
             .WithMessage("Role is not a valid role");
     }
 }

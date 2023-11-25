@@ -64,7 +64,7 @@ public sealed class CreateTenantCommandHandlerTests
             .VerifyNoRaisedEvent<TenantCreatedEvent>()
             .VerifyAnyDomainNotification()
             .VerifyExistingNotification(
-                DomainErrorCodes.Tenant.TenantAlreadyExists,
+                DomainErrorCodes.Tenant.AlreadyExists,
                 $"There is already a tenant with Id {command.AggregateId}");
     }
 }

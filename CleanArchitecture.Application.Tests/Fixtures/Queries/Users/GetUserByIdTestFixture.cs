@@ -33,8 +33,6 @@ public sealed class GetUserByIdTestFixture : QueryHandlerBaseFixture
             "Password",
             UserRole.User);
 
-        var query = new[] { user }.BuildMock();
-
         UserRepository.GetByIdAsync(Arg.Is<Guid>(y => y == ExistingUserId)).Returns(user);
     }
 

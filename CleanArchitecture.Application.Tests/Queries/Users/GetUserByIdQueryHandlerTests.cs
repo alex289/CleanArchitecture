@@ -40,7 +40,7 @@ public sealed class GetUserByIdQueryHandlerTests
         _fixture.VerifyExistingNotification(
             nameof(GetUserByIdQuery),
             ErrorCodes.ObjectNotFound,
-            $"User with id {request.UserId} could not be found");
+            $"User with id {request.Id} could not be found");
 
         result.Should().BeNull();
     }

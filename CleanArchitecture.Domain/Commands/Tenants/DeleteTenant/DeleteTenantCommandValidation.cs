@@ -14,7 +14,7 @@ public sealed class DeleteTenantCommandValidation : AbstractValidator<DeleteTena
     {
         RuleFor(cmd => cmd.AggregateId)
             .NotEmpty()
-            .WithErrorCode(DomainErrorCodes.Tenant.TenantEmptyId)
+            .WithErrorCode(DomainErrorCodes.Tenant.EmptyId)
             .WithMessage("Tenant id may not be empty");
     }
 }

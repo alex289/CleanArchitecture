@@ -28,12 +28,12 @@ public sealed class ChangePasswordCommandValidationTests :
 
         var errors = new List<string>
         {
-            DomainErrorCodes.User.UserEmptyPassword,
-            DomainErrorCodes.User.UserSpecialCharPassword,
-            DomainErrorCodes.User.UserNumberPassword,
-            DomainErrorCodes.User.UserLowercaseLetterPassword,
-            DomainErrorCodes.User.UserUppercaseLetterPassword,
-            DomainErrorCodes.User.UserShortPassword
+            DomainErrorCodes.User.EmptyPassword,
+            DomainErrorCodes.User.SpecialCharPassword,
+            DomainErrorCodes.User.NumberPassword,
+            DomainErrorCodes.User.LowercaseLetterPassword,
+            DomainErrorCodes.User.UppercaseLetterPassword,
+            DomainErrorCodes.User.ShortPassword
         };
 
         ShouldHaveExpectedErrors(command, errors.ToArray());
@@ -44,7 +44,7 @@ public sealed class ChangePasswordCommandValidationTests :
     {
         var command = CreateTestCommand("z8tnayvd5FNLU9AQm");
 
-        ShouldHaveSingleError(command, DomainErrorCodes.User.UserSpecialCharPassword);
+        ShouldHaveSingleError(command, DomainErrorCodes.User.SpecialCharPassword);
     }
 
     [Fact]
@@ -52,7 +52,7 @@ public sealed class ChangePasswordCommandValidationTests :
     {
         var command = CreateTestCommand("z]tnayvdFNLU:]AQm");
 
-        ShouldHaveSingleError(command, DomainErrorCodes.User.UserNumberPassword);
+        ShouldHaveSingleError(command, DomainErrorCodes.User.NumberPassword);
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public sealed class ChangePasswordCommandValidationTests :
     {
         var command = CreateTestCommand("Z8]TNAYVDFNLU:]AQM");
 
-        ShouldHaveSingleError(command, DomainErrorCodes.User.UserLowercaseLetterPassword);
+        ShouldHaveSingleError(command, DomainErrorCodes.User.LowercaseLetterPassword);
     }
 
     [Fact]
@@ -68,7 +68,7 @@ public sealed class ChangePasswordCommandValidationTests :
     {
         var command = CreateTestCommand("z8]tnayvd5fnlu9:]aqm");
 
-        ShouldHaveSingleError(command, DomainErrorCodes.User.UserUppercaseLetterPassword);
+        ShouldHaveSingleError(command, DomainErrorCodes.User.UppercaseLetterPassword);
     }
 
     [Fact]
@@ -76,7 +76,7 @@ public sealed class ChangePasswordCommandValidationTests :
     {
         var command = CreateTestCommand("zA6{");
 
-        ShouldHaveSingleError(command, DomainErrorCodes.User.UserShortPassword);
+        ShouldHaveSingleError(command, DomainErrorCodes.User.ShortPassword);
     }
 
     [Fact]
@@ -84,7 +84,7 @@ public sealed class ChangePasswordCommandValidationTests :
     {
         var command = CreateTestCommand(string.Concat(Enumerable.Repeat("zA6{", 12), 12));
 
-        ShouldHaveSingleError(command, DomainErrorCodes.User.UserLongPassword);
+        ShouldHaveSingleError(command, DomainErrorCodes.User.LongPassword);
     }
 
     private static ChangePasswordCommand CreateTestCommand(

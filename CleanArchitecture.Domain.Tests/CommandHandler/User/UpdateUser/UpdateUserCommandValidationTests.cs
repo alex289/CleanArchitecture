@@ -29,7 +29,7 @@ public sealed class UpdateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.User.UserEmptyId,
+            DomainErrorCodes.User.EmptyId,
             "User id may not be empty");
     }
 
@@ -40,7 +40,7 @@ public sealed class UpdateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.User.UserInvalidEmail,
+            DomainErrorCodes.User.InvalidEmail,
             "Email is not a valid email address");
     }
 
@@ -51,7 +51,7 @@ public sealed class UpdateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.User.UserInvalidEmail,
+            DomainErrorCodes.User.InvalidEmail,
             "Email is not a valid email address");
     }
 
@@ -62,7 +62,7 @@ public sealed class UpdateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.User.UserEmailExceedsMaxLength,
+            DomainErrorCodes.User.EmailExceedsMaxLength,
             $"Email may not be longer than {MaxLengths.User.Email} characters");
     }
 
@@ -73,7 +73,7 @@ public sealed class UpdateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.User.UserEmptyFirstName,
+            DomainErrorCodes.User.EmptyFirstName,
             "FirstName may not be empty");
     }
 
@@ -84,7 +84,7 @@ public sealed class UpdateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.User.UserFirstNameExceedsMaxLength,
+            DomainErrorCodes.User.FirstNameExceedsMaxLength,
             $"FirstName may not be longer than {MaxLengths.User.FirstName} characters");
     }
 
@@ -95,7 +95,7 @@ public sealed class UpdateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.User.UserEmptyLastName,
+            DomainErrorCodes.User.EmptyLastName,
             "LastName may not be empty");
     }
 
@@ -106,7 +106,7 @@ public sealed class UpdateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.User.UserLastNameExceedsMaxLength,
+            DomainErrorCodes.User.LastNameExceedsMaxLength,
             $"LastName may not be longer than {MaxLengths.User.LastName} characters");
     }
 
@@ -117,7 +117,7 @@ public sealed class UpdateUserCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.Tenant.TenantEmptyId,
+            DomainErrorCodes.Tenant.EmptyId,
             "Tenant id may not be empty");
     }
 

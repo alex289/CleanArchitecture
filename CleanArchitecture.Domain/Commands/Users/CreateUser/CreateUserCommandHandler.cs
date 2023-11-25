@@ -59,7 +59,7 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
                 new DomainNotification(
                     request.MessageType,
                     $"There is already a user with Id {request.UserId}",
-                    DomainErrorCodes.User.UserAlreadyExists));
+                    DomainErrorCodes.User.AlreadyExists));
             return;
         }
 
@@ -71,7 +71,7 @@ public sealed class CreateUserCommandHandler : CommandHandlerBase,
                 new DomainNotification(
                     request.MessageType,
                     $"There is already a user with email {request.Email}",
-                    DomainErrorCodes.User.UserAlreadyExists));
+                    DomainErrorCodes.User.AlreadyExists));
             return;
         }
 

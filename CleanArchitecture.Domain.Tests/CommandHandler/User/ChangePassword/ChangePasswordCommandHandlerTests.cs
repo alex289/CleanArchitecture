@@ -57,7 +57,7 @@ public sealed class ChangePasswordCommandHandlerTests
             .VerifyNoRaisedEvent<UserUpdatedEvent>()
             .VerifyAnyDomainNotification()
             .VerifyExistingNotification(
-                DomainErrorCodes.User.UserPasswordIncorrect,
+                DomainErrorCodes.User.PasswordIncorrect,
                 "The password is incorrect");
     }
 }

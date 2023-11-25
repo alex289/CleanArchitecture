@@ -70,7 +70,7 @@ public sealed class UpdateUserCommandHandler : CommandHandlerBase,
                     new DomainNotification(
                         request.MessageType,
                         $"There is already a user with email {request.Email}",
-                        DomainErrorCodes.User.UserAlreadyExists));
+                        DomainErrorCodes.User.AlreadyExists));
                 return;
             }
         }

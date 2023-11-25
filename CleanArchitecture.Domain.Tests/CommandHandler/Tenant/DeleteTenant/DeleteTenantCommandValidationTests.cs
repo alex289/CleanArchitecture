@@ -27,7 +27,7 @@ public sealed class DeleteTenantCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.Tenant.TenantEmptyId,
+            DomainErrorCodes.Tenant.EmptyId,
             "Tenant id may not be empty");
     }
 

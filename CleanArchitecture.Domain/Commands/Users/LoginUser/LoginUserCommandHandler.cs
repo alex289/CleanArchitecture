@@ -64,7 +64,7 @@ public sealed class LoginUserCommandHandler : CommandHandlerBase,
                 new DomainNotification(
                     request.MessageType,
                     "The password is incorrect",
-                    DomainErrorCodes.User.UserPasswordIncorrect));
+                    DomainErrorCodes.User.PasswordIncorrect));
 
             return "";
         }

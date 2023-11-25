@@ -23,14 +23,14 @@ public sealed class GetUserByIdQueryHandler :
 
     public async Task<UserViewModel?> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetByIdAsync(request.UserId);
+        var user = await _userRepository.GetByIdAsync(request.Id);
 
         if (user is null)
         {
             await _bus.RaiseEventAsync(
                 new DomainNotification(
                     nameof(GetUserByIdQuery),
-                    $"User with id {request.UserId} could not be found",
+                    $"User with id {request.Id} could not be found",
                     ErrorCodes.ObjectNotFound));
             return null;
         }

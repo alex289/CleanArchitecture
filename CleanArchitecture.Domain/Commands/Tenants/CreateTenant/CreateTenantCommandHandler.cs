@@ -52,7 +52,7 @@ public sealed class CreateTenantCommandHandler : CommandHandlerBase,
                 new DomainNotification(
                     request.MessageType,
                     $"There is already a tenant with Id {request.AggregateId}",
-                    DomainErrorCodes.Tenant.TenantAlreadyExists));
+                    DomainErrorCodes.Tenant.AlreadyExists));
 
             return;
         }

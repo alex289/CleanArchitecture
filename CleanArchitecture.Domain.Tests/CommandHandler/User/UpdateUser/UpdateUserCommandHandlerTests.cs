@@ -95,7 +95,7 @@ public sealed class UpdateUserCommandHandlerTests
             .VerifyNoRaisedEvent<UserUpdatedEvent>()
             .VerifyAnyDomainNotification()
             .VerifyExistingNotification(
-                DomainErrorCodes.User.UserAlreadyExists,
+                DomainErrorCodes.User.AlreadyExists,
                 $"There is already a user with email {command.Email}");
     }
 

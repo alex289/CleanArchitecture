@@ -48,7 +48,7 @@ public sealed class UserController : ApiController
         return Response(users);
     }
 
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id}")]
     [SwaggerOperation("Get a user by id")]
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<UserViewModel>))]
     public async Task<IActionResult> GetUserByIdAsync([FromRoute] Guid id)
@@ -75,7 +75,7 @@ public sealed class UserController : ApiController
         return Response(userId);
     }
 
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("{id}")]
     [SwaggerOperation("Delete a user")]
     [SwaggerResponse(200, "Request successful", typeof(ResponseMessage<Guid>))]
     public async Task<IActionResult> DeleteUserAsync([FromRoute] Guid id)

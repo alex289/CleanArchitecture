@@ -14,7 +14,7 @@ public sealed class DeleteUserCommandValidation : AbstractValidator<DeleteUserCo
     {
         RuleFor(cmd => cmd.UserId)
             .NotEmpty()
-            .WithErrorCode(DomainErrorCodes.User.UserEmptyId)
+            .WithErrorCode(DomainErrorCodes.User.EmptyId)
             .WithMessage("User id may not be empty");
     }
 }

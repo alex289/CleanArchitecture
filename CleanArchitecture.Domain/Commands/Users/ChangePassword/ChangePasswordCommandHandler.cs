@@ -53,7 +53,7 @@ public sealed class ChangePasswordCommandHandler : CommandHandlerBase,
                 new DomainNotification(
                     request.MessageType,
                     "The password is incorrect",
-                    DomainErrorCodes.User.UserPasswordIncorrect));
+                    DomainErrorCodes.User.PasswordIncorrect));
 
             return;
         }

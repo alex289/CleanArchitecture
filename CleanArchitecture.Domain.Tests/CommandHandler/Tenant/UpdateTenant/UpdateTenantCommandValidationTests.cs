@@ -27,7 +27,7 @@ public sealed class UpdateTenantCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.Tenant.TenantEmptyId,
+            DomainErrorCodes.Tenant.EmptyId,
             "Tenant id may not be empty");
     }
 
@@ -38,7 +38,7 @@ public sealed class UpdateTenantCommandValidationTests :
 
         ShouldHaveSingleError(
             command,
-            DomainErrorCodes.Tenant.TenantEmptyName,
+            DomainErrorCodes.Tenant.EmptyName,
             "Name may not be empty");
     }
 
