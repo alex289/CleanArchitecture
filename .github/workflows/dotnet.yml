@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       release:
+        type: boolean
         description: 'Create a new release'
         required: true
-        default: 'false'
-        options: ['true', 'false']
+        default: false
   push:
     branches: [ main ]
   pull_request:
