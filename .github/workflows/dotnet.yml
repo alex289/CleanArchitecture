@@ -18,7 +18,7 @@ jobs:
       projectName: CleanArchitecture
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
 
     - name: Install .NET Core
       uses: actions/setup-dotnet@v3
@@ -40,6 +40,8 @@ jobs:
     needs: ci
     if: github.ref == 'refs/heads/main'
     steps:
+      - uses: actions/checkout@v4
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
 
