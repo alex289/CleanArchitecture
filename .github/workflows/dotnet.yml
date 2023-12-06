@@ -67,4 +67,4 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: ${{ env.DOCKER_IMAGE }}
-          readme-filepath: Readme.md
+          readme-filepath: ./Readme.md
