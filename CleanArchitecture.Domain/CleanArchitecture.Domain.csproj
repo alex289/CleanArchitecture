@@ -11,7 +11,7 @@
         <PackageReference Include="MediatR" Version="12.2.0" />
         <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="RabbitMQ.Client" Version="6.7.0" />
+        <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
     </ItemGroup>
 
