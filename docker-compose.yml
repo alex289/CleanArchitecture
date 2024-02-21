@@ -14,6 +14,7 @@ services:
     links:
       - db
     environment:
+      - ASPNETCORE_HTTP_PORTS=80
       - ConnectionStrings__DefaultConnection=Server=db;Database=clean-architecture;Trusted_Connection=False;MultipleActiveResultSets=true;TrustServerCertificate=True;User Id=SA;Password=Password123!#
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost/healthz"]
