@@ -35,5 +35,11 @@ spec:
         env:
           - name: ASPNETCORE_HTTP_PORTS
             value: 80
+          - name: Kestrel__Endpoints__Http__Url
+            value: http://+:80
+          - name: Kestrel__Endpoints__Grpc__Url
+            value: http://+:8080
+          - name: Kestrel__Endpoints__Grpc__Protocols
+            value: Http2
           - name: ConnectionStrings__DefaultConnection
             value: Server=sql-server;Database=clean-architecture;Trusted_Connection=False;MultipleActiveResultSets=true;TrustServerCertificate=True;User Id=SA;Password=Password123!#

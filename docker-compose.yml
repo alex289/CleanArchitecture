@@ -6,8 +6,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - 80:80
+      - 8080:8080
     depends_on:
       db:
+        condition: service_started
+      redis:
         condition: service_started
       rabbitmq:
         condition: service_healthy
@@ -15,6 +18,9 @@ services:
       - db
     environment:
       - ASPNETCORE_HTTP_PORTS=80
+      - Kestrel__Endpoints__Http__Url=http://+:80
+      - Kestrel__Endpoints__Grpc__Url=http://+:8080
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
       - ConnectionStrings__DefaultConnection=Server=db;Database=clean-architecture;Trusted_Connection=False;MultipleActiveResultSets=true;TrustServerCertificate=True;User Id=SA;Password=Password123!#
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost/healthz"]
