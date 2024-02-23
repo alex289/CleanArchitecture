@@ -11,7 +11,8 @@
         <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="8.0.0" />
         <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="8.0.0" />
         <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="8.0.0" />
-        <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="8.0.0"/>
+        <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="8.0.0" />
+        <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.61.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1">
@@ -21,15 +22,15 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.1" />
         <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.1" />
         <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="8.0.1" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
-        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0"/>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\CleanArchitecture.Application\CleanArchitecture.Application.csproj"/>
-        <ProjectReference Include="..\CleanArchitecture.Domain\CleanArchitecture.Domain.csproj"/>
-        <ProjectReference Include="..\CleanArchitecture.gRPC\CleanArchitecture.gRPC.csproj"/>
-        <ProjectReference Include="..\CleanArchitecture.Infrastructure\CleanArchitecture.Infrastructure.csproj"/>
+        <ProjectReference Include="..\CleanArchitecture.Application\CleanArchitecture.Application.csproj" />
+        <ProjectReference Include="..\CleanArchitecture.Domain\CleanArchitecture.Domain.csproj" />
+        <ProjectReference Include="..\CleanArchitecture.gRPC\CleanArchitecture.gRPC.csproj" />
+        <ProjectReference Include="..\CleanArchitecture.Infrastructure\CleanArchitecture.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
