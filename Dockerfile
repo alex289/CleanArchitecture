@@ -1,16 +1,18 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG TARGETARCH
 WORKDIR /app
 
 # copy csproj and restore as distinct layers
 COPY . .
-RUN dotnet restore
+RUN dotnet restore -a $TARGETARCH
 
 # copy everything else and build app
 COPY CleanArchitecture.Api/. ./CleanArchitecture.Api/
 WORKDIR /app/CleanArchitecture.Api
-RUN dotnet publish -c Release -o out
+RUN dotnet publish -c Release -o out -a $TARGETARCH
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+ARG TARGETARCH
 WORKDIR /app
 COPY --from=build /app/CleanArchitecture.Api/out ./
 
