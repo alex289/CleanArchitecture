@@ -4,6 +4,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <UserSecretsId>64377c40-44d6-4989-9662-5d778f8b3b92</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -31,6 +32,12 @@
         <ProjectReference Include="..\CleanArchitecture.Domain\CleanArchitecture.Domain.csproj" />
         <ProjectReference Include="..\CleanArchitecture.gRPC\CleanArchitecture.gRPC.csproj" />
         <ProjectReference Include="..\CleanArchitecture.Infrastructure\CleanArchitecture.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>
