@@ -54,11 +54,19 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ env.DOCKER_IMAGE }}
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
           push: true
+          labels: ${{ steps.meta.outputs.labels }}
           tags: |
             ${{ env.DOCKER_IMAGE }}:latest
             ${{ env.DOCKER_IMAGE }}:${{ github.sha }}
