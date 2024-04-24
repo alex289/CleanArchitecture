@@ -5,9 +5,12 @@ using CleanArchitecture.IntegrationTests.Fixtures.gRPC;
 using CleanArchitecture.Proto.Tenants;
 using FluentAssertions;
 using Xunit;
+using Xunit.Priority;
 
 namespace CleanArchitecture.IntegrationTests.gRPC;
 
+[Collection("IntegrationTests")]
+[TestCaseOrderer(PriorityOrderer.Name, PriorityOrderer.Assembly)]
 public sealed class GetTenantsByIdsTests : IClassFixture<GetTenantsByIdsTestFixture>
 {
     private readonly GetTenantsByIdsTestFixture _fixture;

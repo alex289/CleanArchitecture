@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Threading.Tasks;
 using CleanArchitecture.Domain.Constants;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Enums;
@@ -8,20 +9,21 @@ using CleanArchitecture.IntegrationTests.Infrastructure;
 using CleanArchitecture.IntegrationTests.Infrastructure.Auth;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
+using Xunit;
 
 namespace CleanArchitecture.IntegrationTests.Fixtures;
 
-public class TestFixtureBase
+public class TestFixtureBase : IAsyncLifetime
 {
     public HttpClient ServerClient { get; }
-    protected WebApplicationFactory<Program> Factory { get; }
+    protected CleanArchitectureWebApplicationFactory Factory { get; }
 
     public TestFixtureBase(bool useTestAuthentication = true)
     {
         Factory = new CleanArchitectureWebApplicationFactory(
-            SeedTestData,
             RegisterCustomServicesHandler,
-            useTestAuthentication);
+            useTestAuthentication,
+            DatabaseFixture.TestRunDbName);
 
         ServerClient = Factory.CreateClient();
         ServerClient.Timeout = TimeSpan.FromMinutes(5);
@@ -29,17 +31,17 @@ public class TestFixtureBase
 
     protected virtual void SeedTestData(ApplicationDbContext context)
     {
-        context.Users.Add(new User(
-            TestAuthenticationOptions.TestUserId,
-            Ids.Seed.TenantId,
-            TestAuthenticationOptions.Email,
-            TestAuthenticationOptions.FirstName,
-            TestAuthenticationOptions.LastName,
-            // !Password123#
-            "$2a$12$Blal/uiFIJdYsCLTMUik/egLbfg3XhbnxBC6Sb5IKz2ZYhiU/MzL2",
-            UserRole.Admin));
+    }
 
-        context.SaveChanges();
+    private async Task PrepareDatabaseAsync()
+    {
+        await Factory.RespawnDatabaseAsync();
+
+        using var scope = Factory.Services.CreateScope();
+        await using var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        SeedTestData(dbContext);
+        await dbContext.SaveChangesAsync();
     }
 
     protected virtual void RegisterCustomServicesHandler(
@@ -47,5 +49,15 @@ public class TestFixtureBase
         ServiceProvider serviceProvider,
         IServiceProvider scopedServices)
     {
+    }
+
+    public async Task InitializeAsync()
+    {
+        await PrepareDatabaseAsync();
+    }
+
+    public Task DisposeAsync()
+    {
+        return Task.CompletedTask;
     }
 }
