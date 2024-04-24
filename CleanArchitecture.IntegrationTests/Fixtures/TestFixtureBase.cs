@@ -7,7 +7,6 @@ using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.IntegrationTests.Infrastructure;
 using CleanArchitecture.IntegrationTests.Infrastructure.Auth;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
@@ -39,6 +38,28 @@ public class TestFixtureBase : IAsyncLifetime
 
         using var scope = Factory.Services.CreateScope();
         await using var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+        dbContext.Tenants.Add(new Tenant(
+            Ids.Seed.TenantId,
+            "Admin Tenant"));
+
+        dbContext.Users.Add(new User(
+            Ids.Seed.UserId,
+            Ids.Seed.TenantId,
+            "admin@email.com",
+            "Admin",
+            "User",
+            "$2a$12$Blal/uiFIJdYsCLTMUik/egLbfg3XhbnxBC6Sb5IKz2ZYhiU/MzL2",
+            UserRole.Admin));
+
+        dbContext.Users.Add(new User(
+            TestAuthenticationOptions.TestUserId,
+            Ids.Seed.TenantId,
+            TestAuthenticationOptions.Email,
+            TestAuthenticationOptions.FirstName,
+            TestAuthenticationOptions.LastName,
+            TestAuthenticationOptions.Password,
+            UserRole.Admin));
 
         SeedTestData(dbContext);
         await dbContext.SaveChangesAsync();
