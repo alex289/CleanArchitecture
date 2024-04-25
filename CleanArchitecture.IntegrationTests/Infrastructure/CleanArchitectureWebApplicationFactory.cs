@@ -1,13 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using CleanArchitecture.Infrastructure.Database;
-using CleanArchitecture.Infrastructure.Extensions;
-using CleanArchitecture.IntegrationTests.Extensions;
 using CleanArchitecture.IntegrationTests.Infrastructure.Auth;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanArchitecture.IntegrationTests.Infrastructure;
@@ -21,20 +19,19 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
         ServiceProvider serviceProvider,
         IServiceProvider scopedServices);
 
-    private readonly AddCustomSeedDataHandler? _addCustomSeedDataHandler;
-    private readonly bool _addTestAuthentication;
+    private readonly string _instanceDatabaseName;
 
-    private readonly SqliteConnection _connection = new("DataSource=:memory:");
+    private readonly bool _addTestAuthentication;
     private readonly RegisterCustomServicesHandler? _registerCustomServicesHandler;
 
     public CleanArchitectureWebApplicationFactory(
-        AddCustomSeedDataHandler? addCustomSeedDataHandler,
         RegisterCustomServicesHandler? registerCustomServicesHandler,
-        bool addTestAuthentication)
+        bool addTestAuthentication,
+        string instanceDatabaseName)
     {
-        _addCustomSeedDataHandler = addCustomSeedDataHandler;
         _registerCustomServicesHandler = registerCustomServicesHandler;
         _addTestAuthentication = addTestAuthentication;
+        _instanceDatabaseName = instanceDatabaseName;
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -43,14 +40,35 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
 
         base.ConfigureWebHost(builder);
 
-        _connection.Open();
+        var configuration = new ConfigurationBuilder()
+            .Build();
+
+        builder.ConfigureAppConfiguration(configurationBuilder =>
+        {
+            configurationBuilder.AddEnvironmentVariables();
+
+            var dbAccessor = DatabaseAccessor.GetOrCreateAsync(_instanceDatabaseName);
+            var redisAccessor = RedisAccessor.GetOrCreateAsync();
+            var rabbitAccessor = RabbitmqAccessor.GetOrCreateAsync();
+
+            // Overwrite default connection strings
+            configurationBuilder.AddInMemoryCollection([
+                new KeyValuePair<string, string?>(
+                    "ConnectionStrings:DefaultConnection",
+                    dbAccessor.GetConnectionString()),
+                new KeyValuePair<string, string?>(
+                    "RedisHostName",
+                    redisAccessor.GetConnectionString()),
+                new KeyValuePair<string, string?>(
+                    "RabbitMQ:Host",
+                    rabbitAccessor.GetConnectionString())
+            ]);
+
+            configuration = configurationBuilder.Build();
+        });
 
         builder.ConfigureServices(services =>
         {
-            services.SetupTestDatabase<ApplicationDbContext>(_connection);
-            services.SetupTestDatabase<EventStoreDbContext>(_connection);
-            services.SetupTestDatabase<DomainNotificationStoreDbContext>(_connection);
-
             if (_addTestAuthentication)
             {
                 services.AddAuthentication(options =>
@@ -65,22 +83,37 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
             using var scope = sp.CreateScope();
             var scopedServices = scope.ServiceProvider;
 
-            var applicationDbContext = scopedServices.GetRequiredService<ApplicationDbContext>();
-            var storeDbContext = scopedServices.GetRequiredService<EventStoreDbContext>();
-            var domainStoreDbContext = scopedServices.GetRequiredService<DomainNotificationStoreDbContext>();
+            var dbAccessor = DatabaseAccessor.GetOrCreateAsync(_instanceDatabaseName);
+            dbAccessor.CreateDatabase(scopedServices);
 
-            applicationDbContext.EnsureMigrationsApplied();
+            var redisAccessor = RedisAccessor.GetOrCreateAsync();
+            redisAccessor.RegisterRedis(services, configuration);
 
-            var creator2 = (RelationalDatabaseCreator)storeDbContext.Database
-                .GetService<IRelationalDatabaseCreator>();
-            creator2.CreateTables();
+            var rabbitAccessor = RabbitmqAccessor.GetOrCreateAsync();
+            rabbitAccessor.RegisterRabbitmq(services, configuration);
 
-            var creator3 = (RelationalDatabaseCreator)domainStoreDbContext
-                .Database.GetService<IRelationalDatabaseCreator>();
-            creator3.CreateTables();
-
-            _addCustomSeedDataHandler?.Invoke(applicationDbContext);
             _registerCustomServicesHandler?.Invoke(services, sp, scopedServices);
         });
+    }
+
+    public async Task RespawnDatabaseAsync()
+    {
+        var dbAccessor = DatabaseAccessor.GetOrCreateAsync(_instanceDatabaseName);
+        await dbAccessor.RespawnDatabaseAsync();
+        
+        var redisAccessor = RedisAccessor.GetOrCreateAsync();
+        redisAccessor.ResetRedis();
+    }
+
+    public override async ValueTask DisposeAsync()
+    {
+        var dbAccessor = DatabaseAccessor.GetOrCreateAsync(_instanceDatabaseName);
+        await dbAccessor.DisposeAsync();
+
+        var redisAccessor = RedisAccessor.GetOrCreateAsync();
+        await redisAccessor.DisposeAsync();
+
+        var rabbitAccessor = RabbitmqAccessor.GetOrCreateAsync();
+        await rabbitAccessor.DisposeAsync();
     }
 }

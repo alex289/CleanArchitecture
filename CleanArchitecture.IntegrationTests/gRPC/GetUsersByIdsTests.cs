@@ -4,9 +4,12 @@ using CleanArchitecture.IntegrationTests.Fixtures.gRPC;
 using CleanArchitecture.Proto.Users;
 using FluentAssertions;
 using Xunit;
+using Xunit.Priority;
 
 namespace CleanArchitecture.IntegrationTests.gRPC;
 
+[Collection("IntegrationTests")]
+[TestCaseOrderer(PriorityOrderer.Name, PriorityOrderer.Assembly)]
 public sealed class GetUsersByIdsTests : IClassFixture<GetUsersByIdsTestFixture>
 {
     private readonly GetUsersByIdsTestFixture _fixture;
