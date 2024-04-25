@@ -72,7 +72,7 @@ builder.Services.AddLogging(x => x.AddSimpleConsole(console =>
     console.IncludeScopes = true;
 }));
 
-if (builder.Environment.IsProduction())
+if (builder.Environment.IsProduction() || !string.IsNullOrWhiteSpace(builder.Configuration["RedisHostName"]))
 {
     builder.Services.AddStackExchangeRedisCache(options =>
     {
@@ -95,12 +95,8 @@ using (var scope = app.Services.CreateScope())
     var domainStoreDbContext = services.GetRequiredService<DomainNotificationStoreDbContext>();
 
     appDbContext.EnsureMigrationsApplied();
-
-    if (app.Environment.EnvironmentName != "Integration")
-    {
-        storeDbContext.EnsureMigrationsApplied();
-        domainStoreDbContext.EnsureMigrationsApplied();
-    }
+    storeDbContext.EnsureMigrationsApplied();
+    domainStoreDbContext.EnsureMigrationsApplied();
 }
 
 if (app.Environment.IsDevelopment())

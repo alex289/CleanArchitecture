@@ -22,7 +22,7 @@ public class TestFixtureBase : IAsyncLifetime
         Factory = new CleanArchitectureWebApplicationFactory(
             RegisterCustomServicesHandler,
             useTestAuthentication,
-            DatabaseFixture.TestRunDbName);
+            AccessorFixture.TestRunDbName);
 
         ServerClient = Factory.CreateClient();
         ServerClient.Timeout = TimeSpan.FromMinutes(5);

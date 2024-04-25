@@ -5,6 +5,6 @@ namespace CleanArchitecture.IntegrationTests;
 
 [CollectionDefinition("IntegrationTests", DisableParallelization = true)]
 public sealed class IntegrationTestsCollection :
-    ICollectionFixture<DatabaseFixture>
+    ICollectionFixture<AccessorFixture>
 {
 }

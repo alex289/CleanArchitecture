@@ -18,7 +18,7 @@ public sealed class DatabaseAccessor
     private bool _databaseCreated = false;
     private readonly object _databaseCreationLock = new();
 
-    private const string _dbPassword = "12345678##as";
+    private const string _dbPassword = "234#AD224fD#ss";
     private static readonly MsSqlContainer s_dbContainer = new MsSqlBuilder()
         .WithPassword(_dbPassword)
         .WithPortBinding(1433)
@@ -61,6 +61,7 @@ public sealed class DatabaseAccessor
 
     public async ValueTask DisposeAsync()
     {
+        // Reset the database to its original state
         var dropScript = $@"
             USE MASTER;
 

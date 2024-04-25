@@ -40,18 +40,31 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
 
         base.ConfigureWebHost(builder);
 
+        var configuration = new ConfigurationBuilder()
+            .Build();
+
         builder.ConfigureAppConfiguration(configurationBuilder =>
         {
             configurationBuilder.AddEnvironmentVariables();
 
-            var accessor = DatabaseAccessor.GetOrCreateAsync(_instanceDatabaseName);
+            var dbAccessor = DatabaseAccessor.GetOrCreateAsync(_instanceDatabaseName);
+            var redisAccessor = RedisAccessor.GetOrCreateAsync();
+            var rabbitAccessor = RabbitmqAccessor.GetOrCreateAsync();
 
-            // Overwrite default connection string to our test instance db
+            // Overwrite default connection strings
             configurationBuilder.AddInMemoryCollection([
                 new KeyValuePair<string, string?>(
                     "ConnectionStrings:DefaultConnection",
-                    accessor.GetConnectionString())
+                    dbAccessor.GetConnectionString()),
+                new KeyValuePair<string, string?>(
+                    "RedisHostName",
+                    redisAccessor.GetConnectionString()),
+                new KeyValuePair<string, string?>(
+                    "RabbitMQ:Host",
+                    rabbitAccessor.GetConnectionString())
             ]);
+
+            configuration = configurationBuilder.Build();
         });
 
         builder.ConfigureServices(services =>
@@ -70,8 +83,14 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
             using var scope = sp.CreateScope();
             var scopedServices = scope.ServiceProvider;
 
-            var accessor = DatabaseAccessor.GetOrCreateAsync(_instanceDatabaseName);
-            var applicationDbContext = accessor.CreateDatabase(scopedServices);
+            var dbAccessor = DatabaseAccessor.GetOrCreateAsync(_instanceDatabaseName);
+            dbAccessor.CreateDatabase(scopedServices);
+
+            var redisAccessor = RedisAccessor.GetOrCreateAsync();
+            redisAccessor.RegisterRedis(services, configuration);
+
+            var rabbitAccessor = RabbitmqAccessor.GetOrCreateAsync();
+            rabbitAccessor.RegisterRabbitmq(services, configuration);
 
             _registerCustomServicesHandler?.Invoke(services, sp, scopedServices);
         });
@@ -85,7 +104,13 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
 
     public override async ValueTask DisposeAsync()
     {
-        var accessor = DatabaseAccessor.GetOrCreateAsync(_instanceDatabaseName);
-        await accessor.DisposeAsync();
+        var dbAccessor = DatabaseAccessor.GetOrCreateAsync(_instanceDatabaseName);
+        await dbAccessor.DisposeAsync();
+
+        var redisAccessor = RedisAccessor.GetOrCreateAsync();
+        await redisAccessor.DisposeAsync();
+
+        var rabbitAccessor = RabbitmqAccessor.GetOrCreateAsync();
+        await rabbitAccessor.DisposeAsync();
     }
 }
