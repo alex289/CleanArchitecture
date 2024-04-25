@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Concurrent;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
 using Testcontainers.Redis;
 
 namespace CleanArchitecture.IntegrationTests.Infrastructure;
@@ -47,6 +47,26 @@ public sealed class RedisAccessor
             options.Configuration = configuration["RedisHostName"];
             options.InstanceName = "clean-architecture";
         });
+    }
+    
+    public void ResetRedis()
+    {
+        var redis = ConnectionMultiplexer.Connect(GetConnectionString());
+
+        var db = redis.GetDatabase();
+
+        var endpoints = redis.GetEndPoints();
+        foreach (var endpoint in endpoints)
+        {
+            var server = redis.GetServer(endpoint);
+            var keys = server.Keys();
+            foreach (var key in keys)
+            {
+                db.KeyDelete(key);
+            }
+        }
+
+        redis.Close();
     }
 
     public static RedisAccessor GetOrCreateAsync()

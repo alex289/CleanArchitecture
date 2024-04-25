@@ -98,8 +98,11 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
 
     public async Task RespawnDatabaseAsync()
     {
-        var accessor = DatabaseAccessor.GetOrCreateAsync(_instanceDatabaseName);
-        await accessor.RespawnDatabaseAsync();
+        var dbAccessor = DatabaseAccessor.GetOrCreateAsync(_instanceDatabaseName);
+        await dbAccessor.RespawnDatabaseAsync();
+        
+        var redisAccessor = RedisAccessor.GetOrCreateAsync();
+        redisAccessor.ResetRedis();
     }
 
     public override async ValueTask DisposeAsync()
