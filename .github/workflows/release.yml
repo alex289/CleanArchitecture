@@ -60,6 +60,7 @@ jobs:
           name: ${{ steps.get_next_version.outputs.version }}
           body: ${{ steps.changelog.outputs.changes }}
           token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.get_next_version.outputs.version }}
 
       - name: Commit CHANGELOG.md
         if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
