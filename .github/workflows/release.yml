@@ -62,10 +62,14 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.get_next_version.outputs.version }}
 
-      - name: Commit CHANGELOG.md
+      - name: Create Changelog Pull Request
         if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: peter-evans/create-pull-request@v6
         with:
-          branch: main
-          commit_message: 'docs: update CHANGELOG.md for ${{ steps.get_next_version.outputs.version }} [skip ci]'
-          file_pattern: CHANGELOG.md
+          token: ${{ secrets.PAT }}
+          branch: release/${{ steps.get_next_version.outputs.version }}
+          title: 'docs: update CHANGELOG.md for ${{ steps.get_next_version.outputs.version }}'
+          commit-message: 'docs: update CHANGELOG.md for ${{ steps.get_next_version.outputs.version }}'
+          labels: changelog
+          body: |
+            This PR updates the CHANGELOG.md file for the release of version ${{ steps.get_next_version.outputs.version }}.
