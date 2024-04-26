@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.1.1] - 2024-04-26
+### :bug: Bug Fixes
+- [`24ca653`](https://github.com/alex289/CleanArchitecture/commit/24ca6530244c667913d45ba78de1c5a1132ab905) - Changelog and creating release *(commit by @alex289)*
+
+
 ## [v1.1.0] - 2024-04-26
 ### :sparkles: New Features
 - [`8fa1a41`](https://github.com/alex289/CleanArchitecture/commit/8fa1a41c0971dd04a1c40247387cce1712052522) - Use new action to calculate next version *(commit by @alex289)*
@@ -20,3 +25,4 @@ _This is the initial release._
 
 [v1.0.0]: https://github.com/alex289/CleanArchitecture/commits/v1.0.0
 [v1.1.0]: https://github.com/alex289/CleanArchitecture/compare/v1.0.0...v1.1.0
+[v1.1.1]: https://github.com/alex289/CleanArchitecture/compare/v1.1.0...v1.1.1
