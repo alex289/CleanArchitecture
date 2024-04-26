@@ -69,4 +69,3 @@ jobs:
           branch: main
           commit_message: 'docs: update CHANGELOG.md for ${{ steps.get_next_version.outputs.version }} [skip ci]'
           file_pattern: CHANGELOG.md
-          push_options: '--force'
