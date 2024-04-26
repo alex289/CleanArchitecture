@@ -13,44 +13,56 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: calculate version
-        id: calculate-version
-        uses: bitshifted/git-auto-semver@v1
+      - name: Get next version
+        id: get_next_version
+        uses: thenativeweb/get-next-version@main
+        with:
+          prefix: 'v'
+
+      - name: Show the next version
+        run: |
+          echo ${{ steps.get_next_version.outputs.version }}
+          echo ${{ steps.get_next_version.outputs.hasNextVersion }}
 
       - name: Get previous tag
         id: previousTag
+        if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
         run: |
-          name=$(git --no-pager tag --sort=creatordate | tail -2 | head -1)
+          name=$(git --no-pager tag --sort=creatordate | tail -1)
           echo "previousTag: $name"
           echo "previousTag=$name" >> $GITHUB_ENV
 
       - name: Create new tag
+        if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
         run: |
-          git tag -a ${{ steps.calculate-version.outputs.version-string }} -m "Release ${{ steps.calculate-version.outputs.version-string }}"
-          git push origin ${{ steps.calculate-version.outputs.version-string }}
+          git tag -a ${{ steps.get_next_version.outputs.version }} -m "Release ${{ steps.get_next_version.outputs.version }}"
+          git push origin ${{ steps.get_next_version.outputs.version }}
           git checkout main
 
       - name: Update CHANGELOG
+        if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
         id: changelog
         uses: requarks/changelog-action@v1
         with:
           token: ${{ github.token }}
-          fromTag: ${{ github.calculate-version.outputs.version-string }}
+          fromTag: ${{ steps.get_next_version.outputs.version }}
           toTag: ${{ env.previousTag }}
 
       - name: Create Release
+        if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
         uses: ncipollo/release-action@v1.14.0
         with:
           allowUpdates: true
           draft: false
           makeLatest: true
-          name: ${{ github.calculate-version.outputs.version-string }}
+          name: ${{ steps.get_next_version.outputs.version }}
           body: ${{ steps.changelog.outputs.changes }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Commit CHANGELOG.md
+        if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: main
-          commit_message: 'docs: update CHANGELOG.md for ${{ github.calculate-version.outputs.version-string }} [skip ci]'
+          commit_message: 'docs: update CHANGELOG.md for ${{ steps.get_next_version.outputs.version }} [skip ci]'
           file_pattern: CHANGELOG.md
