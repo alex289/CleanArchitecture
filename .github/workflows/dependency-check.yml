@@ -13,7 +13,8 @@ jobs:
   checkLicenses:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
     - name: Install .NET Core
       uses: actions/setup-dotnet@v4
@@ -33,7 +34,8 @@ jobs:
   checkVulnerabilities:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
     - name: Check for vulnerabilities
       uses: dependency-check/Dependency-Check_Action@main
