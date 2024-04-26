@@ -35,6 +35,8 @@ jobs:
       - name: Create new tag
         if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
         run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git tag -a ${{ steps.get_next_version.outputs.version }} -m "Release ${{ steps.get_next_version.outputs.version }}"
           git push origin ${{ steps.get_next_version.outputs.version }}
           git checkout main
