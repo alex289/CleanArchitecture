@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.3.4] - 2024-05-01
+### :bug: Bug Fixes
+- [`0817b74`](https://github.com/alex289/CleanArchitecture/commit/0817b7438ad8787ecab246bbc7c5c26b49c60f94) - Set step output correctly *(commit by [@alex289](https://github.com/alex289))*
+
+
 ## [v1.3.3] - 2024-05-01
 ### :bug: Bug Fixes
 - [`23aad50`](https://github.com/alex289/CleanArchitecture/commit/23aad50d8b130ca735754dec25e65d66cbf336bd) - Set tag docker correctly *(commit by [@alex289](https://github.com/alex289))*
@@ -72,3 +77,4 @@ _This is the initial release._
 [v1.3.1]: https://github.com/alex289/CleanArchitecture/compare/v1.3.0...v1.3.1
 [v1.3.2]: https://github.com/alex289/CleanArchitecture/compare/v1.3.1...v1.3.2
 [v1.3.3]: https://github.com/alex289/CleanArchitecture/compare/v1.3.2...v1.3.3
+[v1.3.4]: https://github.com/alex289/CleanArchitecture/compare/v1.3.3...v1.3.4
