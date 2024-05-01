@@ -117,14 +117,13 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          context: git
-          # tags: |
-          #   latest
-          #   ${{ steps.latestTag.outputs.version }}
-          # annotations: |
-          #   manifest:org.opencontainers.image.version=${{ steps.latestTag.outputs.version }}
-          # labels: |
-          #   org.opencontainers.image.version=${{ steps.latestTag.outputs.version }}
+          tags: |
+            latest
+            ${{ steps.latestTag.outputs.version }}
+          annotations: |
+            manifest:org.opencontainers.image.version=${{ steps.latestTag.outputs.version }}
+          labels: |
+            org.opencontainers.image.version=${{ steps.latestTag.outputs.version }}
           images: |
             ${{ env.DOCKER_IMAGE }}
             ghcr.io/${{ github.repository }}
