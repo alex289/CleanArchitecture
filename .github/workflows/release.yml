@@ -92,7 +92,7 @@ jobs:
           name=$(git --no-pager tag --sort=creatordate | tail -1)
           git checkout $name
           echo "latestTag: $name"
-          echo "latestTag=$name" >> $GITHUB_ENV
+          echo "latestTag=$name" >> $GITHUB_OUTPUT
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
