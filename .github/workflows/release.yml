@@ -118,12 +118,11 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           tags: |
-            latest
-            ${{ steps.latestTag.outputs.latestTag }}
-          annotations: |
-            manifest:org.opencontainers.image.version=${{ steps.latestTag.outputs.latestTag }}
-          labels: |
-            org.opencontainers.image.version=${{ steps.latestTag.outputs.latestTag }}
+            type=semver,pattern={{version}},value=${{ steps.latestTag.outputs.latestTag }}
+          # annotations: |
+          #   manifest:org.opencontainers.image.version=${{ steps.latestTag.outputs.latestTag }}
+          # labels: |
+          #   org.opencontainers.image.version=${{ steps.latestTag.outputs.latestTag }}
           images: |
             ${{ env.DOCKER_IMAGE }}
             ghcr.io/${{ github.repository }}
@@ -135,6 +134,7 @@ jobs:
           push: true
           labels: ${{ steps.meta.outputs.labels }}
           tags: ${{ steps.meta.outputs.tags }}
+          annotations: ${{ steps.meta.outputs.annotations }}
 
       - name: Docker Hub Description
         uses: peter-evans/dockerhub-description@v4
