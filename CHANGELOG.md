@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.3.0] - 2024-05-01
+### :sparkles: New Features
+- [`9297d08`](https://github.com/alex289/CleanArchitecture/commit/9297d0883ab01200b71de9ec5c4010565d9156c7) - Push image after release *(commit by [@alex289](https://github.com/alex289))*
+
+### :wrench: Chores
+- [`90bf073`](https://github.com/alex289/CleanArchitecture/commit/90bf073076fb8c182bcdea302da8090b5e4fd50d) - bump the dependencies group with 3 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`b3ccef5`](https://github.com/alex289/CleanArchitecture/commit/b3ccef5198f7be1322cf8ea58e901e17f1231cce) - bump the dependencies group with 3 updates *(PR [#58](https://github.com/alex289/CleanArchitecture/pull/58) by [@alex289](https://github.com/alex289))*
+
+
 ## [v1.2.0] - 2024-04-26
 ### :sparkles: New Features
 - [`585a976`](https://github.com/alex289/CleanArchitecture/commit/585a976089e0f1b9a8557b9c768e4dcba5923621) - Make pull request for updated changelog *(commit by [@alex289](https://github.com/alex289))*
@@ -44,3 +53,4 @@ _This is the initial release._
 [v1.1.2]: https://github.com/alex289/CleanArchitecture/compare/v1.1.1...v1.1.2
 [v1.1.3]: https://github.com/alex289/CleanArchitecture/compare/v1.1.2...v1.1.3
 [v1.2.0]: https://github.com/alex289/CleanArchitecture/compare/v1.1.3...v1.2.0
+[v1.3.0]: https://github.com/alex289/CleanArchitecture/compare/v1.2.0...v1.3.0
