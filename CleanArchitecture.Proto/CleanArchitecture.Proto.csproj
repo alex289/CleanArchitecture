@@ -13,9 +13,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Google.Protobuf" Version="3.26.1" />
-        <PackageReference Include="Google.Protobuf.Tools" Version="3.26.1" />
-        <PackageReference Include="Grpc.AspNetCore" Version="2.62.0" />
+        <PackageReference Include="Google.Protobuf" Version="3.27.0" />
+        <PackageReference Include="Google.Protobuf.Tools" Version="3.27.0" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.63.0" />
     </ItemGroup>
 
 </Project>
