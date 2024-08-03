@@ -7,24 +7,17 @@ using CleanArchitecture.Application.ViewModels.Tenants;
 using CleanArchitecture.IntegrationTests.Extensions;
 using CleanArchitecture.IntegrationTests.Fixtures;
 using FluentAssertions;
-using Xunit;
-using Xunit.Priority;
 
 namespace CleanArchitecture.IntegrationTests.Controller;
 
-[Collection("IntegrationTests")]
-[TestCaseOrderer(PriorityOrderer.Name, PriorityOrderer.Assembly)]
-public sealed class TenantControllerTests : IClassFixture<TenantTestFixture>
+public sealed class TenantControllerTests
 {
-    private readonly TenantTestFixture _fixture;
+    private readonly TenantTestFixture _fixture = new();
 
-    public TenantControllerTests(TenantTestFixture fixture)
-    {
-        _fixture = fixture;
-    }
+    [OneTimeSetUp]
+    public async Task Setup() => await _fixture.SeedTestData();
 
-    [Fact]
-    [Priority(0)]
+    [Test, Order(0)]
     public async Task Should_Get_Tenant_By_Id()
     {
         var response = await _fixture.ServerClient.GetAsync($"/api/v1/Tenant/{_fixture.CreatedTenantId}");
@@ -41,8 +34,7 @@ public sealed class TenantControllerTests : IClassFixture<TenantTestFixture>
         message.Data.Users.Count().Should().Be(1);
     }
 
-    [Fact]
-    [Priority(5)]
+    [Test, Order(1)]
     public async Task Should_Get_All_Tenants()
     {
         var response = await _fixture.ServerClient.GetAsync(
@@ -63,8 +55,7 @@ public sealed class TenantControllerTests : IClassFixture<TenantTestFixture>
             .Users.Count().Should().Be(1);
     }
 
-    [Fact]
-    [Priority(10)]
+    [Test, Order(2)]
     public async Task Should_Create_Tenant()
     {
         var request = new CreateTenantViewModel("Test Tenant 2");
@@ -89,8 +80,7 @@ public sealed class TenantControllerTests : IClassFixture<TenantTestFixture>
         tenantMessage.Data.Name.Should().Be(request.Name);
     }
 
-    [Fact]
-    [Priority(15)]
+    [Test, Order(3)]
     public async Task Should_Update_Tenant()
     {
         var request = new UpdateTenantViewModel(_fixture.CreatedTenantId, "Test Tenant 3");
@@ -117,8 +107,7 @@ public sealed class TenantControllerTests : IClassFixture<TenantTestFixture>
         tenantMessage.Data.Name.Should().Be(request.Name);
     }
 
-    [Fact]
-    [Priority(20)]
+    [Test, Order(4)]
     public async Task Should_Delete_Tenant()
     {
         var response = await _fixture.ServerClient.DeleteAsync($"/api/v1/Tenant/{_fixture.CreatedTenantId}");

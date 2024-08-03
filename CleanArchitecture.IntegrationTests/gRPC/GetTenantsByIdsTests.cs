@@ -4,23 +4,17 @@ using System.Threading.Tasks;
 using CleanArchitecture.IntegrationTests.Fixtures.gRPC;
 using CleanArchitecture.Proto.Tenants;
 using FluentAssertions;
-using Xunit;
-using Xunit.Priority;
 
 namespace CleanArchitecture.IntegrationTests.gRPC;
 
-[Collection("IntegrationTests")]
-[TestCaseOrderer(PriorityOrderer.Name, PriorityOrderer.Assembly)]
-public sealed class GetTenantsByIdsTests : IClassFixture<GetTenantsByIdsTestFixture>
+public sealed class GetTenantsByIdsTests
 {
-    private readonly GetTenantsByIdsTestFixture _fixture;
+    private readonly GetTenantsByIdsTestFixture _fixture = new();
 
-    public GetTenantsByIdsTests(GetTenantsByIdsTestFixture fixture)
-    {
-        _fixture = fixture;
-    }
+    [OneTimeSetUp]
+    public async Task Setup() => await _fixture.SeedTestData();
 
-    [Fact]
+    [Test]
     public async Task Should_Get_Tenants_By_Ids()
     {
         var client = new TenantsApi.TenantsApiClient(_fixture.GrpcChannel);

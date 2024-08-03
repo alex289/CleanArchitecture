@@ -10,24 +10,17 @@ using CleanArchitecture.IntegrationTests.Extensions;
 using CleanArchitecture.IntegrationTests.Fixtures;
 using CleanArchitecture.IntegrationTests.Infrastructure.Auth;
 using FluentAssertions;
-using Xunit;
-using Xunit.Priority;
 
 namespace CleanArchitecture.IntegrationTests.Controller;
 
-[Collection("IntegrationTests")]
-[TestCaseOrderer(PriorityOrderer.Name, PriorityOrderer.Assembly)]
-public sealed class UserControllerTests : IClassFixture<UserTestFixture>
+public sealed class UserControllerTests
 {
-    private readonly UserTestFixture _fixture;
+    private readonly UserTestFixture _fixture = new();
 
-    public UserControllerTests(UserTestFixture fixture)
-    {
-        _fixture = fixture;
-    }
+    [OneTimeSetUp]
+    public async Task Setup() => await GlobalSetupFixture.RespawnDatabaseAsync();
 
-    [Fact]
-    [Priority(0)]
+    [Test, Order(0)]
     public async Task Should_Get_All_User()
     {
         var response = await _fixture.ServerClient.GetAsync("/api/v1/user");
@@ -50,8 +43,7 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         currentUser.LastName.Should().Be(TestAuthenticationOptions.LastName);
     }
 
-    [Fact]
-    [Priority(5)]
+    [Test, Order(1)]
     public async Task Should_Get_User_By_Id()
     {
         var response = await _fixture.ServerClient.GetAsync("/api/v1/user/" + TestAuthenticationOptions.TestUserId);
@@ -70,8 +62,7 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         content.LastName.Should().Be(TestAuthenticationOptions.LastName);
     }
 
-    [Fact]
-    [Priority(10)]
+    [Test, Order(2)]
     public async Task Should_Create_User()
     {
         var user = new CreateUserViewModel(
@@ -89,8 +80,7 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         message?.Data.Should().NotBeEmpty();
     }
 
-    [Fact]
-    [Priority(15)]
+    [Test, Order(3)]
     public async Task Should_Login_User()
     {
         var user = new LoginUserViewModel(
@@ -105,8 +95,7 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         message?.Data.Should().NotBeEmpty();
     }
 
-    [Fact]
-    [Priority(20)]
+    [Test, Order(4)]
     public async Task Should_Get_The_Current_Active_Users()
     {
         var response = await _fixture.ServerClient.GetAsync("/api/v1/user/me");
@@ -125,8 +114,7 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         content.LastName.Should().Be(TestAuthenticationOptions.LastName);
     }
 
-    [Fact]
-    [Priority(25)]
+    [Test, Order(5)]
     public async Task Should_Update_User()
     {
         var user = new UpdateUserViewModel(
@@ -167,8 +155,7 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         userContent.Role.Should().Be(user.Role);
     }
 
-    [Fact]
-    [Priority(30)]
+    [Test, Order(6)]
     public async Task Should_Change_User_Password()
     {
         var user = new ChangePasswordViewModel(
@@ -201,8 +188,7 @@ public sealed class UserControllerTests : IClassFixture<UserTestFixture>
         loginMessage?.Data.Should().NotBeEmpty();
     }
 
-    [Fact]
-    [Priority(35)]
+    [Test, Order(7)]
     public async Task Should_Delete_User()
     {
         var response = await _fixture.ServerClient.DeleteAsync("/api/v1/user/" + TestAuthenticationOptions.TestUserId);

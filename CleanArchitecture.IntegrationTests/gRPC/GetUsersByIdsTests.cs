@@ -3,23 +3,17 @@ using System.Threading.Tasks;
 using CleanArchitecture.IntegrationTests.Fixtures.gRPC;
 using CleanArchitecture.Proto.Users;
 using FluentAssertions;
-using Xunit;
-using Xunit.Priority;
 
 namespace CleanArchitecture.IntegrationTests.gRPC;
 
-[Collection("IntegrationTests")]
-[TestCaseOrderer(PriorityOrderer.Name, PriorityOrderer.Assembly)]
-public sealed class GetUsersByIdsTests : IClassFixture<GetUsersByIdsTestFixture>
+public sealed class GetUsersByIdsTests
 {
-    private readonly GetUsersByIdsTestFixture _fixture;
+    private readonly GetUsersByIdsTestFixture _fixture = new();
 
-    public GetUsersByIdsTests(GetUsersByIdsTestFixture fixture)
-    {
-        _fixture = fixture;
-    }
+    [OneTimeSetUp]
+    public async Task Setup() => await _fixture.SeedTestData();
 
-    [Fact]
+    [Test]
     public async Task Should_Get_Users_By_Ids()
     {
         var client = new UsersApi.UsersApiClient(_fixture.GrpcChannel);
