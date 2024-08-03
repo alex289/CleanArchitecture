@@ -36,6 +36,7 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
         builder.ConfigureAppConfiguration(configuration =>
         {
             var redisPort = GlobalSetupFixture.RedisContainer.GetMappedPublicPort(Configuration.RedisPort);
+            var rabbitPort = GlobalSetupFixture.RabbitContainer.GetMappedPublicPort(Configuration.RabbitMqPort);
 
             configuration.AddInMemoryCollection([
                 new KeyValuePair<string, string?>(
@@ -43,7 +44,10 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
                     GlobalSetupFixture.DatabaseConnectionString),
                 new KeyValuePair<string, string?>(
                     "RedisStackExchange:RedisConfigString",
-                    $"localhost:{redisPort},abortConnect=true")
+                    $"localhost:{redisPort},abortConnect=true"),
+                new KeyValuePair<string, string?>(
+                    "RabbitMQ:Host",
+                    $"localhost:{rabbitPort}")
             ]);
         });
 
