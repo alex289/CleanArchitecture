@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CleanArchitecture.Domain.Rabbitmq;
 using CleanArchitecture.IntegrationTests.Constants;
 using CleanArchitecture.IntegrationTests.Infrastructure.Auth;
 using Microsoft.AspNetCore.Hosting;
@@ -33,22 +34,27 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
 
         base.ConfigureWebHost(builder);
 
-        builder.ConfigureAppConfiguration(configuration =>
+        var configuration = new ConfigurationBuilder()
+            .Build();
+
+        builder.ConfigureAppConfiguration(configurationBuilder =>
         {
             var redisPort = GlobalSetupFixture.RedisContainer.GetMappedPublicPort(Configuration.RedisPort);
             var rabbitPort = GlobalSetupFixture.RabbitContainer.GetMappedPublicPort(Configuration.RabbitMqPort);
 
-            configuration.AddInMemoryCollection([
+            configurationBuilder.AddInMemoryCollection([
                 new KeyValuePair<string, string?>(
                     "ConnectionStrings:DefaultConnection",
                     GlobalSetupFixture.DatabaseConnectionString),
                 new KeyValuePair<string, string?>(
-                    "RedisStackExchange:RedisConfigString",
-                    $"localhost:{redisPort},abortConnect=true"),
+                    "RedisHostName",
+                    $"localhost:{redisPort}"),
                 new KeyValuePair<string, string?>(
-                    "RabbitMQ:Host",
-                    $"localhost:{rabbitPort}")
+                    "RabbitMQ:Port",
+                    rabbitPort.ToString())
             ]);
+
+            configuration = configurationBuilder.Build();
         });
 
         builder.ConfigureServices(services =>
@@ -66,6 +72,19 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
 
             using var scope = sp.CreateScope();
             var scopedServices = scope.ServiceProvider;
+
+            // Readd rabbitmq options to use the correct port
+            var rabbitMq = new RabbitMqConfiguration();
+            configuration.Bind("RabbitMQ", rabbitMq);
+            services.AddSingleton(rabbitMq);
+
+            // Readd IDistributedCache to replace the memory cache with redis
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = configuration["RedisHostName"];
+                options.InstanceName = "clean-architecture";
+            });
+
             _registerCustomServicesHandler?.Invoke(services, sp, scopedServices);
         });
     }

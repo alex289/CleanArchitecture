@@ -22,6 +22,8 @@ internal class GlobalSetupFixture
         .Build();
 
     public static RabbitMqContainer RabbitContainer { get; } = new RabbitMqBuilder()
+        .WithUsername("guest")
+        .WithPassword("guest")
         .WithPortBinding(Configuration.RabbitMqPort, assignRandomHostPort: true)
         .Build();
 

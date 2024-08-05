@@ -39,6 +39,7 @@ public sealed class RabbitMqHandler : BackgroundService
         {
             AutomaticRecoveryEnabled = true,
             HostName = configuration.Host,
+            Port = configuration.Port,
             UserName = configuration.Username,
             Password = configuration.Password,
             DispatchConsumersAsync = true
