@@ -18,7 +18,7 @@ public sealed class UserControllerTests
     private readonly UserTestFixture _fixture = new();
 
     [OneTimeSetUp]
-    public async Task Setup() => await GlobalSetupFixture.RespawnDatabaseAsync();
+    public async Task Setup() => await _fixture.SeedTestData();
 
     [Test, Order(0)]
     public async Task Should_Get_All_User()

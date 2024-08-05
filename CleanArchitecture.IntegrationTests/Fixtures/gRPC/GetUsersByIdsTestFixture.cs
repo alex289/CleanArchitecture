@@ -28,6 +28,10 @@ public sealed class GetUsersByIdsTestFixture : TestFixtureBase
 
         using var context = Factory.Services.GetRequiredService<ApplicationDbContext>();
 
+        context.Tenants.Add(new Tenant(
+            Ids.Seed.TenantId,
+            "Admin Tenant"));
+
         var user = CreateUser();
 
         context.Users.Add(user);
