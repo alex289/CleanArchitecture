@@ -4,24 +4,17 @@ using CleanArchitecture.IntegrationTests.Fixtures;
 using FluentAssertions;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Newtonsoft.Json.Linq;
-using Xunit;
-using Xunit.Priority;
 
 namespace CleanArchitecture.IntegrationTests.UtilityTests;
 
-[Collection("IntegrationTests")]
-[TestCaseOrderer(PriorityOrderer.Name, PriorityOrderer.Assembly)]
-public sealed class HealthChecksTests : IClassFixture<AuthTestFixure>
+public sealed class HealthChecksTests
 {
-    private readonly AuthTestFixure _fixture;
+    private readonly AuthTestFixure _fixture = new();
 
-    public HealthChecksTests(AuthTestFixure fixture)
-    {
-        _fixture = fixture;
-    }
+    [OneTimeSetUp]
+    public async Task Setup() => await GlobalSetupFixture.RespawnDatabaseAsync();
 
-    [Fact]
-    [Priority(0)]
+    [Test, Order(0)]
     public async Task Should_Return_Healthy()
     {
         var response = await _fixture.ServerClient.GetAsync("/healthz");

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using CleanArchitecture.Infrastructure.Database;
+using CleanArchitecture.Domain.Rabbitmq;
+using CleanArchitecture.IntegrationTests.Constants;
 using CleanArchitecture.IntegrationTests.Infrastructure.Auth;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -12,26 +12,20 @@ namespace CleanArchitecture.IntegrationTests.Infrastructure;
 
 public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFactory<Program>
 {
-    public delegate void AddCustomSeedDataHandler(ApplicationDbContext context);
-
     public delegate void RegisterCustomServicesHandler(
         IServiceCollection services,
         ServiceProvider serviceProvider,
         IServiceProvider scopedServices);
-
-    private readonly string _instanceDatabaseName;
 
     private readonly bool _addTestAuthentication;
     private readonly RegisterCustomServicesHandler? _registerCustomServicesHandler;
 
     public CleanArchitectureWebApplicationFactory(
         RegisterCustomServicesHandler? registerCustomServicesHandler,
-        bool addTestAuthentication,
-        string instanceDatabaseName)
+        bool addTestAuthentication)
     {
         _registerCustomServicesHandler = registerCustomServicesHandler;
         _addTestAuthentication = addTestAuthentication;
-        _instanceDatabaseName = instanceDatabaseName;
     }
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
@@ -45,23 +39,19 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
 
         builder.ConfigureAppConfiguration(configurationBuilder =>
         {
-            configurationBuilder.AddEnvironmentVariables();
+            var redisPort = GlobalSetupFixture.RedisContainer.GetMappedPublicPort(Configuration.RedisPort);
+            var rabbitPort = GlobalSetupFixture.RabbitContainer.GetMappedPublicPort(Configuration.RabbitMqPort);
 
-            var dbAccessor = DatabaseAccessor.GetOrCreateAsync(_instanceDatabaseName);
-            var redisAccessor = RedisAccessor.GetOrCreateAsync();
-            var rabbitAccessor = RabbitmqAccessor.GetOrCreateAsync();
-
-            // Overwrite default connection strings
             configurationBuilder.AddInMemoryCollection([
                 new KeyValuePair<string, string?>(
                     "ConnectionStrings:DefaultConnection",
-                    dbAccessor.GetConnectionString()),
+                    GlobalSetupFixture.DatabaseConnectionString),
                 new KeyValuePair<string, string?>(
                     "RedisHostName",
-                    redisAccessor.GetConnectionString()),
+                    $"localhost:{redisPort}"),
                 new KeyValuePair<string, string?>(
-                    "RabbitMQ:Host",
-                    rabbitAccessor.GetConnectionString())
+                    "RabbitMQ:Port",
+                    rabbitPort.ToString())
             ]);
 
             configuration = configurationBuilder.Build();
@@ -83,37 +73,19 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
             using var scope = sp.CreateScope();
             var scopedServices = scope.ServiceProvider;
 
-            var dbAccessor = DatabaseAccessor.GetOrCreateAsync(_instanceDatabaseName);
-            dbAccessor.CreateDatabase(scopedServices);
+            // Readd rabbitmq options to use the correct port
+            var rabbitMq = new RabbitMqConfiguration();
+            configuration.Bind("RabbitMQ", rabbitMq);
+            services.AddSingleton(rabbitMq);
 
-            var redisAccessor = RedisAccessor.GetOrCreateAsync();
-            redisAccessor.RegisterRedis(services, configuration);
-
-            var rabbitAccessor = RabbitmqAccessor.GetOrCreateAsync();
-            rabbitAccessor.RegisterRabbitmq(services, configuration);
+            // Readd IDistributedCache to replace the memory cache with redis
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = configuration["RedisHostName"];
+                options.InstanceName = "clean-architecture";
+            });
 
             _registerCustomServicesHandler?.Invoke(services, sp, scopedServices);
         });
-    }
-
-    public async Task RespawnDatabaseAsync()
-    {
-        var dbAccessor = DatabaseAccessor.GetOrCreateAsync(_instanceDatabaseName);
-        await dbAccessor.RespawnDatabaseAsync();
-        
-        var redisAccessor = RedisAccessor.GetOrCreateAsync();
-        redisAccessor.ResetRedis();
-    }
-
-    public override async ValueTask DisposeAsync()
-    {
-        var dbAccessor = DatabaseAccessor.GetOrCreateAsync(_instanceDatabaseName);
-        await dbAccessor.DisposeAsync();
-
-        var redisAccessor = RedisAccessor.GetOrCreateAsync();
-        await redisAccessor.DisposeAsync();
-
-        var rabbitAccessor = RabbitmqAccessor.GetOrCreateAsync();
-        await rabbitAccessor.DisposeAsync();
     }
 }

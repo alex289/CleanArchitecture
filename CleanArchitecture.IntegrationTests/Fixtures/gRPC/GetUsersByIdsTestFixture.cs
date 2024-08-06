@@ -1,9 +1,11 @@
 using System;
+using System.Threading.Tasks;
 using CleanArchitecture.Domain.Constants;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Infrastructure.Database;
 using Grpc.Net.Client;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanArchitecture.IntegrationTests.Fixtures.gRPC;
 
@@ -20,14 +22,20 @@ public sealed class GetUsersByIdsTestFixture : TestFixtureBase
         });
     }
 
-    protected override void SeedTestData(ApplicationDbContext context)
+    public async Task SeedTestData()
     {
-        base.SeedTestData(context);
+        await GlobalSetupFixture.RespawnDatabaseAsync();
+
+        using var context = Factory.Services.GetRequiredService<ApplicationDbContext>();
+
+        context.Tenants.Add(new Tenant(
+            Ids.Seed.TenantId,
+            "Admin Tenant"));
 
         var user = CreateUser();
 
         context.Users.Add(user);
-        context.SaveChanges();
+        await context.SaveChangesAsync();
     }
 
     public User CreateUser()

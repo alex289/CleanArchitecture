@@ -1,7 +1,9 @@
 using System;
+using System.Threading.Tasks;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Infrastructure.Database;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanArchitecture.IntegrationTests.Fixtures;
 
@@ -9,9 +11,11 @@ public sealed class TenantTestFixture : TestFixtureBase
 {
     public Guid CreatedTenantId { get; } = Guid.NewGuid();
 
-    protected override void SeedTestData(ApplicationDbContext context)
+    public async Task SeedTestData()
     {
-        base.SeedTestData(context);
+        await GlobalSetupFixture.RespawnDatabaseAsync();
+
+        using var context = Factory.Services.GetRequiredService<ApplicationDbContext>();
 
         context.Tenants.Add(new Tenant(
             CreatedTenantId,
@@ -26,6 +30,6 @@ public sealed class TenantTestFixture : TestFixtureBase
             "Test User",
             UserRole.User));
 
-        context.SaveChanges();
+        await context.SaveChangesAsync();
     }
 }

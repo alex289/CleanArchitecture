@@ -1,7 +1,9 @@
 using System;
+using System.Threading.Tasks;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Infrastructure.Database;
 using Grpc.Net.Client;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanArchitecture.IntegrationTests.Fixtures.gRPC;
 
@@ -18,14 +20,16 @@ public sealed class GetTenantsByIdsTestFixture : TestFixtureBase
         });
     }
 
-    protected override void SeedTestData(ApplicationDbContext context)
+    public async Task SeedTestData()
     {
-        base.SeedTestData(context);
+        await GlobalSetupFixture.RespawnDatabaseAsync();
+
+        using var context = Factory.Services.GetRequiredService<ApplicationDbContext>();
 
         var tenant = CreateTenant();
 
         context.Tenants.Add(tenant);
-        context.SaveChanges();
+        await context.SaveChangesAsync();
     }
 
     public Tenant CreateTenant()

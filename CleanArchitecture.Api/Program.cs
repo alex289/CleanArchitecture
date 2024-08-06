@@ -31,6 +31,7 @@ builder.Services
 if (builder.Environment.IsProduction())
 {
     var rabbitHost = builder.Configuration["RabbitMQ:Host"];
+    var rabbitPort = builder.Configuration["RabbitMQ:Port"];
     var rabbitUser = builder.Configuration["RabbitMQ:Username"];
     var rabbitPass = builder.Configuration["RabbitMQ:Password"];
 
@@ -39,7 +40,7 @@ if (builder.Environment.IsProduction())
         .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!)
         .AddRedis(builder.Configuration["RedisHostName"]!, "Redis")
         .AddRabbitMQ(
-            $"amqp://{rabbitUser}:{rabbitPass}@{rabbitHost}",
+            $"amqp://{rabbitUser}:{rabbitPass}@{rabbitHost}:{rabbitPort}",
             name: "RabbitMQ");
 }
 
