@@ -42,4 +42,4 @@ spec:
           - name: Kestrel__Endpoints__Grpc__Protocols
             value: Http2
           - name: ConnectionStrings__DefaultConnection
-            value: Server=sql-server;Database=clean-architecture;Trusted_Connection=False;MultipleActiveResultSets=true;TrustServerCertificate=True;User Id=SA;Password=Password123!#
+            value: Host=postgres;Database=clean-architecture;Username=postgres;Password=Password123!#

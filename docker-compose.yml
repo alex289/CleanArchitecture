@@ -21,7 +21,7 @@ services:
       - Kestrel__Endpoints__Http__Url=http://+:80
       - Kestrel__Endpoints__Grpc__Url=http://+:8080
       - Kestrel__Endpoints__Grpc__Protocols=Http2
-      - ConnectionStrings__DefaultConnection=Server=db;Database=clean-architecture;Trusted_Connection=False;MultipleActiveResultSets=true;TrustServerCertificate=True;User Id=SA;Password=Password123!#
+      - ConnectionStrings__DefaultConnection=Host=db;Database=clean-architecture;Username=postgres;Password=Password123!#
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost/healthz"]
       interval: 30s
@@ -29,12 +29,11 @@ services:
       retries: 3
 
   db:
-    image: mcr.microsoft.com/mssql/server
+    image: postgres
     environment:
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=Password123!#
+      - POSTGRES_PASSWORD=Password123!#
     ports:
-      - 1433:1433
+      - 5432:5432
 
   redis:
     image: docker.io/bitnami/redis:7.2

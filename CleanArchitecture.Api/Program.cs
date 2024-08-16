@@ -37,7 +37,7 @@ if (builder.Environment.IsProduction())
 
     builder.Services
         .AddHealthChecks()
-        .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!)
+        .AddNpgSql(builder.Configuration.GetConnectionString("DefaultConnection")!)
         .AddRedis(builder.Configuration["RedisHostName"]!, "Redis")
         .AddRabbitMQ(
             $"amqp://{rabbitUser}:{rabbitPass}@{rabbitHost}:{rabbitPort}",
@@ -47,7 +47,7 @@ if (builder.Environment.IsProduction())
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseLazyLoadingProxies();
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
         b => b.MigrationsAssembly("CleanArchitecture.Infrastructure"));
 });
 

@@ -24,7 +24,7 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<EventStoreDbContext>(
             options =>
             {
-                options.UseSqlServer(
+                options.UseNpgsql(
                     configuration.GetConnectionString(connectionStringName),
                     b => b.MigrationsAssembly(migrationsAssemblyName));
             });
@@ -32,7 +32,7 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<DomainNotificationStoreDbContext>(
             options =>
             {
-                options.UseSqlServer(
+                options.UseNpgsql(
                     configuration.GetConnectionString(connectionStringName),
                     b => b.MigrationsAssembly(migrationsAssemblyName));
             });

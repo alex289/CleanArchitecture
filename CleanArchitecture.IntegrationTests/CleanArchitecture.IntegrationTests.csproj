@@ -21,7 +21,7 @@
         <PackageReference Include="NUnit3TestAdapter" Version="4.6.0" />
         <PackageReference Include="Respawn" Version="6.2.1" />
         <PackageReference Include="Testcontainers" Version="3.9.0" />
-        <PackageReference Include="Testcontainers.MsSql" Version="3.9.0" />
+        <PackageReference Include="Testcontainers.PostgreSql" Version="3.9.0" />
         <PackageReference Include="Testcontainers.RabbitMq" Version="3.9.0" />
         <PackageReference Include="Testcontainers.Redis" Version="3.9.0" />
         <PackageReference Include="coverlet.collector" Version="6.0.2">

@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using CleanArchitecture.IntegrationTests.Constants;
 using Respawn;
-using Testcontainers.MsSql;
+using Testcontainers.PostgreSql;
 using Testcontainers.RabbitMq;
 using Testcontainers.Redis;
 
@@ -13,8 +13,8 @@ internal class GlobalSetupFixture
 {
     private static Respawner? s_respawner;
 
-    public static MsSqlContainer DatabaseContainer { get; } = new MsSqlBuilder()
-        .WithPortBinding(Configuration.MsSqlPort, assignRandomHostPort: true)
+    public static PostgreSqlContainer DatabaseContainer { get; } = new PostgreSqlBuilder()
+        .WithPortBinding(Configuration.PostgresSqlPort, assignRandomHostPort: true)
         .Build();
 
     public static RedisContainer RedisContainer { get; } = new RedisBuilder()
