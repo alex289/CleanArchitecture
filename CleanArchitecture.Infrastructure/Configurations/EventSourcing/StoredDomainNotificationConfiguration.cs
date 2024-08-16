@@ -32,7 +32,7 @@ public sealed class StoredDomainNotificationConfiguration : IEntityTypeConfigura
 
         builder.Property(c => c.CorrelationId)
             .HasMaxLength(100)
-            .HasColumnType("nvarchar(100)");
+            .HasColumnType("varchar(100)");
 
         builder.Ignore(c => c.Data);
 

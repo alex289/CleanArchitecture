@@ -52,7 +52,7 @@ namespace CleanArchitecture.Infrastructure.Migrations.EventStoreDb
                     b.Property<string>("User")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
 

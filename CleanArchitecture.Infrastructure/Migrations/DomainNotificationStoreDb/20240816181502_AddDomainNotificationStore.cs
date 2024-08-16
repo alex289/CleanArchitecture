@@ -18,7 +18,7 @@ namespace CleanArchitecture.Infrastructure.Migrations.DomainNotificationStoreDb
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Data = table.Column<string>(type: "text", nullable: false),
                     User = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    CorrelationId = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    CorrelationId = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     AggregateId = table.Column<Guid>(type: "uuid", nullable: false),
                     MessageType = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),

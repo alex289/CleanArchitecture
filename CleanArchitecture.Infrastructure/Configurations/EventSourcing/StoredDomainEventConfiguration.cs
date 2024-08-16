@@ -20,6 +20,6 @@ public sealed class StoredDomainEventConfiguration : IEntityTypeConfiguration<St
 
         builder.Property(c => c.User)
             .HasMaxLength(100)
-            .HasColumnType("nvarchar(100)");
+            .HasColumnType("varchar(100)");
     }
 }

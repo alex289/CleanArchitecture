@@ -9,11 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace CleanArchitecture.Infrastructure.Migrations.DomainNotificationStoreDb
+namespace CleanArchitecture.Infrastructure.Migrations.EventStoreDb
 {
-    [DbContext(typeof(DomainNotificationStoreDbContext))]
-    [Migration("20240816164320_AddDomainNotificationStore")]
-    partial class AddDomainNotificationStore
+    [DbContext(typeof(EventStoreDbContext))]
+    [Migration("20240816181514_AddEventStore")]
+    partial class AddEventStore
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace CleanArchitecture.Infrastructure.Migrations.DomainNotificationStoreDb
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("CleanArchitecture.Domain.DomainNotifications.StoredDomainNotification", b =>
+            modelBuilder.Entity("CleanArchitecture.Domain.DomainEvents.StoredDomainEvent", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -34,50 +34,32 @@ namespace CleanArchitecture.Infrastructure.Migrations.DomainNotificationStoreDb
                     b.Property<Guid>("AggregateId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
                     b.Property<string>("CorrelationId")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("MessageType")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("SerializedData")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("Data");
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("Action");
 
                     b.Property<DateTime>("Timestamp")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("CreationDate");
 
                     b.Property<string>("User")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasMaxLength(1024)
-                        .HasColumnType("character varying(1024)");
-
-                    b.Property<int>("Version")
-                        .HasColumnType("integer");
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("StoredDomainNotifications");
+                    b.ToTable("StoredDomainEvents");
                 });
 #pragma warning restore 612, 618
         }

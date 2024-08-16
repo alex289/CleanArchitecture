@@ -39,7 +39,7 @@ namespace CleanArchitecture.Infrastructure.Migrations.DomainNotificationStoreDb
                     b.Property<string>("CorrelationId")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("Key")
                         .IsRequired()

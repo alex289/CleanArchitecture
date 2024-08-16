@@ -38,7 +38,7 @@ internal class GlobalSetupFixture
 
         DatabaseConnectionString = DatabaseContainer
             .GetConnectionString()
-            .Replace("Database=master", $"Database=clean-architecture-{Guid.NewGuid()}");
+            .Replace("Database=postgres", $"Database=clean-architecture-{Guid.NewGuid()}");
     }
 
     [OneTimeTearDown]
