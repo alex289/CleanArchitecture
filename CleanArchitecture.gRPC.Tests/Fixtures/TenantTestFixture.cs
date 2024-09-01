@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using CleanArchitecture.Application.gRPC;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Interfaces.Repositories;
-using MockQueryable.NSubstitute;
+using MockQueryable.EntityFrameworkCore;
 using NSubstitute;
 
 namespace CleanArchitecture.gRPC.Tests.Fixtures;
