@@ -13,9 +13,7 @@ namespace CleanArchitecture.IntegrationTests.Infrastructure;
 public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFactory<Program>
 {
     public delegate void RegisterCustomServicesHandler(
-        IServiceCollection services,
-        ServiceProvider serviceProvider,
-        IServiceProvider scopedServices);
+        IServiceCollection services);
 
     private readonly bool _addTestAuthentication;
     private readonly RegisterCustomServicesHandler? _registerCustomServicesHandler;
@@ -31,31 +29,14 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         builder.UseEnvironment("Integration");
-
         base.ConfigureWebHost(builder);
+        
+        var redisPort = GlobalSetupFixture.RedisContainer.GetMappedPublicPort(Configuration.RedisPort);
+        var rabbitPort = GlobalSetupFixture.RabbitContainer.GetMappedPublicPort(Configuration.RabbitMqPort);
 
-        var configuration = new ConfigurationBuilder()
-            .Build();
-
-        builder.ConfigureAppConfiguration(configurationBuilder =>
-        {
-            var redisPort = GlobalSetupFixture.RedisContainer.GetMappedPublicPort(Configuration.RedisPort);
-            var rabbitPort = GlobalSetupFixture.RabbitContainer.GetMappedPublicPort(Configuration.RabbitMqPort);
-
-            configurationBuilder.AddInMemoryCollection([
-                new KeyValuePair<string, string?>(
-                    "ConnectionStrings:DefaultConnection",
-                    GlobalSetupFixture.DatabaseConnectionString),
-                new KeyValuePair<string, string?>(
-                    "RedisHostName",
-                    $"localhost:{redisPort}"),
-                new KeyValuePair<string, string?>(
-                    "RabbitMQ:Port",
-                    rabbitPort.ToString())
-            ]);
-
-            configuration = configurationBuilder.Build();
-        });
+        Environment.SetEnvironmentVariable("ConnectionStrings:DefaultConnection", GlobalSetupFixture.DatabaseConnectionString);
+        Environment.SetEnvironmentVariable("RedisHostName", $"localhost:{redisPort}");
+        Environment.SetEnvironmentVariable("RabbitMQ:Port", rabbitPort.ToString());
 
         builder.ConfigureServices(services =>
         {
@@ -68,24 +49,7 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
                 }).AddTestAuthentication(_ => { });
             }
 
-            var sp = services.BuildServiceProvider();
-
-            using var scope = sp.CreateScope();
-            var scopedServices = scope.ServiceProvider;
-
-            // Readd rabbitmq options to use the correct port
-            var rabbitMq = new RabbitMqConfiguration();
-            configuration.Bind("RabbitMQ", rabbitMq);
-            services.AddSingleton(rabbitMq);
-
-            // Readd IDistributedCache to replace the memory cache with redis
-            services.AddStackExchangeRedisCache(options =>
-            {
-                options.Configuration = configuration["RedisHostName"];
-                options.InstanceName = "clean-architecture";
-            });
-
-            _registerCustomServicesHandler?.Invoke(services, sp, scopedServices);
+            _registerCustomServicesHandler?.Invoke(services);
         });
     }
 }

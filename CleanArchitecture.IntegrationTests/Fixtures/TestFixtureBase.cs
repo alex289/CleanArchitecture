@@ -21,9 +21,7 @@ public class TestFixtureBase
     }
 
     protected virtual void RegisterCustomServicesHandler(
-        IServiceCollection services,
-        ServiceProvider serviceProvider,
-        IServiceProvider scopedServices)
+        IServiceCollection services)
     {
     }
 }
