@@ -4,7 +4,7 @@ using CleanArchitecture.Application.SortProviders;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Interfaces.Repositories;
-using MockQueryable.NSubstitute;
+using MockQueryable.EntityFrameworkCore;
 using NSubstitute;
 
 namespace CleanArchitecture.Application.Tests.Fixtures.Queries.Users;
