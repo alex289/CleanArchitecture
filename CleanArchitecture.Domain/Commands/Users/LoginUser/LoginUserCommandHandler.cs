@@ -70,7 +70,7 @@ public sealed class LoginUserCommandHandler : CommandHandlerBase,
         }
 
         user.SetActive();
-        user.SetLastLoggedinDate(DateTimeOffset.Now);
+        user.SetLastLoggedinDate(DateTimeOffset.UtcNow);
 
         if (!await CommitAsync())
         {
@@ -103,7 +103,7 @@ public sealed class LoginUserCommandHandler : CommandHandlerBase,
             tokenSettings.Issuer,
             tokenSettings.Audience,
             claims,
-            expires: DateTime.Now.AddMinutes(_expiryDurationMinutes),
+            expires: DateTime.UtcNow.AddMinutes(_expiryDurationMinutes),
             signingCredentials: credentials);
 
         return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);

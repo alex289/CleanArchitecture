@@ -14,7 +14,7 @@ public abstract class CommandBase : IRequest
     protected CommandBase(Guid aggregateId)
     {
         MessageType = GetType().Name;
-        Timestamp = DateTime.Now;
+        Timestamp = DateTime.UtcNow;
         AggregateId = aggregateId;
     }
 
