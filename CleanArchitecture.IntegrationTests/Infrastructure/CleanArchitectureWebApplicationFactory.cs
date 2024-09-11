@@ -28,11 +28,12 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
     {
         builder.UseEnvironment("Integration");
         base.ConfigureWebHost(builder);
-        
+
         var redisPort = GlobalSetupFixture.RedisContainer.GetMappedPublicPort(RedisBuilder.RedisPort);
         var rabbitPort = GlobalSetupFixture.RabbitContainer.GetMappedPublicPort(RabbitMqBuilder.RabbitMqPort);
 
-        Environment.SetEnvironmentVariable("ConnectionStrings:DefaultConnection", GlobalSetupFixture.DatabaseConnectionString);
+        Environment.SetEnvironmentVariable("ConnectionStrings:DefaultConnection",
+            GlobalSetupFixture.DatabaseConnectionString);
         Environment.SetEnvironmentVariable("RedisHostName", $"localhost:{redisPort}");
         Environment.SetEnvironmentVariable("RabbitMQ:Port", rabbitPort.ToString());
 

@@ -1,10 +1,10 @@
-﻿using CleanArchitecture.Domain.Enums;
-using CleanArchitecture.Infrastructure.Database;
-using Microsoft.Extensions.DependencyInjection;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using CleanArchitecture.Domain.Constants;
-using CleanArchitecture.IntegrationTests.Infrastructure.Auth;
 using CleanArchitecture.Domain.Entities;
+using CleanArchitecture.Domain.Enums;
+using CleanArchitecture.Infrastructure.Database;
+using CleanArchitecture.IntegrationTests.Infrastructure.Auth;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CleanArchitecture.IntegrationTests.Fixtures;
 
@@ -24,8 +24,8 @@ public sealed class UserTestFixture : TestFixtureBase
             Ids.Seed.UserId,
             Ids.Seed.TenantId,
             "admin@email.com",
-        "Admin",
-        "User",
+            "Admin",
+            "User",
             "$2a$12$Blal/uiFIJdYsCLTMUik/egLbfg3XhbnxBC6Sb5IKz2ZYhiU/MzL2",
             UserRole.Admin));
 
