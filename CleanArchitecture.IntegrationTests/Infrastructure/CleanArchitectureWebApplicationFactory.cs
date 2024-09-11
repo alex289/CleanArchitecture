@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using CleanArchitecture.Domain.Rabbitmq;
-using CleanArchitecture.IntegrationTests.Constants;
 using CleanArchitecture.IntegrationTests.Infrastructure.Auth;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Testcontainers.RabbitMq;
+using Testcontainers.Redis;
 
 namespace CleanArchitecture.IntegrationTests.Infrastructure;
 
@@ -31,8 +29,8 @@ public sealed class CleanArchitectureWebApplicationFactory : WebApplicationFacto
         builder.UseEnvironment("Integration");
         base.ConfigureWebHost(builder);
         
-        var redisPort = GlobalSetupFixture.RedisContainer.GetMappedPublicPort(Configuration.RedisPort);
-        var rabbitPort = GlobalSetupFixture.RabbitContainer.GetMappedPublicPort(Configuration.RabbitMqPort);
+        var redisPort = GlobalSetupFixture.RedisContainer.GetMappedPublicPort(RedisBuilder.RedisPort);
+        var rabbitPort = GlobalSetupFixture.RabbitContainer.GetMappedPublicPort(RabbitMqBuilder.RabbitMqPort);
 
         Environment.SetEnvironmentVariable("ConnectionStrings:DefaultConnection", GlobalSetupFixture.DatabaseConnectionString);
         Environment.SetEnvironmentVariable("RedisHostName", $"localhost:{redisPort}");

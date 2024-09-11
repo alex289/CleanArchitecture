@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using CleanArchitecture.IntegrationTests.Constants;
 using Respawn;
 using Testcontainers.MsSql;
 using Testcontainers.RabbitMq;
@@ -14,17 +13,17 @@ internal class GlobalSetupFixture
     private static Respawner? s_respawner;
 
     public static MsSqlContainer DatabaseContainer { get; } = new MsSqlBuilder()
-        .WithPortBinding(Configuration.MsSqlPort, assignRandomHostPort: true)
+        .WithPortBinding(MsSqlBuilder.MsSqlPort, assignRandomHostPort: true)
         .Build();
 
     public static RedisContainer RedisContainer { get; } = new RedisBuilder()
-        .WithPortBinding(Configuration.RedisPort, assignRandomHostPort: true)
+        .WithPortBinding(RedisBuilder.RedisPort, assignRandomHostPort: true)
         .Build();
 
     public static RabbitMqContainer RabbitContainer { get; } = new RabbitMqBuilder()
         .WithUsername("guest")
         .WithPassword("guest")
-        .WithPortBinding(Configuration.RabbitMqPort, assignRandomHostPort: true)
+        .WithPortBinding(RabbitMqBuilder.RabbitMqPort, assignRandomHostPort: true)
         .Build();
 
     public static string DatabaseConnectionString { get; private set; } = string.Empty;
