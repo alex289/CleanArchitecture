@@ -13,6 +13,8 @@ internal class GlobalSetupFixture
     private static Respawner? s_respawner;
 
     public static MsSqlContainer DatabaseContainer { get; } = new MsSqlBuilder()
+        // Required for https://github.com/docker/for-mac/issues/7368
+        .WithImage("mcr.microsoft.com/mssql/server:2022-CU14-ubuntu-22.04")
         .WithPortBinding(MsSqlBuilder.MsSqlPort, assignRandomHostPort: true)
         .Build();
 
