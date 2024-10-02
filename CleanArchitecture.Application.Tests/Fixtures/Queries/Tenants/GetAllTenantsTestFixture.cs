@@ -4,7 +4,7 @@ using CleanArchitecture.Application.Queries.Tenants.GetAll;
 using CleanArchitecture.Application.SortProviders;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Interfaces.Repositories;
-using MockQueryable.EntityFrameworkCore;
+using MockQueryable;
 using NSubstitute;
 
 namespace CleanArchitecture.Application.Tests.Fixtures.Queries.Tenants;

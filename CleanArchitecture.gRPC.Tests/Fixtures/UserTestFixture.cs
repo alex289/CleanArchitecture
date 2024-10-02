@@ -4,7 +4,7 @@ using CleanArchitecture.Application.gRPC;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.Domain.Interfaces.Repositories;
-using MockQueryable.EntityFrameworkCore;
+using MockQueryable;
 using NSubstitute;
 
 namespace CleanArchitecture.gRPC.Tests.Fixtures;
