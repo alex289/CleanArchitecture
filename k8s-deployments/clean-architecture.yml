@@ -43,3 +43,9 @@ spec:
             value: Http2
           - name: ConnectionStrings__DefaultConnection
             value: Server=sql-server;Database=clean-architecture;Trusted_Connection=False;MultipleActiveResultSets=true;TrustServerCertificate=True;User Id=SA;Password=Password123!#
+          - name: OTEL_EXPORTER_OTLP_ENDPOINT
+            value: http://seq:5341/ingest/otlp/v1/traces
+          - name: OTEL_EXPORTER_OTLP_PROTOCOL
+            value: http/protobuf
+          - name: Serilog__WriteTo__1__Args__serverUrl
+            value: http://seq:5341

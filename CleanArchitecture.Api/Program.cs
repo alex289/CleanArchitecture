@@ -91,6 +91,7 @@ builder.Services
     .WithTracing(tracing =>
     {
         tracing
+            .AddEntityFrameworkCoreInstrumentation()
             .AddHttpClientInstrumentation()
             .AddAspNetCoreInstrumentation()
             .AddSource(MassTransit.Logging.DiagnosticHeaders.DefaultListenerName);
