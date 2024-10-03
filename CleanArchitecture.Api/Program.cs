@@ -14,9 +14,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, loggerConfig) =>
+    loggerConfig.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddControllers();
 builder.Services.AddGrpc();
@@ -67,12 +72,6 @@ builder.Services.AddHostedService<SetInactiveUsersService>();
 
 builder.Services.AddMediatR(cfg => { cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly); });
 
-builder.Services.AddLogging(x => x.AddSimpleConsole(console =>
-{
-    console.TimestampFormat = "[yyyy-MM-ddTHH:mm:ss.fff] ";
-    console.IncludeScopes = true;
-}));
-
 if (builder.Environment.IsProduction() || !string.IsNullOrWhiteSpace(builder.Configuration["RedisHostName"]))
 {
     builder.Services.AddStackExchangeRedisCache(options =>
@@ -85,6 +84,19 @@ else
 {
     builder.Services.AddDistributedMemoryCache();
 }
+
+builder.Services
+    .AddOpenTelemetry()
+    .ConfigureResource(resource => resource.AddService("CleanArchitecture.Api"))
+    .WithTracing(tracing =>
+    {
+        tracing
+            .AddHttpClientInstrumentation()
+            .AddAspNetCoreInstrumentation()
+            .AddSource(MassTransit.Logging.DiagnosticHeaders.DefaultListenerName);
+
+        tracing.AddOtlpExporter();
+    });
 
 var app = builder.Build();
 
@@ -111,6 +123,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseSerilogRequestLogging();
 
 app.MapHealthChecks("/healthz", new HealthCheckOptions
 {

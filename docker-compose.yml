@@ -1,6 +1,6 @@
-version: "3"
 services:
   app:
+    container_name: ca_app
     build:
       context: .
       dockerfile: Dockerfile
@@ -22,6 +22,8 @@ services:
       - Kestrel__Endpoints__Grpc__Url=http://+:8080
       - Kestrel__Endpoints__Grpc__Protocols=Http2
       - ConnectionStrings__DefaultConnection=Server=db;Database=clean-architecture;Trusted_Connection=False;MultipleActiveResultSets=true;TrustServerCertificate=True;User Id=SA;Password=Password123!#
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:5341/ingest/otlp/v1/traces
+      - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost/healthz"]
       interval: 30s
@@ -29,7 +31,8 @@ services:
       retries: 3
 
   db:
-    image: mcr.microsoft.com/mssql/server
+    container_name: ca_db
+    image: mcr.microsoft.com/mssql/server:2022-CU14-ubuntu-22.04
     environment:
       - ACCEPT_EULA=Y
       - SA_PASSWORD=Password123!#
@@ -37,6 +40,7 @@ services:
       - 1433:1433
 
   redis:
+    container_name: ca_redis
     image: docker.io/bitnami/redis:7.2
     environment:
       # ALLOW_EMPTY_PASSWORD is recommended only for development.
@@ -48,6 +52,7 @@ services:
       - 'redis_data:/bitnami/redis/data'
 
   rabbitmq:
+    container_name: ca_rabbitmq
     image: "rabbitmq:3-management"
     ports:
       - 5672:5672
@@ -63,7 +68,19 @@ services:
       timeout: 3s
       retries: 3
 
+  seq:
+    container_name: ca_seq
+    image: datalust/seq:latest
+    volumes:
+      - seq_data:/data
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - 5341:5341
+      - 8081:80
+
 volumes:
+  seq_data:
   rabbitmq_data:
   redis_data:
     driver: local
