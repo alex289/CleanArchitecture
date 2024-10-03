@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: seq
+spec:
+  selector:
+    app: seq
+  ports:
+    - name: seq
+      protocol: TCP
+      port: 5341
+      targetPort: 5341
+    - name: seq-frontend
+      protocol: TCP
+      port: 8081
+      targetPort: 80
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: seq-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: seq
+  template:
+    metadata:
+      labels:
+        app: seq
+    spec:
+      containers:
+        - name: seq
+          image: datalust/seq:latest
+          env:
+            - name: ACCEPT_EULA
+              value: "y"
+          ports:
+            - containerPort: 5341
+            - containerPort: 80
+          volumeMounts:
+            - name: seq-data
+              mountPath: /data
+      volumes:
+        - name: seq-data
+          emptyDir: {}
