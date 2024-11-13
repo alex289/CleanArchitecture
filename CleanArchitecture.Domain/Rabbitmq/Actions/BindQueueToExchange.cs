@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using RabbitMQ.Client;
 
 namespace CleanArchitecture.Domain.Rabbitmq.Actions;
@@ -15,8 +16,8 @@ public sealed class BindQueueToExchange : IRabbitMqAction
         _queueName = queueName;
     }
 
-    public void Perform(IModel channel)
+    public async Task Perform(IChannel channel)
     {
-        channel.QueueBind(_queueName, _exchangeName, _routingKey);
+        await channel.QueueBindAsync(_queueName, _exchangeName, _routingKey);
     }
 }
