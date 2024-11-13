@@ -32,6 +32,7 @@
         <ProjectReference Include="..\CleanArchitecture.Domain\CleanArchitecture.Domain.csproj" />
         <ProjectReference Include="..\CleanArchitecture.gRPC\CleanArchitecture.gRPC.csproj" />
         <ProjectReference Include="..\CleanArchitecture.Infrastructure\CleanArchitecture.Infrastructure.csproj" />
+        <ProjectReference Include="..\CleanArchitecture.ServiceDefaults\CleanArchitecture.ServiceDefaults.csproj" />
     </ItemGroup>
 
     <ItemGroup>
