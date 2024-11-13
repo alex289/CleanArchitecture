@@ -1,11 +1,12 @@
 using System;
+using System.Threading.Tasks;
 using RabbitMQ.Client;
 
 namespace CleanArchitecture.Domain.Rabbitmq.Actions;
 
 public sealed class RegisterConsumer : IRabbitMqAction
 {
-    private readonly Action<string, string, string, ConsumeEventHandler> _addConsumer;
+    private readonly Func<string, string, string, ConsumeEventHandler, Task> _addConsumer;
     private readonly ConsumeEventHandler _consumer;
     private readonly string _exchange;
     private readonly string _queue;
@@ -16,7 +17,7 @@ public sealed class RegisterConsumer : IRabbitMqAction
         string queue,
         string routingKey,
         ConsumeEventHandler consumer,
-        Action<string, string, string, ConsumeEventHandler> addConsumer)
+        Func<string, string, string, ConsumeEventHandler, Task> addConsumer)
     {
         _exchange = exchange;
         _queue = queue;
@@ -25,8 +26,8 @@ public sealed class RegisterConsumer : IRabbitMqAction
         _addConsumer = addConsumer;
     }
 
-    public void Perform(IModel channel)
+    public async Task Perform(IChannel channel)
     {
-        _addConsumer(_exchange, _queue, _routingKey, _consumer);
+        await _addConsumer(_exchange, _queue, _routingKey, _consumer);
     }
 }

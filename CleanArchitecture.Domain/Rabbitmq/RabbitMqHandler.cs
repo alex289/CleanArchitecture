@@ -13,7 +13,7 @@ namespace CleanArchitecture.Domain.Rabbitmq;
 
 public sealed class RabbitMqHandler : BackgroundService
 {
-    private readonly IModel? _channel;
+    private IChannel? _channel;
     private readonly RabbitMqConfiguration _configuration;
 
     private readonly ConcurrentDictionary<string, List<ConsumeEventHandler>> _consumers = new();
@@ -28,26 +28,29 @@ public sealed class RabbitMqHandler : BackgroundService
     {
         _configuration = configuration;
         _logger = logger;
+    }
 
-        if (!configuration.Enabled)
+    public override async Task StartAsync(CancellationToken cancellationToken)
+    {
+        if (!_configuration.Enabled)
         {
-            logger.LogInformation("RabbitMQ is disabled. Connection will not be established");
+            _logger.LogInformation("RabbitMQ is disabled. Connection will not be established");
             return;
         }
 
         var factory = new ConnectionFactory
         {
             AutomaticRecoveryEnabled = true,
-            HostName = configuration.Host,
-            Port = configuration.Port,
-            UserName = configuration.Username,
-            Password = configuration.Password,
-            DispatchConsumersAsync = true
+            HostName = _configuration.Host,
+            Port = _configuration.Port,
+            UserName = _configuration.Username,
+            Password = _configuration.Password,
         };
 
-        var connection = factory.CreateConnection();
-        _channel = connection.CreateModel();
+        var connection = await factory.CreateConnectionAsync(cancellationToken);
+        _channel = await connection.CreateChannelAsync(null, cancellationToken);
     }
+
 
     public void InitializeExchange(string exchangeName, string type = ExchangeType.Fanout)
     {
@@ -126,8 +129,14 @@ public sealed class RabbitMqHandler : BackgroundService
         AddExchangeConsumer(exchange, string.Empty, queue, consumer);
     }
 
-    private void AddEventConsumer(string exchange, string queueName, string routingKey, ConsumeEventHandler consumer)
+    private async Task AddEventConsumer(string exchange, string queueName, string routingKey, ConsumeEventHandler consumer)
     {
+        if (!_configuration.Enabled)
+        {
+            _logger.LogInformation("RabbitMQ is disabled. Event consumer will not be added.");
+            return;
+        }
+        
         var key = $"{exchange}-{routingKey}";
 
         if (!_consumers.TryGetValue(key, out var consumers))
@@ -135,10 +144,10 @@ public sealed class RabbitMqHandler : BackgroundService
             consumers = new List<ConsumeEventHandler>();
             _consumers.TryAdd(key, consumers);
 
-            var eventHandler = new AsyncEventingBasicConsumer(_channel);
-            eventHandler.Received += CallEventConsumersAsync;
+            var eventHandler = new AsyncEventingBasicConsumer(_channel!);
+            eventHandler.ReceivedAsync += CallEventConsumersAsync;
 
-            _channel!.BasicConsume(queueName, false, eventHandler);
+            await _channel!.BasicConsumeAsync(queueName, false, eventHandler);
         }
 
         consumers.Add(consumer);
@@ -202,19 +211,19 @@ public sealed class RabbitMqHandler : BackgroundService
 
         while (true)
         {
-            HandleEnqueuedActions();
+            await HandleEnqueuedActions();
 
             await Task.Delay(1000, stoppingToken);
         }
     }
 
-    private void HandleEnqueuedActions()
+    private async Task HandleEnqueuedActions()
     {
         while (_pendingActions.TryDequeue(out var action))
         {
             try
             {
-                action.Perform(_channel!);
+                await action.Perform(_channel!);
             }
             catch (Exception ex)
             {

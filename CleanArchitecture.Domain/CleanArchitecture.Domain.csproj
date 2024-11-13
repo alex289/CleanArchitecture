@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
@@ -9,10 +9,10 @@
         <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
         <PackageReference Include="FluentValidation" Version="11.10.0" />
         <PackageReference Include="MediatR" Version="12.4.1" />
-        <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="RabbitMQ.Client" Version="6.8.1" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.2" />
+        <PackageReference Include="RabbitMQ.Client" Version="7.0.0" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.2.0" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using RabbitMQ.Client;
 
 namespace CleanArchitecture.Domain.Rabbitmq.Actions;
@@ -11,9 +12,9 @@ public sealed class CreateQueue : IRabbitMqAction
         QueueName = queueName;
     }
 
-    public void Perform(IModel channel)
+    public async Task Perform(IChannel channel)
     {
-        channel.QueueDeclare(
+        await channel.QueueDeclareAsync(
             QueueName,
             false,
             false,

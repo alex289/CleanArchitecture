@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using RabbitMQ.Client;
 
 namespace CleanArchitecture.Domain.Rabbitmq.Actions;
@@ -13,8 +14,8 @@ public sealed class CreateExchange : IRabbitMqAction
         _type = type;
     }
 
-    public void Perform(IModel channel)
+    public async Task Perform(IChannel channel)
     {
-        channel.ExchangeDeclare(_name, _type);
+        await channel.ExchangeDeclareAsync(_name, _type);
     }
 }

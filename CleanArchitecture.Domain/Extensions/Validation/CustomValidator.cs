@@ -14,7 +14,7 @@ public static partial class CustomValidator
     private static bool IsBase64String(string base64)
     {
         base64 = base64.Trim();
-        return base64.Length % 4 == 0 && Base64Regex().IsMatch(base64);
+        return base64.Length % 4 == 0 && new Regex("^[a-zA-Z0-9\\+/]*={0,3}$").IsMatch(base64);
     }
 
     public static IRuleBuilder<T, string> Password<T>(
@@ -32,7 +32,4 @@ public static partial class CustomValidator
             .Matches("[^a-zA-Z0-9]").WithErrorCode(DomainErrorCodes.User.SpecialCharPassword);
         return options;
     }
-
-    [GeneratedRegex("^[a-zA-Z0-9\\+/]*={0,3}$", RegexOptions.None)]
-    private static partial Regex Base64Regex();
 }

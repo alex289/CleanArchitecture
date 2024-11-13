@@ -1,4 +1,5 @@
 using System.Text;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 
@@ -23,16 +24,15 @@ public sealed class SendMessage : IRabbitMqAction
         _message = message;
     }
 
-    public void Perform(IModel channel)
+    public async Task Perform(IChannel channel)
     {
         var json = JsonConvert.SerializeObject(_message, s_serializerSettings);
 
         var content = Encoding.UTF8.GetBytes(json);
 
-        channel.BasicPublish(
+        await channel.BasicPublishAsync(
             _exchange,
             _routingKey,
-            null,
             content);
     }
 }
