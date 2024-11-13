@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.5.0] - 2024-11-13
+### :sparkles: New Features
+- [`804679d`](https://github.com/alex289/CleanArchitecture/commit/804679d6765df33ab5472e9f91ed8d75ed2fc5f4) - dotnet 9 *(commit by [@alex289](https://github.com/alex289))*
+- [`1e6c51f`](https://github.com/alex289/CleanArchitecture/commit/1e6c51fa792f1437f96d6ac8b22ee7fed50eddf9) - dotnet 9 *(PR [#78](https://github.com/alex289/CleanArchitecture/pull/78) by [@alex289](https://github.com/alex289))*
+
+### :wrench: Chores
+- [`31ee2b7`](https://github.com/alex289/CleanArchitecture/commit/31ee2b72396a2ec8d29349d929cda1036dff58e9) - bump the dependencies group with 17 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`18f4583`](https://github.com/alex289/CleanArchitecture/commit/18f458332f5e8d164cffb46dd9d9f30b2b4afef7) - bump the dependencies group with 17 updates *(PR [#77](https://github.com/alex289/CleanArchitecture/pull/77) by [@alex289](https://github.com/alex289))*
+
+
 ## [v1.4.0] - 2024-10-02
 ### :sparkles: New Features
 - [`336bfc1`](https://github.com/alex289/CleanArchitecture/commit/336bfc1d11bd30f56f5ce05c36487353527fedba) - Use NUnit for Integration tests *(commit by [@alex289](https://github.com/alex289))*
@@ -115,3 +125,4 @@ _This is the initial release._
 [v1.3.3]: https://github.com/alex289/CleanArchitecture/compare/v1.3.2...v1.3.3
 [v1.3.4]: https://github.com/alex289/CleanArchitecture/compare/v1.3.3...v1.3.4
 [v1.4.0]: https://github.com/alex289/CleanArchitecture/compare/v1.3.4...v1.4.0
+[v1.5.0]: https://github.com/alex289/CleanArchitecture/compare/v1.4.0...v1.5.0
