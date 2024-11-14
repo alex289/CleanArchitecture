@@ -6,6 +6,7 @@ using CleanArchitecture.Domain.Extensions;
 using CleanArchitecture.Domain.Rabbitmq.Extensions;
 using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.Infrastructure.Extensions;
+using CleanArchitecture.ServiceDefaults;
 using HealthChecks.ApplicationStatus.DependencyInjection;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
