@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: redis
-          image: docker.io/bitnami/redis:7.2
+          image: docker.io/bitnami/redis:7.4
           env:
               # ALLOW_EMPTY_PASSWORD is recommended only for development.
             - name: ALLOW_EMPTY_PASSWORD
