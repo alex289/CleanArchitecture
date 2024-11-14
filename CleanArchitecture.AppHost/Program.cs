@@ -11,16 +11,16 @@ var rabbitMq = builder
     .WithManagementPlugin();
 
 var sqlServer = builder.AddSqlServer("SqlServer");
+var db = sqlServer.AddDatabase("Database", "clean-architecture");
 
-builder.AddProject<Projects.CleanArchitecture_Api>("CleanArchitecture.Api")
-    .WithHttpsEndpoint(17270)
-    .WithHealthCheck("Api Health")
+builder.AddProject<Projects.CleanArchitecture_Api>("CleanArchitecture-Api")
+    //.WithHealthCheck("Api Health")
     .WithOtlpExporter()
     .WithReference(redis)
     .WaitFor(redis)
     .WithReference(rabbitMq)
     .WaitFor(rabbitMq)
-    .WithReference(sqlServer)
+    .WithReference(db)
     .WaitFor(sqlServer);
 
 builder.Build().Run();

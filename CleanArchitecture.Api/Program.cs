@@ -12,7 +12,6 @@ using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -31,32 +30,41 @@ builder.Services
     .AddDbContextCheck<ApplicationDbContext>()
     .AddApplicationStatus();
 
+var isAspire = builder.Configuration["ASPIRE_ENABLED"] == "true";
+
+var rabbitHost = builder.Configuration["RabbitMQ:Host"];
+var rabbitPort = builder.Configuration["RabbitMQ:Port"];
+var rabbitUser = builder.Configuration["RabbitMQ:Username"];
+var rabbitPass = builder.Configuration["RabbitMQ:Password"];
+var rabbitConnectionString =
+    isAspire ? builder.Configuration["ConnectionStrings:RabbitMq"] :
+        $"amqp://{rabbitUser}:{rabbitPass}@{rabbitHost}:{rabbitPort}";
+
+var redisConnectionString = isAspire ? builder.Configuration["ConnectionStrings:Redis"] : builder.Configuration["RedisHostName"];
+
+var dbConnectionString = isAspire ? builder.Configuration["ConnectionStrings:Database"] : builder.Configuration["ConnectionStrings:DefaultConnection"];
+
 if (builder.Environment.IsProduction())
 {
-    var rabbitHost = builder.Configuration["RabbitMQ:Host"];
-    var rabbitPort = builder.Configuration["RabbitMQ:Port"];
-    var rabbitUser = builder.Configuration["RabbitMQ:Username"];
-    var rabbitPass = builder.Configuration["RabbitMQ:Password"];
-
     builder.Services
         .AddHealthChecks()
-        .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!)
-        .AddRedis(builder.Configuration["RedisHostName"]!, "Redis")
+        .AddSqlServer(dbConnectionString!)
+        .AddRedis(redisConnectionString!, "Redis")
         .AddRabbitMQ(
-            $"amqp://{rabbitUser}:{rabbitPass}@{rabbitHost}:{rabbitPort}",
+            rabbitConnectionString!,
             name: "RabbitMQ");
 }
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseLazyLoadingProxies();
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+    options.UseSqlServer(dbConnectionString,
         b => b.MigrationsAssembly("CleanArchitecture.Infrastructure"));
 });
 
 builder.Services.AddSwagger();
 builder.Services.AddAuth(builder.Configuration);
-builder.Services.AddInfrastructure(builder.Configuration, "CleanArchitecture.Infrastructure");
+builder.Services.AddInfrastructure("CleanArchitecture.Infrastructure", dbConnectionString!);
 builder.Services.AddQueryHandlers();
 builder.Services.AddServices();
 builder.Services.AddSortProviders();
@@ -76,11 +84,11 @@ builder.Services.AddLogging(x => x.AddSimpleConsole(console =>
     console.IncludeScopes = true;
 }));
 
-if (builder.Environment.IsProduction() || !string.IsNullOrWhiteSpace(builder.Configuration["RedisHostName"]))
+if (builder.Environment.IsProduction() || !string.IsNullOrWhiteSpace(redisConnectionString))
 {
     builder.Services.AddStackExchangeRedisCache(options =>
     {
-        options.Configuration = builder.Configuration["RedisHostName"];
+        options.Configuration = redisConnectionString;
         options.InstanceName = "clean-architecture";
     });
 }
