@@ -14,14 +14,14 @@ namespace CleanArchitecture.ServiceDefaults;
 public static class Extensions
 {
     private const string AspireEnabled = "ASPIRE_ENABLED";
-    
+
     public static void AddServiceDefaults<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
     {
         if (builder.Configuration[AspireEnabled] != "true")
         {
             return;
         }
-        
+
         builder.ConfigureOpenTelemetry();
 
         builder.AddDefaultHealthChecks();
@@ -60,6 +60,7 @@ public static class Extensions
                 tracing.AddSource(builder.Environment.ApplicationName)
                     .AddAspNetCoreInstrumentation()
                     .AddGrpcClientInstrumentation()
+                    .AddEntityFrameworkCoreInstrumentation()
                     .AddHttpClientInstrumentation();
             });
 
@@ -88,7 +89,7 @@ public static class Extensions
         {
             return;
         }
-        
+
         if (app.Environment.IsDevelopment())
         {
             app.MapHealthChecks("/health");
