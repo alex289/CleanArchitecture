@@ -33,8 +33,11 @@ builder.Services
 var isAspire = builder.Configuration["ASPIRE_ENABLED"] == "true";
 
 var rabbitConfiguration = builder.Configuration.GetRabbitMqConfiguration();
-var redisConnectionString = isAspire ? builder.Configuration["ConnectionStrings:Redis"] : builder.Configuration["RedisHostName"];
-var dbConnectionString = isAspire ? builder.Configuration["ConnectionStrings:Database"] : builder.Configuration["ConnectionStrings:DefaultConnection"];
+var redisConnectionString =
+    isAspire ? builder.Configuration["ConnectionStrings:Redis"] : builder.Configuration["RedisHostName"];
+var dbConnectionString = isAspire
+    ? builder.Configuration["ConnectionStrings:Database"]
+    : builder.Configuration["ConnectionStrings:DefaultConnection"];
 
 if (builder.Environment.IsProduction())
 {

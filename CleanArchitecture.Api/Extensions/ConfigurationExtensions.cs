@@ -35,7 +35,7 @@ public static class ConfigurationExtensions
             Port = int.Parse(rabbitPort ?? "0"),
             Enabled = bool.Parse(rabbitEnabled ?? "false"),
             Username = rabbitUser ?? "",
-            Password = rabbitPass ?? "",
+            Password = rabbitPass ?? ""
         };
     }
 }

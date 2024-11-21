@@ -3,7 +3,7 @@ var builder = DistributedApplication.CreateBuilder(args);
 var redis = builder.AddRedis("Redis");
 
 var rabbitPasswordRessource = new ParameterResource("password", _ => "guest");
-var rabbitPasswordParameter = 
+var rabbitPasswordParameter =
     builder.AddParameter("username", rabbitPasswordRessource.Value);
 
 var rabbitMq = builder

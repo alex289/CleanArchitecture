@@ -34,10 +34,7 @@ public static class Extensions
             http.AddServiceDiscovery();
         });
 
-        builder.Services.Configure<ServiceDiscoveryOptions>(options =>
-        {
-            options.AllowedSchemes = ["https"];
-        });
+        builder.Services.Configure<ServiceDiscoveryOptions>(options => { options.AllowedSchemes = ["https"]; });
     }
 
     private static void ConfigureOpenTelemetry<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
@@ -67,7 +64,8 @@ public static class Extensions
         builder.AddOpenTelemetryExporters();
     }
 
-    private static void AddOpenTelemetryExporters<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
+    private static void AddOpenTelemetryExporters<TBuilder>(this TBuilder builder)
+        where TBuilder : IHostApplicationBuilder
     {
         var useOtlpExporter = !string.IsNullOrWhiteSpace(builder.Configuration["OTEL_EXPORTER_OTLP_ENDPOINT"]);
 
