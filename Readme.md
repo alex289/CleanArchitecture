@@ -25,16 +25,20 @@ The project uses the following dependencies:
 - **gRPC**: gRPC is an open-source remote procedure call framework that enables efficient communication between distributed systems using a variety of programming languages and protocols.
 
 ## Running the Project
-To run the project, follow these steps:
 
+To run the project, follow these steps:
 
 1. Clone the repository to your local machine.
 2. Open the solution in your IDE of choice.
 3. Build the solution to restore the dependencies.
 4. Update the connection string in the appsettings.json file to point to your database.
-5. Start the API project
+5. Start the API project (Alterntively you can use the `dotnet run --project CleanArchitecture.Api` command)
 6. The database migrations will be automatically applied on start-up. If the database does not exist, it will be created.
 7. The API should be accessible at `https://localhost:<port>/api/<controller>` where `<port>` is the port number specified in the project properties and `<controller>` is the name of the API controller.
+
+### Using Aspire
+
+1. Run `dotnet run --project CleanArchitecture.AppHost` in the root directory of the project.
 
 ### Using docker
 
@@ -53,7 +57,7 @@ options.ConfigurationOptions = new ConfigurationOptions
 
 Running the container
 1. Build the Dockerfile: `docker build -t clean-architecture .`
-2. Run the Container: `docker run -p 80:80 clean-architecture`
+2. Run the Container: `docker run -p 80:80 -p 8080:8080 clean-architecture`
 
 ### Using docker-compose
 
