@@ -38,6 +38,8 @@ public sealed class RabbitMqHandler : BackgroundService
             return;
         }
 
+        _logger.LogInformation("Starting RabbitMQ connection");
+
         var factory = new ConnectionFactory
         {
             AutomaticRecoveryEnabled = true,
@@ -49,6 +51,8 @@ public sealed class RabbitMqHandler : BackgroundService
 
         var connection = await factory.CreateConnectionAsync(cancellationToken);
         _channel = await connection.CreateChannelAsync(null, cancellationToken);
+
+        await base.StartAsync(cancellationToken);
     }
 
 

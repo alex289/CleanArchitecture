@@ -32,16 +32,8 @@ builder.Services
 
 var isAspire = builder.Configuration["ASPIRE_ENABLED"] == "true";
 
-var rabbitHost = builder.Configuration["RabbitMQ:Host"];
-var rabbitPort = builder.Configuration["RabbitMQ:Port"];
-var rabbitUser = builder.Configuration["RabbitMQ:Username"];
-var rabbitPass = builder.Configuration["RabbitMQ:Password"];
-var rabbitConnectionString =
-    isAspire ? builder.Configuration["ConnectionStrings:RabbitMq"] :
-        $"amqp://{rabbitUser}:{rabbitPass}@{rabbitHost}:{rabbitPort}";
-
+var rabbitConfiguration = builder.Configuration.GetRabbitMqConfiguration();
 var redisConnectionString = isAspire ? builder.Configuration["ConnectionStrings:Redis"] : builder.Configuration["RedisHostName"];
-
 var dbConnectionString = isAspire ? builder.Configuration["ConnectionStrings:Database"] : builder.Configuration["ConnectionStrings:DefaultConnection"];
 
 if (builder.Environment.IsProduction())
@@ -51,7 +43,7 @@ if (builder.Environment.IsProduction())
         .AddSqlServer(dbConnectionString!)
         .AddRedis(redisConnectionString!, "Redis")
         .AddRabbitMQ(
-            rabbitConnectionString!,
+            rabbitConfiguration.ConnectionString,
             name: "RabbitMQ");
 }
 
@@ -72,7 +64,7 @@ builder.Services.AddCommandHandlers();
 builder.Services.AddNotificationHandlers();
 builder.Services.AddApiUser();
 
-builder.Services.AddRabbitMqHandler(builder.Configuration, "RabbitMQ");
+builder.Services.AddRabbitMqHandler(rabbitConfiguration);
 
 builder.Services.AddHostedService<SetInactiveUsersService>();
 
