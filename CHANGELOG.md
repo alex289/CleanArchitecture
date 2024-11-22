@@ -4,6 +4,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.6.0] - 2024-11-22
+### :sparkles: New Features
+- [`cfe5d02`](https://github.com/alex289/CleanArchitecture/commit/cfe5d029aa0043e716f22582be887b8315bb4319) - Aspire *(commit by [@alex289](https://github.com/alex289))*
+- [`2a048b6`](https://github.com/alex289/CleanArchitecture/commit/2a048b682a1e1eaf9cd498660c22d752fe59ff30) - Cleanup redundant configurations *(commit by [@alex289](https://github.com/alex289))*
+- [`7d0ac81`](https://github.com/alex289/CleanArchitecture/commit/7d0ac810462f084f94579d6548d9b812ee822597) - Update redis and rabbit image *(commit by [@alex289](https://github.com/alex289))*
+- [`425da0b`](https://github.com/alex289/CleanArchitecture/commit/425da0b4503a694024a7ad454c0ae55041601c05) - Add entity framework telemetry *(commit by [@alex289](https://github.com/alex289))*
+- [`693ca45`](https://github.com/alex289/CleanArchitecture/commit/693ca4589d558fa71835410e6d0c8c6d4c0d9644) - Fix rabbitmq registration *(commit by [@alex289](https://github.com/alex289))*
+- [`189b900`](https://github.com/alex289/CleanArchitecture/commit/189b9004b712fc23705de8c0ada02fe9a6a728c5) - Extend documentation for aspire *(commit by [@alex289](https://github.com/alex289))*
+- [`5a92022`](https://github.com/alex289/CleanArchitecture/commit/5a92022fdc59c85e1cdf2237c73e0f436c32bad0) - Add redis test *(commit by [@alex289](https://github.com/alex289))*
+- [`f909b61`](https://github.com/alex289/CleanArchitecture/commit/f909b6175fd7b58da58c89cc57b40db02ae1f8d4) - Aspire improvements *(commit by [@alex289](https://github.com/alex289))*
+- [`5e8d6ad`](https://github.com/alex289/CleanArchitecture/commit/5e8d6ad45fb7832dc418ca45df304d8d5ab93c36) - Aspire *(PR [#80](https://github.com/alex289/CleanArchitecture/pull/80) by [@alex289](https://github.com/alex289))*
+
+### :bug: Bug Fixes
+- [`d9ae278`](https://github.com/alex289/CleanArchitecture/commit/d9ae278caf7732259c5cd9925cfd942f22059f41) - Use correct connection string *(commit by [@alex289](https://github.com/alex289))*
+- [`aa4c169`](https://github.com/alex289/CleanArchitecture/commit/aa4c16922d29f02c6c9b304c4bfc154997ab4c42) - Docker and kubernetes setup *(commit by [@alex289](https://github.com/alex289))*
+
+### :wrench: Chores
+- [`7a166d1`](https://github.com/alex289/CleanArchitecture/commit/7a166d15c48956a95ed7bd74deac4c47367df376) - Code cleanup *(commit by [@alex289](https://github.com/alex289))*
+
+
 ## [v1.5.0] - 2024-11-13
 ### :sparkles: New Features
 - [`804679d`](https://github.com/alex289/CleanArchitecture/commit/804679d6765df33ab5472e9f91ed8d75ed2fc5f4) - dotnet 9 *(commit by [@alex289](https://github.com/alex289))*
@@ -126,3 +146,4 @@ _This is the initial release._
 [v1.3.4]: https://github.com/alex289/CleanArchitecture/compare/v1.3.3...v1.3.4
 [v1.4.0]: https://github.com/alex289/CleanArchitecture/compare/v1.3.4...v1.4.0
 [v1.5.0]: https://github.com/alex289/CleanArchitecture/compare/v1.4.0...v1.5.0
+[v1.6.0]: https://github.com/alex289/CleanArchitecture/compare/v1.5.0...v1.6.0
