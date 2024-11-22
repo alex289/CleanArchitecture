@@ -25,23 +25,29 @@ The project uses the following dependencies:
 - **gRPC**: gRPC is an open-source remote procedure call framework that enables efficient communication between distributed systems using a variety of programming languages and protocols.
 
 ## Running the Project
-To run the project, follow these steps:
 
+To run the project, follow these steps:
 
 1. Clone the repository to your local machine.
 2. Open the solution in your IDE of choice.
 3. Build the solution to restore the dependencies.
 4. Update the connection string in the appsettings.json file to point to your database.
-5. Start the API project
+5. Start the API project (Alterntively you can use the `dotnet run --project CleanArchitecture.Api` command)
 6. The database migrations will be automatically applied on start-up. If the database does not exist, it will be created.
 7. The API should be accessible at `https://localhost:<port>/api/<controller>` where `<port>` is the port number specified in the project properties and `<controller>` is the name of the API controller.
+
+### Using Aspire
+
+1. Run `dotnet run --project CleanArchitecture.AppHost` in the root directory of the project.
 
 ### Using docker
 
 Requirements
 > This is only needed if running the API locally or only the docker image
-1. Redis: `docker run --name redis -d -p 6379:6379 -e ALLOW_EMPTY_PASSWORD=yes redis:latest`
-2. Add this to the redis configuration in the Program.cs
+1. SqlServer: `docker run --name sqlserver -d -p 1433:1433 -e ACCEPT_EULA=Y -e SA_PASSWORD='Password123!#' mcr.microsoft.com/mssql/server`
+1. RabbitMq: `docker run --name rabbitmq -d -p 5672:5672 -p 15672:15672 rabbitmq:4-management`
+3. Redis: `docker run --name redis -d -p 6379:6379 -e ALLOW_EMPTY_PASSWORD=yes redis:latest`
+4. Add this to the redis configuration in the Program.cs
 ```csharp
 options.ConfigurationOptions = new ConfigurationOptions
         {
@@ -49,11 +55,10 @@ options.ConfigurationOptions = new ConfigurationOptions
             EndPoints = { "localhost", "6379" }
         };
 ```
-3. RabbitMq: `docker run --name rabbitmq -d -p 5672:5672 -p 15672:15672 rabbitmq:3-management`
 
 Running the container
 1. Build the Dockerfile: `docker build -t clean-architecture .`
-2. Run the Container: `docker run -p 80:80 clean-architecture`
+2. Run the Container: `docker run --name clean-architecture -d -p 80:80 -p 8080:8080 clean-architecture`
 
 ### Using docker-compose
 

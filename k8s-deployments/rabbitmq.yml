@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
         - name: rabbitmq
-          image: rabbitmq:management
+          image: rabbitmq:4-management
           ports:
             - containerPort: 5672
             - containerPort: 15672

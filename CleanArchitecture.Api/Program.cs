@@ -6,17 +6,19 @@ using CleanArchitecture.Domain.Extensions;
 using CleanArchitecture.Domain.Rabbitmq.Extensions;
 using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.Infrastructure.Extensions;
+using CleanArchitecture.ServiceDefaults;
 using HealthChecks.ApplicationStatus.DependencyInjection;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.AddServiceDefaults();
 
 builder.Services.AddControllers();
 builder.Services.AddGrpc();
@@ -28,32 +30,36 @@ builder.Services
     .AddDbContextCheck<ApplicationDbContext>()
     .AddApplicationStatus();
 
+var isAspire = builder.Configuration["ASPIRE_ENABLED"] == "true";
+
+var rabbitConfiguration = builder.Configuration.GetRabbitMqConfiguration();
+var redisConnectionString =
+    isAspire ? builder.Configuration["ConnectionStrings:Redis"] : builder.Configuration["RedisHostName"];
+var dbConnectionString = isAspire
+    ? builder.Configuration["ConnectionStrings:Database"]
+    : builder.Configuration["ConnectionStrings:DefaultConnection"];
+
 if (builder.Environment.IsProduction())
 {
-    var rabbitHost = builder.Configuration["RabbitMQ:Host"];
-    var rabbitPort = builder.Configuration["RabbitMQ:Port"];
-    var rabbitUser = builder.Configuration["RabbitMQ:Username"];
-    var rabbitPass = builder.Configuration["RabbitMQ:Password"];
-
     builder.Services
         .AddHealthChecks()
-        .AddSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")!)
-        .AddRedis(builder.Configuration["RedisHostName"]!, "Redis")
+        .AddSqlServer(dbConnectionString!)
+        .AddRedis(redisConnectionString!, "Redis")
         .AddRabbitMQ(
-            $"amqp://{rabbitUser}:{rabbitPass}@{rabbitHost}:{rabbitPort}",
+            rabbitConfiguration.ConnectionString,
             name: "RabbitMQ");
 }
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseLazyLoadingProxies();
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"),
+    options.UseSqlServer(dbConnectionString,
         b => b.MigrationsAssembly("CleanArchitecture.Infrastructure"));
 });
 
 builder.Services.AddSwagger();
 builder.Services.AddAuth(builder.Configuration);
-builder.Services.AddInfrastructure(builder.Configuration, "CleanArchitecture.Infrastructure");
+builder.Services.AddInfrastructure("CleanArchitecture.Infrastructure", dbConnectionString!);
 builder.Services.AddQueryHandlers();
 builder.Services.AddServices();
 builder.Services.AddSortProviders();
@@ -61,7 +67,7 @@ builder.Services.AddCommandHandlers();
 builder.Services.AddNotificationHandlers();
 builder.Services.AddApiUser();
 
-builder.Services.AddRabbitMqHandler(builder.Configuration, "RabbitMQ");
+builder.Services.AddRabbitMqHandler(rabbitConfiguration);
 
 builder.Services.AddHostedService<SetInactiveUsersService>();
 
@@ -73,11 +79,11 @@ builder.Services.AddLogging(x => x.AddSimpleConsole(console =>
     console.IncludeScopes = true;
 }));
 
-if (builder.Environment.IsProduction() || !string.IsNullOrWhiteSpace(builder.Configuration["RedisHostName"]))
+if (builder.Environment.IsProduction() || !string.IsNullOrWhiteSpace(redisConnectionString))
 {
     builder.Services.AddStackExchangeRedisCache(options =>
     {
-        options.Configuration = builder.Configuration["RedisHostName"];
+        options.Configuration = redisConnectionString;
         options.InstanceName = "clean-architecture";
     });
 }
@@ -87,6 +93,8 @@ else
 }
 
 var app = builder.Build();
+
+app.MapDefaultEndpoints();
 
 using (var scope = app.Services.CreateScope())
 {

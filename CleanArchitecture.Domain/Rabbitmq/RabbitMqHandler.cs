@@ -13,7 +13,6 @@ namespace CleanArchitecture.Domain.Rabbitmq;
 
 public sealed class RabbitMqHandler : BackgroundService
 {
-    private IChannel? _channel;
     private readonly RabbitMqConfiguration _configuration;
 
     private readonly ConcurrentDictionary<string, List<ConsumeEventHandler>> _consumers = new();
@@ -21,6 +20,7 @@ public sealed class RabbitMqHandler : BackgroundService
     private readonly ILogger<RabbitMqHandler> _logger;
 
     private readonly ConcurrentQueue<IRabbitMqAction> _pendingActions = new();
+    private IChannel? _channel;
 
     public RabbitMqHandler(
         RabbitMqConfiguration configuration,
@@ -38,17 +38,21 @@ public sealed class RabbitMqHandler : BackgroundService
             return;
         }
 
+        _logger.LogInformation("Starting RabbitMQ connection");
+
         var factory = new ConnectionFactory
         {
             AutomaticRecoveryEnabled = true,
             HostName = _configuration.Host,
             Port = _configuration.Port,
             UserName = _configuration.Username,
-            Password = _configuration.Password,
+            Password = _configuration.Password
         };
 
         var connection = await factory.CreateConnectionAsync(cancellationToken);
         _channel = await connection.CreateChannelAsync(null, cancellationToken);
+
+        await base.StartAsync(cancellationToken);
     }
 
 
@@ -129,14 +133,15 @@ public sealed class RabbitMqHandler : BackgroundService
         AddExchangeConsumer(exchange, string.Empty, queue, consumer);
     }
 
-    private async Task AddEventConsumer(string exchange, string queueName, string routingKey, ConsumeEventHandler consumer)
+    private async Task AddEventConsumer(string exchange, string queueName, string routingKey,
+        ConsumeEventHandler consumer)
     {
         if (!_configuration.Enabled)
         {
             _logger.LogInformation("RabbitMQ is disabled. Event consumer will not be added.");
             return;
         }
-        
+
         var key = $"{exchange}-{routingKey}";
 
         if (!_consumers.TryGetValue(key, out var consumers))
