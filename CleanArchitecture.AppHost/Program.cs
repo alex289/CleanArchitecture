@@ -1,6 +1,6 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var redis = builder.AddRedis("Redis");
+var redis = builder.AddRedis("Redis").WithRedisInsight();
 
 var rabbitPasswordRessource = new ParameterResource("password", _ => "guest");
 var rabbitPasswordParameter =
@@ -15,6 +15,7 @@ var db = sqlServer.AddDatabase("Database", "clean-architecture");
 
 builder.AddProject<Projects.CleanArchitecture_Api>("CleanArchitecture-Api")
     .WithOtlpExporter()
+    .WithHttpHealthCheck("/health")
     .WithReference(redis)
     .WaitFor(redis)
     .WithReference(rabbitMq)
