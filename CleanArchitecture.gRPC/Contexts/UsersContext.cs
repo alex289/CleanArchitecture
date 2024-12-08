@@ -30,6 +30,6 @@ public sealed class UsersContext : IUsersContext
             user.Email,
             user.FirstName,
             user.LastName,
-            user.IsDeleted));
+            string.IsNullOrWhiteSpace(user.DeletedAt) ? null : DateTimeOffset.Parse(user.DeletedAt)));
     }
 }

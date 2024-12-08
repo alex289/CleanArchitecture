@@ -40,7 +40,7 @@ public sealed class TenantsApiImplementation : TenantsApi.TenantsApiBase
             {
                 Id = tenant.Id.ToString(),
                 Name = tenant.Name,
-                IsDeleted = tenant.Deleted
+                DeletedAt = tenant.DeletedAt == null ? "": tenant.DeletedAt.ToString()
             })
             .ToListAsync();
 

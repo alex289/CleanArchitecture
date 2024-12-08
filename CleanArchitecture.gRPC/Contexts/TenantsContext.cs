@@ -27,6 +27,7 @@ public sealed class TenantsContext : ITenantsContext
 
         return result.Tenants.Select(tenant => new TenantViewModel(
             Guid.Parse(tenant.Id),
-            tenant.Name));
+            tenant.Name,
+            string.IsNullOrWhiteSpace(tenant.DeletedAt) ? null : DateTimeOffset.Parse(tenant.DeletedAt)));
     }
 }
