@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CleanArchitecture.Domain.Constants;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Enums;
@@ -28,6 +29,18 @@ public sealed class UserTestFixture : TestFixtureBase
             "User",
             "$2a$12$Blal/uiFIJdYsCLTMUik/egLbfg3XhbnxBC6Sb5IKz2ZYhiU/MzL2",
             UserRole.Admin));
+
+        // This user should not be included in any queries
+        var deletedUsed = new User(
+            Guid.NewGuid(),
+            Ids.Seed.TenantId,
+            "admin2@email.com",
+            "Admin2",
+            "User2",
+            "$2a$12$Blal/uiFIJdYsCLTMUik/egLbfg3XhbnxBC6Sb5IKz2ZYhiU/MzL2",
+            UserRole.User);
+        deletedUsed.Delete();
+        context.Users.Add(deletedUsed);
 
         context.Users.Add(new User(
             TestAuthenticationOptions.TestUserId,
