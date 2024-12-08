@@ -23,7 +23,7 @@ public sealed class TenantTestFixture : TestFixtureBase
 
         // This tenant should not be included in any queries
         var deletedTenant = new Tenant(
-            CreatedTenantId,
+            Guid.NewGuid(),
             "Test Tenant2");
         deletedTenant.Delete();
         context.Tenants.Add(deletedTenant);
