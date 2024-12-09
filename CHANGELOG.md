@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.7.0] - 2024-12-09
+### :sparkles: New Features
+- [`8b9253c`](https://github.com/alex289/CleanArchitecture/commit/8b9253c095e0750015e8dba2b30c2b31e66c0dd6) - Convert deleted flag to timestamp *(commit by [@alex289](https://github.com/alex289))*
+- [`a03f1ce`](https://github.com/alex289/CleanArchitecture/commit/a03f1ce68543cc1aec4b08805429f79a1714cdf8) - Add deleted entities to integration tests *(commit by [@alex289](https://github.com/alex289))*
+- [`76da825`](https://github.com/alex289/CleanArchitecture/commit/76da8251d59cd2e1b35a38d18d200c93e3b52942) - Extend tests to verify deleted entity query behavior *(commit by [@alex289](https://github.com/alex289))*
+- [`3360b59`](https://github.com/alex289/CleanArchitecture/commit/3360b59de14023e21b8280d02c3f61dfaabfe7e3) - Convert deleted flag to timestamp *(PR [#83](https://github.com/alex289/CleanArchitecture/pull/83) by [@alex289](https://github.com/alex289))*
+
+### :bug: Bug Fixes
+- [`9e74b9f`](https://github.com/alex289/CleanArchitecture/commit/9e74b9f66aaeb3b07ed3274cb50f477d23c7b7ab) - Use new Id for deleted tenant *(commit by [@alex289](https://github.com/alex289))*
+
+### :wrench: Chores
+- [`7a6e649`](https://github.com/alex289/CleanArchitecture/commit/7a6e6499c88ec84d1b1da9e4a76b501e42706577) - bump the dependencies group with 10 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`4f64005`](https://github.com/alex289/CleanArchitecture/commit/4f64005dee3f5d7afd26e92ebf957443571f91bd) - bump the dependencies group with 10 updates *(PR [#82](https://github.com/alex289/CleanArchitecture/pull/82) by [@alex289](https://github.com/alex289))*
+
+
 ## [v1.6.0] - 2024-11-22
 ### :sparkles: New Features
 - [`cfe5d02`](https://github.com/alex289/CleanArchitecture/commit/cfe5d029aa0043e716f22582be887b8315bb4319) - Aspire *(commit by [@alex289](https://github.com/alex289))*
@@ -147,3 +162,4 @@ _This is the initial release._
 [v1.4.0]: https://github.com/alex289/CleanArchitecture/compare/v1.3.4...v1.4.0
 [v1.5.0]: https://github.com/alex289/CleanArchitecture/compare/v1.4.0...v1.5.0
 [v1.6.0]: https://github.com/alex289/CleanArchitecture/compare/v1.5.0...v1.6.0
+[v1.7.0]: https://github.com/alex289/CleanArchitecture/compare/v1.6.0...v1.7.0
