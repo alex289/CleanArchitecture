@@ -10,6 +10,7 @@ namespace CleanArchitecture.IntegrationTests.Fixtures;
 public sealed class TenantTestFixture : TestFixtureBase
 {
     public Guid CreatedTenantId { get; } = Guid.NewGuid();
+    public Guid DeletedTenantId { get; } = Guid.NewGuid();
 
     public async Task SeedTestData()
     {
@@ -21,9 +22,8 @@ public sealed class TenantTestFixture : TestFixtureBase
             CreatedTenantId,
             "Test Tenant"));
 
-        // This tenant should not be included in any queries
         var deletedTenant = new Tenant(
-            Guid.NewGuid(),
+            DeletedTenantId,
             "Test Tenant2");
         deletedTenant.Delete();
         context.Tenants.Add(deletedTenant);

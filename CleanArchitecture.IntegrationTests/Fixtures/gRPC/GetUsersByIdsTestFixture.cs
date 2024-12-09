@@ -33,6 +33,7 @@ public sealed class GetUsersByIdsTestFixture : TestFixtureBase
             "Admin Tenant"));
 
         var user = CreateUser();
+        user.Delete();
 
         context.Users.Add(user);
         await context.SaveChangesAsync();

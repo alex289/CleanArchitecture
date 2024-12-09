@@ -27,6 +27,7 @@ public sealed class GetTenantsByIdsTestFixture : TestFixtureBase
         using var context = Factory.Services.GetRequiredService<ApplicationDbContext>();
 
         var tenant = CreateTenant();
+        tenant.Delete();
 
         context.Tenants.Add(tenant);
         await context.SaveChangesAsync();

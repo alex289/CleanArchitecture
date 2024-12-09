@@ -31,5 +31,6 @@ public sealed class GetUsersByIdsTests
         user.Email.Should().Be(createdUser.Email);
         user.FirstName.Should().Be(createdUser.FirstName);
         user.LastName.Should().Be(createdUser.LastName);
+        user.DeletedAt.Should().NotBeNullOrWhiteSpace();
     }
 }

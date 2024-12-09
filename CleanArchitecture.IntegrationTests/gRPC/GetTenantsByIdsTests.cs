@@ -31,5 +31,6 @@ public sealed class GetTenantsByIdsTests
 
         new Guid(tenant.Id).Should().Be(createdTenant.Id);
         tenant.Name.Should().Be(createdTenant.Name);
+        tenant.DeletedAt.Should().NotBeNullOrWhiteSpace();
     }
 }

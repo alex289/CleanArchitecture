@@ -11,6 +11,8 @@ namespace CleanArchitecture.IntegrationTests.Fixtures;
 
 public sealed class UserTestFixture : TestFixtureBase
 {
+    public Guid DeletedUserId { get; } = Guid.NewGuid();
+    
     public async Task SeedTestData()
     {
         await GlobalSetupFixture.RespawnDatabaseAsync();
@@ -30,9 +32,8 @@ public sealed class UserTestFixture : TestFixtureBase
             "$2a$12$Blal/uiFIJdYsCLTMUik/egLbfg3XhbnxBC6Sb5IKz2ZYhiU/MzL2",
             UserRole.Admin));
 
-        // This user should not be included in any queries
         var deletedUsed = new User(
-            Guid.NewGuid(),
+            DeletedUserId,
             Ids.Seed.TenantId,
             "admin2@email.com",
             "Admin2",

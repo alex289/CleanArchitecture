@@ -61,8 +61,37 @@ public sealed class UserControllerTests
         content.FirstName.Should().Be(TestAuthenticationOptions.FirstName);
         content.LastName.Should().Be(TestAuthenticationOptions.LastName);
     }
-
+    
     [Test, Order(2)]
+    public async Task Should_Get_All_User_Including_Deleted()
+    {
+        var response = await _fixture.ServerClient.GetAsync("/api/v1/user?includeDeleted=true");
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var message = await response.Content.ReadAsJsonAsync<PagedResult<UserViewModel>>();
+
+        message?.Data.Should().NotBeNull();
+
+        var content = message!.Data!.Items.ToList();
+
+        content.Count.Should().Be(3);
+
+        content.FirstOrDefault(x => x.Id == _fixture.DeletedUserId).Should().NotBeNull();
+    }
+
+    [Test, Order(3)]
+    public async Task Should_Not_Get_Deleted_User_By_Id()
+    {
+        var response = await _fixture.ServerClient.GetAsync("/api/v1/user/" + _fixture.DeletedUserId);
+
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+
+        var message = await response.Content.ReadAsJsonAsync<UserViewModel>();
+        message?.Data.Should().BeNull();
+    }
+
+    [Test, Order(4)]
     public async Task Should_Create_User()
     {
         var user = new CreateUserViewModel(
@@ -80,7 +109,7 @@ public sealed class UserControllerTests
         message?.Data.Should().NotBeEmpty();
     }
 
-    [Test, Order(3)]
+    [Test, Order(5)]
     public async Task Should_Login_User()
     {
         var user = new LoginUserViewModel(
@@ -95,7 +124,7 @@ public sealed class UserControllerTests
         message?.Data.Should().NotBeEmpty();
     }
 
-    [Test, Order(4)]
+    [Test, Order(6)]
     public async Task Should_Get_The_Current_Active_Users()
     {
         var response = await _fixture.ServerClient.GetAsync("/api/v1/user/me");
@@ -114,7 +143,7 @@ public sealed class UserControllerTests
         content.LastName.Should().Be(TestAuthenticationOptions.LastName);
     }
 
-    [Test, Order(5)]
+    [Test, Order(7)]
     public async Task Should_Update_User()
     {
         var user = new UpdateUserViewModel(
@@ -155,7 +184,7 @@ public sealed class UserControllerTests
         userContent.Role.Should().Be(user.Role);
     }
 
-    [Test, Order(6)]
+    [Test, Order(8)]
     public async Task Should_Change_User_Password()
     {
         var user = new ChangePasswordViewModel(
@@ -188,7 +217,7 @@ public sealed class UserControllerTests
         loginMessage?.Data.Should().NotBeEmpty();
     }
 
-    [Test, Order(7)]
+    [Test, Order(9)]
     public async Task Should_Delete_User()
     {
         var response = await _fixture.ServerClient.DeleteAsync("/api/v1/user/" + TestAuthenticationOptions.TestUserId);
