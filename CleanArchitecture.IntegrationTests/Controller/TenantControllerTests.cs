@@ -54,8 +54,37 @@ public sealed class TenantControllerTests
             .FirstOrDefault(x => x.Id == _fixture.CreatedTenantId)!
             .Users.Count().Should().Be(1);
     }
-
+    
     [Test, Order(2)]
+    public async Task Should_Not_Get_Deleted_Tenant_By_Id()
+    {
+        var response = await _fixture.ServerClient.GetAsync($"/api/v1/Tenant/{_fixture.DeletedTenantId}");
+
+        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+
+        var message = await response.Content.ReadAsJsonAsync<TenantViewModel>();
+
+        message?.Data.Should().BeNull();
+    }
+    
+    [Test, Order(3)]
+    public async Task Should_Get_All_Tenants_Including_Deleted()
+    {
+        var response = await _fixture.ServerClient.GetAsync(
+            "api/v1/Tenant?searchTerm=Test&pageSize=5&page=1&includeDeleted=true");
+
+        response.StatusCode.Should().Be(HttpStatusCode.OK);
+
+        var message = await response.Content.ReadAsJsonAsync<PagedResult<TenantViewModel>>();
+
+        message?.Data!.Items.Should().NotBeEmpty();
+        message!.Data!.Items.Should().HaveCount(2);
+        message.Data!.Items
+            .FirstOrDefault(x => x.Id == _fixture.DeletedTenantId)
+            .Should().NotBeNull();
+    }
+
+    [Test, Order(4)]
     public async Task Should_Create_Tenant()
     {
         var request = new CreateTenantViewModel("Test Tenant 2");
@@ -80,7 +109,7 @@ public sealed class TenantControllerTests
         tenantMessage.Data.Name.Should().Be(request.Name);
     }
 
-    [Test, Order(3)]
+    [Test, Order(5)]
     public async Task Should_Update_Tenant()
     {
         var request = new UpdateTenantViewModel(_fixture.CreatedTenantId, "Test Tenant 3");
@@ -107,7 +136,7 @@ public sealed class TenantControllerTests
         tenantMessage.Data.Name.Should().Be(request.Name);
     }
 
-    [Test, Order(4)]
+    [Test, Order(6)]
     public async Task Should_Delete_Tenant()
     {
         var response = await _fixture.ServerClient.DeleteAsync($"/api/v1/Tenant/{_fixture.CreatedTenantId}");

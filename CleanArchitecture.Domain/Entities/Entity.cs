@@ -5,7 +5,7 @@ namespace CleanArchitecture.Domain.Entities;
 public abstract class Entity
 {
     public Guid Id { get; private set; }
-    public bool Deleted { get; private set; }
+    public DateTimeOffset? DeletedAt { get; private set; }
 
     protected Entity(Guid id)
     {
@@ -24,11 +24,11 @@ public abstract class Entity
 
     public void Delete()
     {
-        Deleted = true;
+        DeletedAt = DateTimeOffset.UtcNow;
     }
 
     public void Undelete()
     {
-        Deleted = false;
+        DeletedAt = null;
     }
 }

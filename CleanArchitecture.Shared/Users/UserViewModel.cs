@@ -7,4 +7,4 @@ public sealed record UserViewModel(
     string Email,
     string FirstName,
     string LastName,
-    bool IsDeleted);
+    DateTimeOffset? DeletedAt);

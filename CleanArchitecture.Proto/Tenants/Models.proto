@@ -5,7 +5,7 @@ option csharp_namespace = "CleanArchitecture.Proto.Tenants";
 message Tenant {
   string id = 1;
   string name = 2;
-  bool isDeleted = 3;
+  optional string deletedAt = 3;
 }
 
 message GetTenantsByIdsResult {

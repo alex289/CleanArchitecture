@@ -42,7 +42,7 @@ public sealed class UsersApiImplementation : UsersApi.UsersApiBase
                 Email = user.Email,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                IsDeleted = user.Deleted
+                DeletedAt = user.DeletedAt == null ? "": user.DeletedAt.ToString()
             })
             .ToListAsync();
 

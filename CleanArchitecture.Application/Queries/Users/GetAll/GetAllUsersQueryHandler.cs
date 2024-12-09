@@ -33,7 +33,7 @@ public sealed class GetAllUsersQueryHandler :
         var usersQuery = _userRepository
             .GetAllNoTracking()
             .IgnoreQueryFilters()
-            .Where(x => request.IncludeDeleted || !x.Deleted);
+            .Where(x => request.IncludeDeleted || x.DeletedAt == null);
 
         if (!string.IsNullOrWhiteSpace(request.SearchTerm))
         {
