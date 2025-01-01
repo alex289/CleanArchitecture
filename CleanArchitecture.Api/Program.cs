@@ -1,3 +1,4 @@
+using System;
 using CleanArchitecture.Api.BackgroundServices;
 using CleanArchitecture.Api.Extensions;
 using CleanArchitecture.Application.Extensions;
@@ -15,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,7 +48,14 @@ if (builder.Environment.IsProduction())
         .AddSqlServer(dbConnectionString!)
         .AddRedis(redisConnectionString!, "Redis")
         .AddRabbitMQ(
-            rabbitConfiguration.ConnectionString,
+            async _ =>
+            {
+                var factory = new ConnectionFactory
+                {
+                    Uri = new Uri(rabbitConfiguration.ConnectionString),
+                };
+                return await factory.CreateConnectionAsync();
+            },
             name: "RabbitMQ");
 }
 
