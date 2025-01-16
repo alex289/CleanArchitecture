@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.8.0] - 2025-01-16
+### :sparkles: New Features
+- [`cd4c362`](https://github.com/alex289/CleanArchitecture/commit/cd4c36230741a20a26b7131a49be9a4ebff7c5dd) - Update license year *(commit by [@alex289](https://github.com/alex289))*
+- [`d31fc62`](https://github.com/alex289/CleanArchitecture/commit/d31fc624125941e21425813c3e2c45941e63bf96) - Replace FluentAssertions with Shouldy *(commit by [@alex289](https://github.com/alex289))*
+- [`0affa3a`](https://github.com/alex289/CleanArchitecture/commit/0affa3aba619d06a028ac704f490de94ce9f181a) - Add CI test reporting *(commit by [@alex289](https://github.com/alex289))*
+- [`6c4eb21`](https://github.com/alex289/CleanArchitecture/commit/6c4eb2140ed5d2e5be70ea5f557e4f830a9adb04) - Replace FluentAssertions with Shouldy *(PR [#86](https://github.com/alex289/CleanArchitecture/pull/86) by [@alex289](https://github.com/alex289))*
+
+### :bug: Bug Fixes
+- [`255dbb3`](https://github.com/alex289/CleanArchitecture/commit/255dbb36031a55fd84ae02dff6f1b70beb8dac55) - Create Connection for rabbit health check *(commit by [@alex289](https://github.com/alex289))*
+- [`aeb8ea5`](https://github.com/alex289/CleanArchitecture/commit/aeb8ea5d38ed6494c27e3cdb5bfe567efb02b5b2) - Add missing space *(commit by [@alex289](https://github.com/alex289))*
+
+### :wrench: Chores
+- [`133c868`](https://github.com/alex289/CleanArchitecture/commit/133c868bc1533590d86a169b170c2e33c6f77292) - bump the dependencies group with 21 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`c042490`](https://github.com/alex289/CleanArchitecture/commit/c04249004551d4387c9d376fa992edebfa04d38a) - bump the dependencies group with 21 updates *(PR [#85](https://github.com/alex289/CleanArchitecture/pull/85) by [@alex289](https://github.com/alex289))*
+
+
 ## [v1.7.0] - 2024-12-09
 ### :sparkles: New Features
 - [`8b9253c`](https://github.com/alex289/CleanArchitecture/commit/8b9253c095e0750015e8dba2b30c2b31e66c0dd6) - Convert deleted flag to timestamp *(commit by [@alex289](https://github.com/alex289))*
@@ -163,3 +179,4 @@ _This is the initial release._
 [v1.5.0]: https://github.com/alex289/CleanArchitecture/compare/v1.4.0...v1.5.0
 [v1.6.0]: https://github.com/alex289/CleanArchitecture/compare/v1.5.0...v1.6.0
 [v1.7.0]: https://github.com/alex289/CleanArchitecture/compare/v1.6.0...v1.7.0
+[v1.8.0]: https://github.com/alex289/CleanArchitecture/compare/v1.7.0...v1.8.0
