@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CleanArchitecture.Application.Queries.Users.GetUserById;
 using CleanArchitecture.Application.Tests.Fixtures.Queries.Users;
 using CleanArchitecture.Domain.Errors;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 
 namespace CleanArchitecture.Application.Tests.Queries.Users;
@@ -23,8 +23,8 @@ public sealed class GetUserByIdQueryHandlerTests
 
         _fixture.VerifyNoDomainNotification();
 
-        result.Should().NotBeNull();
-        result!.Id.Should().Be(_fixture.ExistingUserId);
+        result.ShouldNotBeNull();
+        result!.Id.ShouldBe(_fixture.ExistingUserId);
     }
 
     [Fact]
@@ -42,7 +42,7 @@ public sealed class GetUserByIdQueryHandlerTests
             ErrorCodes.ObjectNotFound,
             $"User with id {request.Id} could not be found");
 
-        result.Should().BeNull();
+        result.ShouldBeNull();
     }
 
     [Fact]
@@ -59,6 +59,6 @@ public sealed class GetUserByIdQueryHandlerTests
             ErrorCodes.ObjectNotFound,
             $"User with id {_fixture.ExistingUserId} could not be found");
 
-        result.Should().BeNull();
+        result.ShouldBeNull();
     }
 }

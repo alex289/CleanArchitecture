@@ -3,10 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.Infrastructure.Tests.Fixtures;
-using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NSubstitute;
+using Shouldly;
 using Xunit;
 
 namespace CleanArchitecture.Infrastructure.Tests;
@@ -26,7 +26,7 @@ public sealed class UnitOfWorkTests
 
         var result = await unitOfWork.CommitAsync();
 
-        result.Should().BeTrue();
+        result.ShouldBeTrue();
     }
 
     [Fact]
@@ -44,7 +44,7 @@ public sealed class UnitOfWorkTests
 
         var result = await unitOfWork.CommitAsync();
 
-        result.Should().BeFalse();
+        result.ShouldBeFalse();
     }
 
     [Fact]
@@ -59,9 +59,9 @@ public sealed class UnitOfWorkTests
             .Do(_ => throw new Exception("Boom"));
 
         var unitOfWork = UnitOfWorkTestFixture.GetUnitOfWork(dbContextMock, loggerMock);
-
+        
         Func<Task> throwsAction = async () => await unitOfWork.CommitAsync();
 
-        await throwsAction.Should().ThrowAsync<Exception>();
+        await throwsAction.ShouldThrowAsync<Exception>();
     }
 }

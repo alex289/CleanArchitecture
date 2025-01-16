@@ -1,5 +1,5 @@
 ﻿using CleanArchitecture.Domain.Notifications;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 
 namespace CleanArchitecture.Infrastructure.Tests;
@@ -10,7 +10,7 @@ public sealed class DomainNotificationHandlerTests
     public void Should_Create_DomainNotificationHandler_Instance()
     {
         var domainNotificationHandler = new DomainNotificationHandler();
-        domainNotificationHandler.GetNotifications().Should().BeEmpty();
+        domainNotificationHandler.GetNotifications().ShouldBeEmpty();
     }
 
     [Fact]
@@ -23,7 +23,7 @@ public sealed class DomainNotificationHandlerTests
         var domainNotification = new DomainNotification(key, value, code);
         var domainNotificationHandler = new DomainNotificationHandler();
         domainNotificationHandler.Handle(domainNotification);
-        domainNotificationHandler.GetNotifications().Should().HaveCount(1);
+        domainNotificationHandler.GetNotifications().Count.ShouldBe(1);
     }
 
     [Fact]
@@ -36,7 +36,7 @@ public sealed class DomainNotificationHandlerTests
         var domainNotification = new DomainNotification(key, value, code);
         var domainNotificationHandler = new DomainNotificationHandler();
         domainNotificationHandler.Handle(domainNotification);
-        domainNotificationHandler.GetNotifications().Should().HaveCount(1);
+        domainNotificationHandler.GetNotifications().Count.ShouldBe(1);
     }
 
     [Fact]
@@ -50,7 +50,7 @@ public sealed class DomainNotificationHandlerTests
         var domainNotificationHandler = new DomainNotificationHandler();
         domainNotificationHandler.Handle(domainNotification);
 
-        domainNotificationHandler.HasNotifications().Should().BeTrue();
+        domainNotificationHandler.HasNotifications().ShouldBeTrue();
     }
 
     [Fact]
@@ -58,6 +58,6 @@ public sealed class DomainNotificationHandlerTests
     {
         var domainNotificationHandler = new DomainNotificationHandler();
 
-        domainNotificationHandler.HasNotifications().Should().BeFalse();
+        domainNotificationHandler.HasNotifications().ShouldBeFalse();
     }
 }

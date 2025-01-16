@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CleanArchitecture.gRPC.Tests.Fixtures;
 using CleanArchitecture.Proto.Users;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 
 namespace CleanArchitecture.gRPC.Tests.Users;
@@ -25,7 +25,7 @@ public sealed class GetUsersByIdsTests : IClassFixture<UserTestFixture>
             SetupRequest(Enumerable.Empty<Guid>()),
             default!);
 
-        result.Users.Should().HaveCount(0);
+        result.Users.Count.ShouldBe(0);
     }
 
     [Fact]
@@ -44,21 +44,21 @@ public sealed class GetUsersByIdsTests : IClassFixture<UserTestFixture>
             SetupRequest(ids),
             default!);
 
-        result.Users.Should().HaveCount(2);
+        result.Users.Count.ShouldBe(2);
 
         foreach (var user in result.Users)
         {
             var userId = Guid.Parse(user.Id);
 
-            userId.Should().NotBe(nonExistingId);
+            userId.ShouldNotBe(nonExistingId);
 
             var mockUser = _fixture.ExistingUsers.First(u => u.Id == userId);
 
-            mockUser.Should().NotBeNull();
+            mockUser.ShouldNotBeNull();
 
-            user.Email.Should().Be(mockUser.Email);
-            user.FirstName.Should().Be(mockUser.FirstName);
-            user.LastName.Should().Be(mockUser.LastName);
+            user.Email.ShouldBe(mockUser.Email);
+            user.FirstName.ShouldBe(mockUser.FirstName);
+            user.LastName.ShouldBe(mockUser.LastName);
         }
     }
 

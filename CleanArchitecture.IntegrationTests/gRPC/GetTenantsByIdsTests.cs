@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CleanArchitecture.IntegrationTests.Fixtures.gRPC;
 using CleanArchitecture.Proto.Tenants;
-using FluentAssertions;
+using Shouldly;
 
 namespace CleanArchitecture.IntegrationTests.gRPC;
 
@@ -24,13 +24,13 @@ public sealed class GetTenantsByIdsTests
 
         var response = await client.GetByIdsAsync(request);
 
-        response.Tenants.Should().HaveCount(1);
+        response.Tenants.ShouldHaveSingleItem();
 
         var tenant = response.Tenants.First();
         var createdTenant = _fixture.CreateTenant();
 
-        new Guid(tenant.Id).Should().Be(createdTenant.Id);
-        tenant.Name.Should().Be(createdTenant.Name);
-        tenant.DeletedAt.Should().NotBeNullOrWhiteSpace();
+        new Guid(tenant.Id).ShouldBe(createdTenant.Id);
+        tenant.Name.ShouldBe(createdTenant.Name);
+        tenant.DeletedAt.ShouldNotBeNullOrWhiteSpace();
     }
 }

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using CleanArchitecture.Domain.Commands;
-using FluentAssertions;
 using FluentValidation;
+using Shouldly;
 
 namespace CleanArchitecture.Domain.Tests;
 
@@ -21,8 +21,8 @@ public class ValidationTestBase<TCommand, TValidation>
     {
         var result = _validation.Validate(command);
 
-        result.IsValid.Should().BeTrue();
-        result.Errors.Should().BeEmpty();
+        result.IsValid.ShouldBeTrue();
+        result.Errors.ShouldBeEmpty();
     }
 
     protected void ShouldHaveSingleError(
@@ -31,11 +31,11 @@ public class ValidationTestBase<TCommand, TValidation>
     {
         var result = _validation.Validate(command);
 
-        result.IsValid.Should().BeFalse();
+        result.IsValid.ShouldBeFalse();
 
-        result.Errors.Count.Should().Be(1);
+        result.Errors.Count.ShouldBe(1);
 
-        result.Errors.First().ErrorCode.Should().Be(expectedCode);
+        result.Errors.First().ErrorCode.ShouldBe(expectedCode);
     }
 
     protected void ShouldHaveSingleError(
@@ -45,12 +45,12 @@ public class ValidationTestBase<TCommand, TValidation>
     {
         var result = _validation.Validate(command);
 
-        result.IsValid.Should().BeFalse();
+        result.IsValid.ShouldBeFalse();
 
-        result.Errors.Count.Should().Be(1);
+        result.Errors.Count.ShouldBe(1);
 
-        result.Errors.First().ErrorCode.Should().Be(expectedCode);
-        result.Errors.First().ErrorMessage.Should().Be(expectedMessage);
+        result.Errors.First().ErrorCode.ShouldBe(expectedCode);
+        result.Errors.First().ErrorMessage.ShouldBe(expectedMessage);
     }
 
     protected void ShouldHaveExpectedErrors(
@@ -59,15 +59,14 @@ public class ValidationTestBase<TCommand, TValidation>
     {
         var result = _validation.Validate(command);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Count.Should().Be(expectedErrors.Length);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.Count.ShouldBe(expectedErrors.Length);
 
         foreach (var error in expectedErrors)
         {
             result.Errors
                 .Count(validation => validation.ErrorCode == error.Key && validation.ErrorMessage == error.Value)
-                .Should()
-                .Be(1);
+                .ShouldBe(1);
         }
     }
 
@@ -77,15 +76,14 @@ public class ValidationTestBase<TCommand, TValidation>
     {
         var result = _validation.Validate(command);
 
-        result.IsValid.Should().BeFalse();
-        result.Errors.Count.Should().Be(expectedErrors.Length);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.Count.ShouldBe(expectedErrors.Length);
 
         foreach (var error in expectedErrors)
         {
             result.Errors
                 .Count(validation => validation.ErrorCode == error)
-                .Should()
-                .Be(1);
+                .ShouldBe(1);
         }
     }
 }

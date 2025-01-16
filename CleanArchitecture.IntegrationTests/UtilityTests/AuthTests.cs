@@ -1,7 +1,7 @@
 using System.Net;
 using System.Threading.Tasks;
 using CleanArchitecture.IntegrationTests.Fixtures;
-using FluentAssertions;
+using Shouldly;
 
 namespace CleanArchitecture.IntegrationTests.UtilityTests;
 
@@ -21,6 +21,6 @@ public sealed class AuthTests
     public async Task Should_Get_Unauthorized_If_Trying_To_Call_Endpoint_Without_Token(string url)
     {
         var response = await _fixture.ServerClient.GetAsync(url);
-        response.StatusCode.Should().Be(HttpStatusCode.Unauthorized);
+        response.StatusCode.ShouldBe(HttpStatusCode.Unauthorized);
     }
 }

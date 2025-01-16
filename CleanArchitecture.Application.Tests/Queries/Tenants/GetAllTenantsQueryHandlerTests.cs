@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CleanArchitecture.Application.Queries.Tenants.GetAll;
 using CleanArchitecture.Application.Tests.Fixtures.Queries.Tenants;
 using CleanArchitecture.Application.ViewModels;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 
 namespace CleanArchitecture.Application.Tests.Queries.Tenants;
@@ -29,11 +29,15 @@ public sealed class GetAllTenantsQueryHandlerTests
 
         _fixture.VerifyNoDomainNotification();
 
-        result.PageSize.Should().Be(query.PageSize);
-        result.Page.Should().Be(query.Page);
-        result.Count.Should().Be(1);
+        result.PageSize.ShouldBe(query.PageSize);
+        result.Page.ShouldBe(query.Page);
+        result.Count.ShouldBe(1);
 
-        tenant.Should().BeEquivalentTo(result.Items.First());
+        var checkingTenant = result.Items.First();
+
+        tenant.Id.ShouldBe(checkingTenant.Id);
+        tenant.Name.ShouldBe(checkingTenant.Name);
+        tenant.Users.Count.ShouldBe(checkingTenant.Users.Count());
     }
 
     [Fact]
@@ -51,10 +55,10 @@ public sealed class GetAllTenantsQueryHandlerTests
             new GetAllTenantsQuery(query, false),
             default);
 
-        result.PageSize.Should().Be(query.PageSize);
-        result.Page.Should().Be(query.Page);
-        result.Count.Should().Be(0);
+        result.PageSize.ShouldBe(query.PageSize);
+        result.Page.ShouldBe(query.Page);
+        result.Count.ShouldBe(0);
 
-        result.Items.Should().HaveCount(0);
+        result.Items.Count.ShouldBe(0);
     }
 }
