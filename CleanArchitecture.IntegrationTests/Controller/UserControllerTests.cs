@@ -9,7 +9,7 @@ using CleanArchitecture.Domain.Enums;
 using CleanArchitecture.IntegrationTests.Extensions;
 using CleanArchitecture.IntegrationTests.Fixtures;
 using CleanArchitecture.IntegrationTests.Infrastructure.Auth;
-using FluentAssertions;
+using Shouldly;
 
 namespace CleanArchitecture.IntegrationTests.Controller;
 
@@ -25,22 +25,22 @@ public sealed class UserControllerTests
     {
         var response = await _fixture.ServerClient.GetAsync("/api/v1/user");
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var message = await response.Content.ReadAsJsonAsync<PagedResult<UserViewModel>>();
 
-        message?.Data.Should().NotBeNull();
+        message?.Data.ShouldNotBeNull();
 
         var content = message!.Data!.Items.ToList();
 
-        content.Count.Should().Be(2);
+        content.Count.ShouldBe(2);
 
         var currentUser = content.First(x => x.Id == TestAuthenticationOptions.TestUserId);
 
-        currentUser.Role.Should().Be(UserRole.Admin);
-        currentUser.Email.Should().Be(TestAuthenticationOptions.Email);
-        currentUser.FirstName.Should().Be(TestAuthenticationOptions.FirstName);
-        currentUser.LastName.Should().Be(TestAuthenticationOptions.LastName);
+        currentUser.Role.ShouldBe(UserRole.Admin);
+        currentUser.Email.ShouldBe(TestAuthenticationOptions.Email);
+        currentUser.FirstName.ShouldBe(TestAuthenticationOptions.FirstName);
+        currentUser.LastName.ShouldBe(TestAuthenticationOptions.LastName);
     }
 
     [Test, Order(1)]
@@ -48,18 +48,18 @@ public sealed class UserControllerTests
     {
         var response = await _fixture.ServerClient.GetAsync("/api/v1/user/" + TestAuthenticationOptions.TestUserId);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var message = await response.Content.ReadAsJsonAsync<UserViewModel>();
 
-        message?.Data.Should().NotBeNull();
+        message?.Data.ShouldNotBeNull();
 
         var content = message!.Data!;
 
-        content.Id.Should().Be(TestAuthenticationOptions.TestUserId);
-        content.Email.Should().Be(TestAuthenticationOptions.Email);
-        content.FirstName.Should().Be(TestAuthenticationOptions.FirstName);
-        content.LastName.Should().Be(TestAuthenticationOptions.LastName);
+        content.Id.ShouldBe(TestAuthenticationOptions.TestUserId);
+        content.Email.ShouldBe(TestAuthenticationOptions.Email);
+        content.FirstName.ShouldBe(TestAuthenticationOptions.FirstName);
+        content.LastName.ShouldBe(TestAuthenticationOptions.LastName);
     }
     
     [Test, Order(2)]
@@ -67,17 +67,17 @@ public sealed class UserControllerTests
     {
         var response = await _fixture.ServerClient.GetAsync("/api/v1/user?includeDeleted=true");
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var message = await response.Content.ReadAsJsonAsync<PagedResult<UserViewModel>>();
 
-        message?.Data.Should().NotBeNull();
+        message?.Data.ShouldNotBeNull();
 
         var content = message!.Data!.Items.ToList();
 
-        content.Count.Should().Be(3);
+        content.Count.ShouldBe(3);
 
-        content.FirstOrDefault(x => x.Id == _fixture.DeletedUserId).Should().NotBeNull();
+        content.FirstOrDefault(x => x.Id == _fixture.DeletedUserId).ShouldNotBeNull();
     }
 
     [Test, Order(3)]
@@ -85,10 +85,10 @@ public sealed class UserControllerTests
     {
         var response = await _fixture.ServerClient.GetAsync("/api/v1/user/" + _fixture.DeletedUserId);
 
-        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
 
         var message = await response.Content.ReadAsJsonAsync<UserViewModel>();
-        message?.Data.Should().BeNull();
+        message?.Data.ShouldBeNull();
     }
 
     [Test, Order(4)]
@@ -103,10 +103,10 @@ public sealed class UserControllerTests
 
         var response = await _fixture.ServerClient.PostAsJsonAsync("/api/v1/user", user);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var message = await response.Content.ReadAsJsonAsync<Guid>();
-        message?.Data.Should().NotBeEmpty();
+        message?.Data.ShouldNotBe(Guid.Empty);
     }
 
     [Test, Order(5)]
@@ -118,10 +118,10 @@ public sealed class UserControllerTests
 
         var response = await _fixture.ServerClient.PostAsJsonAsync("/api/v1/user/login", user);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var message = await response.Content.ReadAsJsonAsync<string>();
-        message?.Data.Should().NotBeEmpty();
+        message?.Data.ShouldNotBeEmpty();
     }
 
     [Test, Order(6)]
@@ -129,18 +129,18 @@ public sealed class UserControllerTests
     {
         var response = await _fixture.ServerClient.GetAsync("/api/v1/user/me");
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var message = await response.Content.ReadAsJsonAsync<UserViewModel>();
 
-        message?.Data.Should().NotBeNull();
+        message?.Data.ShouldNotBeNull();
 
         var content = message!.Data!;
 
-        content.Id.Should().Be(TestAuthenticationOptions.TestUserId);
-        content.Email.Should().Be(TestAuthenticationOptions.Email);
-        content.FirstName.Should().Be(TestAuthenticationOptions.FirstName);
-        content.LastName.Should().Be(TestAuthenticationOptions.LastName);
+        content.Id.ShouldBe(TestAuthenticationOptions.TestUserId);
+        content.Email.ShouldBe(TestAuthenticationOptions.Email);
+        content.FirstName.ShouldBe(TestAuthenticationOptions.FirstName);
+        content.LastName.ShouldBe(TestAuthenticationOptions.LastName);
     }
 
     [Test, Order(7)]
@@ -156,32 +156,32 @@ public sealed class UserControllerTests
 
         var response = await _fixture.ServerClient.PutAsJsonAsync("/api/v1/user", user);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var message = await response.Content.ReadAsJsonAsync<UpdateUserViewModel>();
 
-        message?.Data.Should().NotBeNull();
+        message?.Data.ShouldNotBeNull();
 
         var content = message!.Data;
 
-        content.Should().BeEquivalentTo(user);
+        content.ShouldBeEquivalentTo(user);
 
         // Check if user is really updated
         var userResponse = await _fixture.ServerClient.GetAsync("/api/v1/user/" + user.Id);
 
-        userResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        userResponse.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var userMessage = await userResponse.Content.ReadAsJsonAsync<UserViewModel>();
 
-        userMessage?.Data.Should().NotBeNull();
+        userMessage?.Data.ShouldNotBeNull();
 
         var userContent = userMessage!.Data!;
 
-        userContent.Id.Should().Be(user.Id);
-        userContent.Email.Should().Be(user.Email);
-        userContent.FirstName.Should().Be(user.FirstName);
-        userContent.LastName.Should().Be(user.LastName);
-        userContent.Role.Should().Be(user.Role);
+        userContent.Id.ShouldBe(user.Id);
+        userContent.Email.ShouldBe(user.Email);
+        userContent.FirstName.ShouldBe(user.FirstName);
+        userContent.LastName.ShouldBe(user.LastName);
+        userContent.Role.ShouldBe(user.Role);
     }
 
     [Test, Order(8)]
@@ -193,15 +193,15 @@ public sealed class UserControllerTests
 
         var response = await _fixture.ServerClient.PostAsJsonAsync("/api/v1/user/changePassword", user);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var message = await response.Content.ReadAsJsonAsync<ChangePasswordViewModel>();
 
-        message?.Data.Should().NotBeNull();
+        message?.Data.ShouldNotBeNull();
 
         var content = message!.Data;
 
-        content.Should().BeEquivalentTo(user);
+        content.ShouldBeEquivalentTo(user);
 
         // Verify the user can login with the new password
         var login = new LoginUserViewModel(
@@ -210,11 +210,11 @@ public sealed class UserControllerTests
 
         var loginResponse = await _fixture.ServerClient.PostAsJsonAsync("/api/v1/user/login", login);
 
-        loginResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        loginResponse.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var loginMessage = await loginResponse.Content.ReadAsJsonAsync<string>();
 
-        loginMessage?.Data.Should().NotBeEmpty();
+        loginMessage?.Data.ShouldNotBeEmpty();
     }
 
     [Test, Order(9)]
@@ -222,17 +222,17 @@ public sealed class UserControllerTests
     {
         var response = await _fixture.ServerClient.DeleteAsync("/api/v1/user/" + TestAuthenticationOptions.TestUserId);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var message = await response.Content.ReadAsJsonAsync<Guid>();
 
-        message?.Data.Should().NotBeEmpty();
+        message?.Data.ShouldNotBe(Guid.Empty);
 
         var content = message!.Data;
-        content.Should().Be(TestAuthenticationOptions.TestUserId);
+        content.ShouldBe(TestAuthenticationOptions.TestUserId);
 
         var userResponse = await _fixture.ServerClient.GetAsync("/api/v1/user/" + TestAuthenticationOptions.TestUserId);
 
-        userResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        userResponse.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
 }

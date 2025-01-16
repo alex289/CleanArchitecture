@@ -1,8 +1,9 @@
+using System.Linq;
 using System.Threading.Tasks;
 using CleanArchitecture.Application.Queries.Tenants.GetTenantById;
 using CleanArchitecture.Application.Tests.Fixtures.Queries.Tenants;
 using CleanArchitecture.Domain.Errors;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 
 namespace CleanArchitecture.Application.Tests.Queries.Tenants;
@@ -22,7 +23,9 @@ public sealed class GetTenantByIdQueryHandlerTests
 
         _fixture.VerifyNoDomainNotification();
 
-        tenant.Should().BeEquivalentTo(result);
+        tenant.Id.ShouldBe(result!.Id);
+        tenant.Name.ShouldBe(result.Name);
+        tenant.Users.Count.ShouldBe(result.Users.Count());
     }
 
     [Fact]
@@ -38,6 +41,6 @@ public sealed class GetTenantByIdQueryHandlerTests
             nameof(GetTenantByIdQuery),
             ErrorCodes.ObjectNotFound,
             $"Tenant with id {tenant.Id} could not be found");
-        result.Should().BeNull();
+        result.ShouldBeNull();
     }
 }

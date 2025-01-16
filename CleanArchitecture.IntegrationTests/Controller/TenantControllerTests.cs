@@ -6,7 +6,7 @@ using CleanArchitecture.Application.ViewModels;
 using CleanArchitecture.Application.ViewModels.Tenants;
 using CleanArchitecture.IntegrationTests.Extensions;
 using CleanArchitecture.IntegrationTests.Fixtures;
-using FluentAssertions;
+using Shouldly;
 
 namespace CleanArchitecture.IntegrationTests.Controller;
 
@@ -22,16 +22,16 @@ public sealed class TenantControllerTests
     {
         var response = await _fixture.ServerClient.GetAsync($"/api/v1/Tenant/{_fixture.CreatedTenantId}");
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var message = await response.Content.ReadAsJsonAsync<TenantViewModel>();
 
-        message?.Data.Should().NotBeNull();
+        message?.Data.ShouldNotBeNull();
 
-        message!.Data!.Id.Should().Be(_fixture.CreatedTenantId);
-        message.Data.Name.Should().Be("Test Tenant");
+        message!.Data!.Id.ShouldBe(_fixture.CreatedTenantId);
+        message.Data.Name.ShouldBe("Test Tenant");
 
-        message.Data.Users.Count().Should().Be(1);
+        message.Data.Users.Count().ShouldBe(1);
     }
 
     [Test, Order(1)]
@@ -40,19 +40,19 @@ public sealed class TenantControllerTests
         var response = await _fixture.ServerClient.GetAsync(
             "api/v1/Tenant?searchTerm=Test&pageSize=5&page=1");
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var message = await response.Content.ReadAsJsonAsync<PagedResult<TenantViewModel>>();
 
-        message?.Data!.Items.Should().NotBeEmpty();
-        message!.Data!.Items.Should().HaveCount(1);
+        message?.Data!.Items.ShouldNotBeEmpty();
+        message!.Data!.Items.ShouldHaveSingleItem();
         message.Data!.Items
             .FirstOrDefault(x => x.Id == _fixture.CreatedTenantId)
-            .Should().NotBeNull();
+            .ShouldNotBeNull();
 
         message.Data.Items
             .FirstOrDefault(x => x.Id == _fixture.CreatedTenantId)!
-            .Users.Count().Should().Be(1);
+            .Users.Count().ShouldBe(1);
     }
     
     [Test, Order(2)]
@@ -60,11 +60,11 @@ public sealed class TenantControllerTests
     {
         var response = await _fixture.ServerClient.GetAsync($"/api/v1/Tenant/{_fixture.DeletedTenantId}");
 
-        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
 
         var message = await response.Content.ReadAsJsonAsync<TenantViewModel>();
 
-        message?.Data.Should().BeNull();
+        message?.Data.ShouldBeNull();
     }
     
     [Test, Order(3)]
@@ -73,15 +73,15 @@ public sealed class TenantControllerTests
         var response = await _fixture.ServerClient.GetAsync(
             "api/v1/Tenant?searchTerm=Test&pageSize=5&page=1&includeDeleted=true");
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var message = await response.Content.ReadAsJsonAsync<PagedResult<TenantViewModel>>();
 
-        message?.Data!.Items.Should().NotBeEmpty();
-        message!.Data!.Items.Should().HaveCount(2);
+        message?.Data!.Items.ShouldNotBeEmpty();
+        message!.Data!.Items.Count.ShouldBe(2);
         message.Data!.Items
             .FirstOrDefault(x => x.Id == _fixture.DeletedTenantId)
-            .Should().NotBeNull();
+            .ShouldNotBeNull();
     }
 
     [Test, Order(4)]
@@ -91,7 +91,7 @@ public sealed class TenantControllerTests
 
         var response = await _fixture.ServerClient.PostAsJsonAsync("/api/v1/Tenant", request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var message = await response.Content.ReadAsJsonAsync<Guid>();
         var tenantId = message?.Data;
@@ -99,14 +99,14 @@ public sealed class TenantControllerTests
         // Check if tenant exists
         var tenantResponse = await _fixture.ServerClient.GetAsync($"/api/v1/Tenant/{tenantId}");
 
-        tenantResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        tenantResponse.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var tenantMessage = await tenantResponse.Content.ReadAsJsonAsync<TenantViewModel>();
 
-        tenantMessage?.Data.Should().NotBeNull();
+        tenantMessage?.Data.ShouldNotBeNull();
 
-        tenantMessage!.Data!.Id.Should().Be(tenantId!.Value);
-        tenantMessage.Data.Name.Should().Be(request.Name);
+        tenantMessage!.Data!.Id.ShouldBe(tenantId!.Value);
+        tenantMessage.Data.Name.ShouldBe(request.Name);
     }
 
     [Test, Order(5)]
@@ -116,24 +116,24 @@ public sealed class TenantControllerTests
 
         var response = await _fixture.ServerClient.PutAsJsonAsync("/api/v1/Tenant", request);
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var message = await response.Content.ReadAsJsonAsync<UpdateTenantViewModel>();
 
-        message?.Data.Should().NotBeNull();
-        message!.Data.Should().BeEquivalentTo(request);
+        message?.Data.ShouldNotBeNull();
+        message!.Data.ShouldBeEquivalentTo(request);
 
         // Check if tenant is updated
         var tenantResponse = await _fixture.ServerClient.GetAsync($"/api/v1/Tenant/{_fixture.CreatedTenantId}");
 
-        tenantResponse.StatusCode.Should().Be(HttpStatusCode.OK);
+        tenantResponse.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         var tenantMessage = await response.Content.ReadAsJsonAsync<TenantViewModel>();
 
-        tenantMessage?.Data.Should().NotBeNull();
+        tenantMessage?.Data.ShouldNotBeNull();
 
-        tenantMessage!.Data!.Id.Should().Be(_fixture.CreatedTenantId);
-        tenantMessage.Data.Name.Should().Be(request.Name);
+        tenantMessage!.Data!.Id.ShouldBe(_fixture.CreatedTenantId);
+        tenantMessage.Data.Name.ShouldBe(request.Name);
     }
 
     [Test, Order(6)]
@@ -141,11 +141,11 @@ public sealed class TenantControllerTests
     {
         var response = await _fixture.ServerClient.DeleteAsync($"/api/v1/Tenant/{_fixture.CreatedTenantId}");
 
-        response.StatusCode.Should().Be(HttpStatusCode.OK);
+        response.StatusCode.ShouldBe(HttpStatusCode.OK);
 
         // Check if tenant is deleted
         var tenantResponse = await _fixture.ServerClient.GetAsync($"/api/v1/Tenant/{_fixture.CreatedTenantId}");
 
-        tenantResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        tenantResponse.StatusCode.ShouldBe(HttpStatusCode.NotFound);
     }
 }

@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using CleanArchitecture.Domain.Commands.Users.LoginUser;
 using CleanArchitecture.Domain.Errors;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 
 namespace CleanArchitecture.Domain.Tests.CommandHandler.User.LoginUser;
@@ -25,7 +25,7 @@ public sealed class LoginUserCommandHandlerTests
 
         _fixture.VerifyNoDomainNotification();
 
-        token.Should().NotBeNullOrEmpty();
+        token.ShouldNotBeNullOrEmpty();
 
         var handler = new JwtSecurityTokenHandler();
         var decodedToken = handler.ReadToken(token) as JwtSecurityToken;
@@ -33,17 +33,17 @@ public sealed class LoginUserCommandHandlerTests
         var userIdClaim = decodedToken!.Claims
             .FirstOrDefault(x => string.Equals(x.Type, ClaimTypes.NameIdentifier));
 
-        Guid.Parse(userIdClaim!.Value).Should().Be(user.Id);
+        Guid.Parse(userIdClaim!.Value).ShouldBe(user.Id);
 
         var userEmailClaim = decodedToken.Claims
             .FirstOrDefault(x => string.Equals(x.Type, ClaimTypes.Email));
 
-        userEmailClaim!.Value.Should().Be(user.Email);
+        userEmailClaim!.Value.ShouldBe(user.Email);
 
         var userRoleClaim = decodedToken.Claims
             .FirstOrDefault(x => string.Equals(x.Type, ClaimTypes.Role));
 
-        userRoleClaim!.Value.Should().Be(user.Role.ToString());
+        userRoleClaim!.Value.ShouldBe(user.Role.ToString());
     }
 
     [Fact]
@@ -59,7 +59,7 @@ public sealed class LoginUserCommandHandlerTests
                 ErrorCodes.ObjectNotFound,
                 $"There is no user with email {command.Email}");
 
-        token.Should().BeEmpty();
+        token.ShouldBeEmpty();
     }
 
     [Fact]
@@ -77,6 +77,6 @@ public sealed class LoginUserCommandHandlerTests
                 DomainErrorCodes.User.PasswordIncorrect,
                 "The password is incorrect");
 
-        token.Should().BeEmpty();
+        token.ShouldBeEmpty();
     }
 }

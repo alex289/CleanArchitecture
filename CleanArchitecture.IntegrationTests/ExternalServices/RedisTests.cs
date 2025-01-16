@@ -3,9 +3,9 @@ using CleanArchitecture.Application.ViewModels.Tenants;
 using CleanArchitecture.Domain;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.IntegrationTests.Extensions;
-using FluentAssertions;
 using Microsoft.Extensions.Caching.Distributed;
 using Newtonsoft.Json;
+using Shouldly;
 
 namespace CleanArchitecture.IntegrationTests.ExternalServices;
 
@@ -21,14 +21,14 @@ public sealed class RedisTests
     {
         var response = await _fixture.ServerClient.GetAsync($"/api/v1/Tenant/{_fixture.CreatedTenantId}");
         var message = await response.Content.ReadAsJsonAsync<TenantViewModel>();
-        message!.Data!.Id.Should().Be(_fixture.CreatedTenantId);
+        message!.Data!.Id.ShouldBe(_fixture.CreatedTenantId);
 
         var json = await _fixture.DistributedCache.GetStringAsync(CacheKeyGenerator.GetEntityCacheKey<Tenant>(_fixture.CreatedTenantId));
-        json.Should().NotBeNullOrEmpty();
+        json.ShouldNotBeNullOrEmpty();
         
         var tenant = JsonConvert.DeserializeObject<TenantViewModel>(json!)!;
 
-        tenant.Should().NotBeNull();
-        tenant.Id.Should().Be(_fixture.CreatedTenantId);
+        tenant.ShouldNotBeNull();
+        tenant.Id.ShouldBe(_fixture.CreatedTenantId);
     }
 }

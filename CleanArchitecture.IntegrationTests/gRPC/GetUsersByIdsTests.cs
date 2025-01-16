@@ -2,7 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CleanArchitecture.IntegrationTests.Fixtures.gRPC;
 using CleanArchitecture.Proto.Users;
-using FluentAssertions;
+using Shouldly;
 
 namespace CleanArchitecture.IntegrationTests.gRPC;
 
@@ -23,14 +23,14 @@ public sealed class GetUsersByIdsTests
 
         var response = await client.GetByIdsAsync(request);
 
-        response.Users.Should().HaveCount(1);
+        response.Users.ShouldHaveSingleItem();
 
         var user = response.Users.First();
         var createdUser = _fixture.CreateUser();
 
-        user.Email.Should().Be(createdUser.Email);
-        user.FirstName.Should().Be(createdUser.FirstName);
-        user.LastName.Should().Be(createdUser.LastName);
-        user.DeletedAt.Should().NotBeNullOrWhiteSpace();
+        user.Email.ShouldBe(createdUser.Email);
+        user.FirstName.ShouldBe(createdUser.FirstName);
+        user.LastName.ShouldBe(createdUser.LastName);
+        user.DeletedAt.ShouldNotBeNullOrWhiteSpace();
     }
 }

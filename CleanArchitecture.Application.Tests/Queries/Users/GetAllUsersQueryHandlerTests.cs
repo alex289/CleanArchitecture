@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CleanArchitecture.Application.Queries.Users.GetAll;
 using CleanArchitecture.Application.Tests.Fixtures.Queries.Users;
 using CleanArchitecture.Application.ViewModels;
-using FluentAssertions;
+using Shouldly;
 using Xunit;
 
 namespace CleanArchitecture.Application.Tests.Queries.Users;
@@ -29,14 +29,14 @@ public sealed class GetAllUsersQueryHandlerTests
 
         _fixture.VerifyNoDomainNotification();
 
-        result.PageSize.Should().Be(query.PageSize);
-        result.Page.Should().Be(query.Page);
-        result.Count.Should().Be(1);
+        result.PageSize.ShouldBe(query.PageSize);
+        result.Page.ShouldBe(query.Page);
+        result.Count.ShouldBe(1);
 
         var userViewModels = result.Items.ToArray();
-        userViewModels.Should().NotBeNull();
-        userViewModels.Should().ContainSingle();
-        userViewModels.FirstOrDefault()!.Id.Should().Be(_fixture.ExistingUserId);
+        userViewModels.ShouldNotBeNull();
+        userViewModels.ShouldHaveSingleItem();
+        userViewModels.FirstOrDefault()!.Id.ShouldBe(_fixture.ExistingUserId);
     }
 
     [Fact]
@@ -56,10 +56,10 @@ public sealed class GetAllUsersQueryHandlerTests
 
         _fixture.VerifyNoDomainNotification();
 
-        result.PageSize.Should().Be(query.PageSize);
-        result.Page.Should().Be(query.Page);
-        result.Count.Should().Be(0);
+        result.PageSize.ShouldBe(query.PageSize);
+        result.Page.ShouldBe(query.Page);
+        result.Count.ShouldBe(0);
 
-        result.Items.Should().BeEmpty();
+        result.Items.ShouldBeEmpty();
     }
 }
