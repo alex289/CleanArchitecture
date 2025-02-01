@@ -21,6 +21,7 @@ jobs:
       with:
         dotnet-version: |
           9.x.x
+          6.x.x
 
     - name: Restore dependencies
       run: dotnet restore
