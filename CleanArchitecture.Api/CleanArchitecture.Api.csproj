@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Aikido.Zen.DotNetCore" Version="1.2.0" />
         <PackageReference Include="AspNetCore.HealthChecks.ApplicationStatus" Version="9.0.0" />
         <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="9.0.0" />
         <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="9.0.0" />
