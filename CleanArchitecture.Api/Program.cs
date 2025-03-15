@@ -35,11 +35,6 @@ if (builder.Environment.IsProduction())
     builder.Services.AddZenFirewall();
 }
 
-builder.Services
-    .AddHealthChecks()
-    .AddDbContextCheck<ApplicationDbContext>()
-    .AddApplicationStatus();
-
 var isAspire = builder.Configuration["ASPIRE_ENABLED"] == "true";
 
 var rabbitConfiguration = builder.Configuration.GetRabbitMqConfiguration();
@@ -49,23 +44,22 @@ var dbConnectionString = isAspire
     ? builder.Configuration["ConnectionStrings:Database"]
     : builder.Configuration["ConnectionStrings:DefaultConnection"];
 
-if (builder.Environment.IsProduction())
-{
-    builder.Services
-        .AddHealthChecks()
-        .AddSqlServer(dbConnectionString!)
-        .AddRedis(redisConnectionString!, "Redis")
-        .AddRabbitMQ(
-            async _ =>
+builder.Services
+    .AddHealthChecks()
+    .AddDbContextCheck<ApplicationDbContext>()
+    .AddApplicationStatus()
+    .AddSqlServer(dbConnectionString!)
+    .AddRedis(redisConnectionString!, "Redis")
+    .AddRabbitMQ(
+        async _ =>
+        {
+            var factory = new ConnectionFactory
             {
-                var factory = new ConnectionFactory
-                {
-                    Uri = new Uri(rabbitConfiguration.ConnectionString),
-                };
-                return await factory.CreateConnectionAsync();
-            },
-            name: "RabbitMQ");
-}
+                Uri = new Uri(rabbitConfiguration.ConnectionString),
+            };
+            return await factory.CreateConnectionAsync();
+        },
+        name: "RabbitMQ");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
