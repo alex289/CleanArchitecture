@@ -4,19 +4,21 @@ using CleanArchitecture.Api.BackgroundServices;
 using CleanArchitecture.Api.Extensions;
 using CleanArchitecture.Application.Extensions;
 using CleanArchitecture.Application.gRPC;
+using CleanArchitecture.Domain.Consumers;
 using CleanArchitecture.Domain.Extensions;
-using CleanArchitecture.Domain.Rabbitmq.Extensions;
 using CleanArchitecture.Infrastructure.Database;
 using CleanArchitecture.Infrastructure.Extensions;
 using CleanArchitecture.ServiceDefaults;
 using HealthChecks.ApplicationStatus.DependencyInjection;
 using HealthChecks.UI.Client;
+using MassTransit;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using RabbitMQ.Client;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,11 +35,6 @@ if (builder.Environment.IsProduction())
     builder.Services.AddZenFirewall();
 }
 
-builder.Services
-    .AddHealthChecks()
-    .AddDbContextCheck<ApplicationDbContext>()
-    .AddApplicationStatus();
-
 var isAspire = builder.Configuration["ASPIRE_ENABLED"] == "true";
 
 var rabbitConfiguration = builder.Configuration.GetRabbitMqConfiguration();
@@ -47,23 +44,22 @@ var dbConnectionString = isAspire
     ? builder.Configuration["ConnectionStrings:Database"]
     : builder.Configuration["ConnectionStrings:DefaultConnection"];
 
-if (builder.Environment.IsProduction())
-{
-    builder.Services
-        .AddHealthChecks()
-        .AddSqlServer(dbConnectionString!)
-        .AddRedis(redisConnectionString!, "Redis")
-        .AddRabbitMQ(
-            async _ =>
+builder.Services
+    .AddHealthChecks()
+    .AddDbContextCheck<ApplicationDbContext>()
+    .AddApplicationStatus()
+    .AddSqlServer(dbConnectionString!)
+    .AddRedis(redisConnectionString!, "Redis")
+    .AddRabbitMQ(
+        async _ =>
+        {
+            var factory = new ConnectionFactory
             {
-                var factory = new ConnectionFactory
-                {
-                    Uri = new Uri(rabbitConfiguration.ConnectionString),
-                };
-                return await factory.CreateConnectionAsync();
-            },
-            name: "RabbitMQ");
-}
+                Uri = new Uri(rabbitConfiguration.ConnectionString),
+            };
+            return await factory.CreateConnectionAsync();
+        },
+        name: "RabbitMQ");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -82,7 +78,48 @@ builder.Services.AddCommandHandlers();
 builder.Services.AddNotificationHandlers();
 builder.Services.AddApiUser();
 
-builder.Services.AddRabbitMqHandler(rabbitConfiguration);
+builder.Services.AddMassTransit(x =>
+{
+    x.AddConsumer<FanoutEventConsumer>();
+    x.AddConsumer<TenantUpdatedEventConsumer>();
+    
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.ConfigureNewtonsoftJsonSerializer(settings =>
+        {
+            settings.TypeNameHandling = TypeNameHandling.Objects;
+            settings.NullValueHandling = NullValueHandling.Ignore;
+            return settings;
+        });
+        cfg.UseNewtonsoftJsonSerializer();
+        cfg.ConfigureNewtonsoftJsonDeserializer(settings =>
+        {
+            settings.TypeNameHandling = TypeNameHandling.Objects;
+            settings.NullValueHandling = NullValueHandling.Ignore;
+            return settings;
+        });
+        
+        cfg.Host(rabbitConfiguration.Host, (ushort)rabbitConfiguration.Port, "/", h => {
+            h.Username(rabbitConfiguration.Username);
+            h.Password(rabbitConfiguration.Password);
+        });
+
+        // Every instance of the service will receive the message
+        cfg.ReceiveEndpoint("clean-architecture-fanout-event-" + Guid.NewGuid(), e =>
+        {
+            e.Durable = false;
+            e.AutoDelete = true;
+            e.ConfigureConsumer<FanoutEventConsumer>(context);
+            e.DiscardSkippedMessages();
+        });
+        cfg.ReceiveEndpoint("clean-architecture-fanout-events", e =>
+        {
+            e.ConfigureConsumer<TenantUpdatedEventConsumer>(context);
+            e.DiscardSkippedMessages();
+        });
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 builder.Services.AddHostedService<SetInactiveUsersService>();
 
@@ -148,7 +185,7 @@ app.MapControllers();
 app.MapGrpcService<UsersApiImplementation>();
 app.MapGrpcService<TenantsApiImplementation>();
 
-app.Run();
+await app.RunAsync();
 
 // Needed for integration tests web application factory
 public partial class Program

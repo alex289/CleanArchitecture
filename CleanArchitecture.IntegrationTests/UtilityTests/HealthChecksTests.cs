@@ -17,6 +17,9 @@ public sealed class HealthChecksTests
     [Test, Order(0)]
     public async Task Should_Return_Healthy()
     {
+        // Wait some time to let the services get healthy
+        await Task.Delay(2000);
+        
         var response = await _fixture.ServerClient.GetAsync("/healthz");
         response.StatusCode.ShouldBe(HttpStatusCode.OK);
 

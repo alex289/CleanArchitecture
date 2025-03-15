@@ -1,27 +1,33 @@
 using System.Threading.Tasks;
-using CleanArchitecture.Domain.Constants;
-using CleanArchitecture.Domain.Rabbitmq;
+using CleanArchitecture.Domain.Interfaces;
 using CleanArchitecture.Shared.Events;
+using MassTransit;
 
 namespace CleanArchitecture.Domain.EventHandler.Fanout;
 
 public sealed class FanoutEventHandler : IFanoutEventHandler
 {
-    private readonly RabbitMqHandler _rabbitMqHandler;
+    private readonly IPublishEndpoint _massTransit;
+    private readonly IUser _user;
 
     public FanoutEventHandler(
-        RabbitMqHandler rabbitMqHandler)
+        IPublishEndpoint massTransit, IUser user)
     {
-        _rabbitMqHandler = rabbitMqHandler;
-        _rabbitMqHandler.InitializeExchange(Messaging.ExchangeNameNotifications);
+        _massTransit = massTransit;
+        _user = user;
     }
 
-    public Task<DomainEvent> HandleDomainEventAsync(DomainEvent @event)
+    public async Task<T> HandleDomainEventAsync<T>(T @event) where T : DomainEvent
     {
-        _rabbitMqHandler.EnqueueExchangeMessage(
-            Messaging.ExchangeNameNotifications,
-            @event);
+        var fanoutDomainEvent =
+            new FanoutDomainEvent(
+                @event.AggregateId,
+                @event,
+                _user.GetUserId());
+        
+        await _massTransit.Publish(fanoutDomainEvent);
+        await _massTransit.Publish(@event);
 
-        return Task.FromResult(@event);
+        return @event;
     }
 }
