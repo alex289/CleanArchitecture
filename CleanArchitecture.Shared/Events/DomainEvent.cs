@@ -1,8 +1,10 @@
 using System;
+using MassTransit;
 using MediatR;
 
 namespace CleanArchitecture.Shared.Events;
 
+[ExcludeFromTopology]
 public abstract class DomainEvent : Message, INotification
 {
     public DateTime Timestamp { get; private set; }

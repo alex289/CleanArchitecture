@@ -1,5 +1,5 @@
 using System;
-using CleanArchitecture.Domain.Rabbitmq;
+using CleanArchitecture.Domain.Settings;
 using Microsoft.Extensions.Configuration;
 
 namespace CleanArchitecture.Api.Extensions;
@@ -11,7 +11,6 @@ public static class ConfigurationExtensions
     {
         var isAspire = configuration["ASPIRE_ENABLED"] == "true";
 
-        var rabbitEnabled = configuration["RabbitMQ:Enabled"];
         var rabbitHost = configuration["RabbitMQ:Host"];
         var rabbitPort = configuration["RabbitMQ:Port"];
         var rabbitUser = configuration["RabbitMQ:Username"];
@@ -19,7 +18,6 @@ public static class ConfigurationExtensions
 
         if (isAspire)
         {
-            rabbitEnabled = "true";
             var connectionString = configuration["ConnectionStrings:RabbitMq"];
 
             var rabbitUri = new Uri(connectionString!);
@@ -33,7 +31,6 @@ public static class ConfigurationExtensions
         {
             Host = rabbitHost ?? "",
             Port = int.Parse(rabbitPort ?? "0"),
-            Enabled = bool.Parse(rabbitEnabled ?? "false"),
             Username = rabbitUser ?? "",
             Password = rabbitPass ?? ""
         };

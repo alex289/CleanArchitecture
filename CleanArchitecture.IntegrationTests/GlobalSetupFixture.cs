@@ -66,7 +66,7 @@ internal class GlobalSetupFixture
             catch (Exception ex)
             {
                 // Creation of the respawner can fail if the database has not been created yet
-                TestContext.WriteLine($"Failed to create respawner: {ex.Message}");
+                await TestContext.Out.WriteLineAsync($"Failed to create respawner: {ex.Message}");
             }
         }
 
