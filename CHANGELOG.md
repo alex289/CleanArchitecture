@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.9.0] - 2025-03-15
+### :sparkles: New Features
+- [`b4ba65c`](https://github.com/alex289/CleanArchitecture/commit/b4ba65c5b3e38d8241a169dafa7793aaf91aa91a) - Try out Zen firewall *(commit by [@alex289](https://github.com/alex289))*
+- [`67c1de4`](https://github.com/alex289/CleanArchitecture/commit/67c1de433041fd279d5a03102334ffbc2e865821) - Try out Zen firewall *(PR [#90](https://github.com/alex289/CleanArchitecture/pull/90) by [@alex289](https://github.com/alex289))*
+- [`7454980`](https://github.com/alex289/CleanArchitecture/commit/74549806d61b2c7c990823c0849b47e609b69b18) - MassTransit *(commit by [@alex289](https://github.com/alex289))*
+- [`18ba6d5`](https://github.com/alex289/CleanArchitecture/commit/18ba6d52a82df929035ca3a1c1ea9172b8041f52) - Check services health while testing and developing too *(commit by [@alex289](https://github.com/alex289))*
+- [`884aa80`](https://github.com/alex289/CleanArchitecture/commit/884aa80a21083617822b3bb2a41f65637cfaf0a6) - MassTransit *(PR [#94](https://github.com/alex289/CleanArchitecture/pull/94) by [@alex289](https://github.com/alex289))*
+
+### :bug: Bug Fixes
+- [`0234b28`](https://github.com/alex289/CleanArchitecture/commit/0234b282148e18fe5cf1bc48ff2048773cba6a95) - Use dotnet 6 for the license check tool *(commit by [@alex289](https://github.com/alex289))*
+- [`f171126`](https://github.com/alex289/CleanArchitecture/commit/f17112657c3bcaa427eca83c715410577e1a2c85) - Allow services to get healthy *(commit by [@alex289](https://github.com/alex289))*
+
+### :wrench: Chores
+- [`ea48d6b`](https://github.com/alex289/CleanArchitecture/commit/ea48d6b38e3fce849260bdf9da0ab356d631c0e8) - bump ncipollo/release-action in the dependencies group *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`1a9225e`](https://github.com/alex289/CleanArchitecture/commit/1a9225ea99af315b418374bfb3cb10553a115b52) - bump the dependencies group with 26 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`f731cae`](https://github.com/alex289/CleanArchitecture/commit/f731cae4607cd09cb18a9908dba23d5b81de28f9) - bump the dependencies group with 26 updates *(PR [#89](https://github.com/alex289/CleanArchitecture/pull/89) by [@alex289](https://github.com/alex289))*
+- [`2931e13`](https://github.com/alex289/CleanArchitecture/commit/2931e139c703b323d90142be0b78b13c8d7b915f) - bump ncipollo/release-action from 1.14.0 to 1.15.0 in the dependencies group *(PR [#88](https://github.com/alex289/CleanArchitecture/pull/88) by [@alex289](https://github.com/alex289))*
+- [`fe87087`](https://github.com/alex289/CleanArchitecture/commit/fe87087cda1824866af5088f751d0257166af8fd) - bump ncipollo/release-action in the dependencies group *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`047f465`](https://github.com/alex289/CleanArchitecture/commit/047f465ca89d48723aa9a7cb3ea4f913d44af0d6) - bump the dependencies group with 28 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`52be2a1`](https://github.com/alex289/CleanArchitecture/commit/52be2a143fe36df406891415a76996d627e69518) - bump ncipollo/release-action from 1.15.0 to 1.16.0 in the dependencies group *(PR [#92](https://github.com/alex289/CleanArchitecture/pull/92) by [@alex289](https://github.com/alex289))*
+- [`3922987`](https://github.com/alex289/CleanArchitecture/commit/392298749372c359577350a6237fde3e3187db88) - bump the dependencies group with 28 updates *(PR [#93](https://github.com/alex289/CleanArchitecture/pull/93) by [@alex289](https://github.com/alex289))*
+
+
 ## [v1.8.0] - 2025-01-16
 ### :sparkles: New Features
 - [`cd4c362`](https://github.com/alex289/CleanArchitecture/commit/cd4c36230741a20a26b7131a49be9a4ebff7c5dd) - Update license year *(commit by [@alex289](https://github.com/alex289))*
@@ -180,3 +203,4 @@ _This is the initial release._
 [v1.6.0]: https://github.com/alex289/CleanArchitecture/compare/v1.5.0...v1.6.0
 [v1.7.0]: https://github.com/alex289/CleanArchitecture/compare/v1.6.0...v1.7.0
 [v1.8.0]: https://github.com/alex289/CleanArchitecture/compare/v1.7.0...v1.8.0
+[v1.9.0]: https://github.com/alex289/CleanArchitecture/compare/v1.8.0...v1.9.0
