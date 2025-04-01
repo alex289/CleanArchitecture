@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
@@ -8,15 +8,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aikido.Zen.DotNetCore" Version="1.2.0" />
+        <PackageReference Include="Aikido.Zen.DotNetCore" Version="1.2.5" />
         <PackageReference Include="AspNetCore.HealthChecks.ApplicationStatus" Version="9.0.0" />
         <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="9.0.0" />
         <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="9.0.0" />
         <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="9.0.0" />
         <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="9.0.0" />
         <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.70.0" />
-        <PackageReference Include="MassTransit.Newtonsoft" Version="8.3.7" />
-        <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.7" />
+        <PackageReference Include="MassTransit.Newtonsoft" Version="8.4.0" />
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.4.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.3" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.3" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.3">
@@ -26,8 +26,8 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.3" />
         <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.2" />
         <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="9.0.3" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="7.3.1" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="7.3.1" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="8.1.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="8.1.0" />
     </ItemGroup>
 
     <ItemGroup>
