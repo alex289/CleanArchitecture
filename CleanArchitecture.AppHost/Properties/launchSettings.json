@@ -4,14 +4,13 @@
     "Aspire": {
       "commandName": "Project",
       "dotnetRunMessages": true,
-      "launchBrowser": true,
+      "launchBrowser": false,
       "applicationUrl": "https://localhost:17270;http://localhost:15188",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "DOTNET_ENVIRONMENT": "Development",
         "DOTNET_DASHBOARD_OTLP_ENDPOINT_URL": "https://localhost:21200",
-        "DOTNET_RESOURCE_SERVICE_ENDPOINT_URL": "https://localhost:22111",
-        "ASPIRE_ENABLED": "true"
+        "DOTNET_RESOURCE_SERVICE_ENDPOINT_URL": "https://localhost:22111"
       }
     }
   }

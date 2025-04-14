@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
@@ -39,6 +40,8 @@ public static class Extensions
 
     private static void ConfigureOpenTelemetry<TBuilder>(this TBuilder builder) where TBuilder : IHostApplicationBuilder
     {
+        var enableHttpTraces = builder.Configuration.GetValue<bool?>("APP_ENABLE_HTTP_TRACES") ?? false;
+
         builder.Logging.AddOpenTelemetry(logging =>
         {
             logging.IncludeFormattedMessage = true;
@@ -48,17 +51,44 @@ public static class Extensions
         builder.Services.AddOpenTelemetry()
             .WithMetrics(metrics =>
             {
-                metrics.AddAspNetCoreInstrumentation()
+                metrics
+                    .AddAspNetCoreInstrumentation()
                     .AddHttpClientInstrumentation()
                     .AddRuntimeInstrumentation();
             })
             .WithTracing(tracing =>
             {
-                tracing.AddSource(builder.Environment.ApplicationName)
-                    .AddAspNetCoreInstrumentation()
-                    .AddGrpcClientInstrumentation()
-                    .AddEntityFrameworkCoreInstrumentation()
-                    .AddHttpClientInstrumentation();
+                tracing
+                    .AddSource(builder.Environment.ApplicationName)
+                    .AddSource("MassTransit")
+                    .AddAspNetCoreInstrumentation(options =>
+                    {
+                        options.EnableAspNetCoreSignalRSupport = true;
+                        options.EnrichWithHttpResponse = HttpEnricher.HttpRouteEnricher;
+                    })
+                    .AddGrpcClientInstrumentation(options =>
+                    {
+                        if (enableHttpTraces)
+                        {
+                            options.EnrichWithHttpRequestMessage = HttpEnricher.RequestEnricher;
+                            options.EnrichWithHttpResponseMessage = HttpEnricher.ResponseEnricher;
+                        }
+                    })
+                    .AddEntityFrameworkCoreInstrumentation(options =>
+                    {
+                        options.EnrichWithIDbCommand = (activity, dbCommand) =>
+                        {
+                            activity.SetTag("sql.statement", dbCommand.CommandText);
+                        };
+                    })
+                    .AddHttpClientInstrumentation(options =>
+                    {
+                        if (enableHttpTraces)
+                        {
+                            options.EnrichWithHttpRequestMessage = HttpEnricher.RequestEnricher;
+                            options.EnrichWithHttpResponseMessage = HttpEnricher.ResponseEnricher;
+                        }
+                    });
             });
 
         builder.AddOpenTelemetryExporters();
