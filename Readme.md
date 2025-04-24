@@ -27,7 +27,7 @@ The project uses the following dependencies:
 ## Running the Project
 
 To run the project, follow these steps:
-test
+
 1. Clone the repository to your local machine.
 2. Open the solution in your IDE of choice.
 3. Build the solution to restore the dependencies.
