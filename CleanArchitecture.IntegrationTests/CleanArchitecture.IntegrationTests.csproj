@@ -13,21 +13,21 @@
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.3" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.3" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.4" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.4" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
         <PackageReference Include="NUnit" Version="4.3.2" />
-        <PackageReference Include="NUnit.Analyzers" Version="4.6.0">
+        <PackageReference Include="NUnit.Analyzers" Version="4.7.0">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
         <PackageReference Include="Respawn" Version="6.2.1" />
         <PackageReference Include="Shouldly" Version="4.3.0" />
-        <PackageReference Include="Testcontainers" Version="4.3.0" />
-        <PackageReference Include="Testcontainers.MsSql" Version="4.3.0" />
-        <PackageReference Include="Testcontainers.RabbitMq" Version="4.3.0" />
-        <PackageReference Include="Testcontainers.Redis" Version="4.3.0" />
+        <PackageReference Include="Testcontainers" Version="4.4.0" />
+        <PackageReference Include="Testcontainers.MsSql" Version="4.4.0" />
+        <PackageReference Include="Testcontainers.RabbitMq" Version="4.4.0" />
+        <PackageReference Include="Testcontainers.Redis" Version="4.4.0" />
         <PackageReference Include="coverlet.collector" Version="6.0.4">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
