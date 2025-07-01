@@ -55,7 +55,7 @@ jobs:
 
       - name: Create Release
         if: ${{ steps.get_next_version.outputs.hasNextVersion == 'true' }}
-        uses: ncipollo/release-action@v1.16.0
+        uses: ncipollo/release-action@v1.18.0
         with:
           allowUpdates: true
           draft: false
