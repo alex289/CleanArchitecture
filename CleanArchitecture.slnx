@@ -1,0 +1,20 @@
+﻿<Solution>
+  <Folder Name="/Aspire/">
+    <Project Path="CleanArchitecture.AppHost\CleanArchitecture.AppHost.csproj" Type="Classic C#" />
+    <Project Path="CleanArchitecture.ServiceDefaults\CleanArchitecture.ServiceDefaults.csproj" Type="Classic C#" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="CleanArchitecture.Application.Tests\CleanArchitecture.Application.Tests.csproj" />
+    <Project Path="CleanArchitecture.Domain.Tests\CleanArchitecture.Domain.Tests.csproj" />
+    <Project Path="CleanArchitecture.gRPC.Tests\CleanArchitecture.gRPC.Tests.csproj" />
+    <Project Path="CleanArchitecture.Infrastructure.Tests\CleanArchitecture.Infrastructure.Tests.csproj" />
+    <Project Path="CleanArchitecture.IntegrationTests\CleanArchitecture.IntegrationTests.csproj" />
+  </Folder>
+  <Project Path="CleanArchitecture.Api\CleanArchitecture.Api.csproj" />
+  <Project Path="CleanArchitecture.Application\CleanArchitecture.Application.csproj" />
+  <Project Path="CleanArchitecture.Domain\CleanArchitecture.Domain.csproj" />
+  <Project Path="CleanArchitecture.gRPC\CleanArchitecture.gRPC.csproj" />
+  <Project Path="CleanArchitecture.Infrastructure\CleanArchitecture.Infrastructure.csproj" />
+  <Project Path="CleanArchitecture.Proto\CleanArchitecture.Proto.csproj" />
+  <Project Path="CleanArchitecture.Shared\CleanArchitecture.Shared.csproj" Type="Classic C#" />
+</Solution>

@@ -6,7 +6,7 @@ on:
     - cron: '0 0 1 * *'
 
 env:
-  solutionFile: CleanArchitecture.sln
+  solutionFile: CleanArchitecture.slnx
   projectName: CleanArchitecture
 
 jobs:
