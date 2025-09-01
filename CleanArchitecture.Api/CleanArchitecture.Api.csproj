@@ -8,26 +8,26 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aikido.Zen.DotNetCore" Version="1.2.15" />
+        <PackageReference Include="Aikido.Zen.DotNetCore" Version="1.2.18" />
         <PackageReference Include="AspNetCore.HealthChecks.ApplicationStatus" Version="9.0.0" />
         <PackageReference Include="AspNetCore.HealthChecks.Rabbitmq" Version="9.0.0" />
         <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="9.0.0" />
         <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="9.0.0" />
         <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="9.0.0" />
         <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.71.0" />
-        <PackageReference Include="MassTransit.Newtonsoft" Version="8.5.0" />
-        <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.6" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.6" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.6">
+        <PackageReference Include="MassTransit.Newtonsoft" Version="8.5.2" />
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.8" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.8">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.6" />
-        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.6" />
-        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="9.0.6" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.1" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="9.0.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.8" />
+        <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.8" />
+        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="9.0.8" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.4" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="9.0.4" />
     </ItemGroup>
 
     <ItemGroup>
