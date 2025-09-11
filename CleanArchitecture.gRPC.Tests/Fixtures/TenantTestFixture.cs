@@ -13,7 +13,7 @@ public sealed class TenantTestFixture
     public TenantsApiImplementation TenantsApiImplementation { get; }
     private ITenantRepository TenantRepository { get; }
 
-    public IEnumerable<Tenant> ExistingTenants { get; }
+    public IList<Tenant> ExistingTenants { get; }
 
     public TenantTestFixture()
     {
