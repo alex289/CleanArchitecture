@@ -15,7 +15,7 @@ public sealed class UserTestFixture
 
     public UsersApiImplementation UsersApiImplementation { get; }
 
-    public IEnumerable<User> ExistingUsers { get; }
+    public IList<User> ExistingUsers { get; }
 
     public UserTestFixture()
     {

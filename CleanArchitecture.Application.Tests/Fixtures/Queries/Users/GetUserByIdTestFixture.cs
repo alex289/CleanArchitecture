@@ -49,7 +49,7 @@ public sealed class GetUserByIdTestFixture : QueryHandlerBaseFixture
 
         user.Delete();
 
-        var query = new[] { user }.AsQueryable().BuildMock();
+        var query = new[] { user }.BuildMock();
 
         UserRepository.GetAllNoTracking().Returns(query);
     }
