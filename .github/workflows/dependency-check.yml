@@ -50,7 +50,7 @@ jobs:
           --failOnCVSS "7"
 
     - name: Upload test results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: Dependency Check Report
         path: ${{github.workspace}}/reports
