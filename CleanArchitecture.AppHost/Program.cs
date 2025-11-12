@@ -2,12 +2,10 @@ var builder = DistributedApplication.CreateBuilder(args);
 
 var redis = builder.AddRedis("Redis").WithRedisInsight();
 
-var rabbitPasswordRessource = new ParameterResource("password", _ => "guest");
-var rabbitPasswordParameter =
-    builder.AddParameter("username", rabbitPasswordRessource.Value);
+var rabbitPassword = builder.AddParameter("rabbit-password", secret: false);
 
 var rabbitMq = builder
-    .AddRabbitMQ("RabbitMQ", null, rabbitPasswordParameter, 5672)
+    .AddRabbitMQ("RabbitMQ", null, rabbitPassword, 5672)
     .WithManagementPlugin();
 
 var sqlServer = builder.AddSqlServer("SqlServer");

@@ -1,13 +1,13 @@
 ﻿using System.Linq;
 using System.Reflection;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace CleanArchitecture.Api.Swagger;
 
 public sealed class SortableFieldsAttributeFilter : IParameterFilter
 {
-    public void Apply(OpenApiParameter parameter, ParameterFilterContext context)
+    public void Apply(IOpenApiParameter parameter, ParameterFilterContext context)
     {
         if (context.ParameterInfo is null)
         {

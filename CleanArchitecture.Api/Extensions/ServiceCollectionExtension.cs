@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 using CleanArchitecture.Api.Swagger;
 using CleanArchitecture.Domain.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace CleanArchitecture.Api.Extensions;
 
@@ -38,23 +37,10 @@ public static class ServiceCollectionExtension
             c.ParameterFilter<SortableFieldsAttributeFilter>();
 
             c.SupportNonNullableReferenceTypes();
-
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            
+            c.AddSecurityRequirement((document) => new OpenApiSecurityRequirement()
             {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        },
-                        Scheme = "oauth2",
-                        Name = "Bearer",
-                        In = ParameterLocation.Header
-                    },
-                    new List<string>()
-                }
+                [new OpenApiSecuritySchemeReference("Bearer", document)] = ["readAccess", "writeAccess"]
             });
         });
         return services;
