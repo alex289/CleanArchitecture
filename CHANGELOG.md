@@ -4,6 +4,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.10.0] - 2025-11-15
+### :sparkles: New Features
+- [`2f49493`](https://github.com/alex289/CleanArchitecture/commit/2f494932f8d82a99e76c2cc3cc6e8062f0c0cd6b) - Improve Aspire telemetry *(commit by [@alex289](https://github.com/alex289))*
+- [`a21e10d`](https://github.com/alex289/CleanArchitecture/commit/a21e10d8bfd13a06fd9319a2339deaccff975346) - Dotnet 10 *(commit by [@alex289](https://github.com/alex289))*
+- [`5d795da`](https://github.com/alex289/CleanArchitecture/commit/5d795dace96f02578f2651e2be148a366980dd2f) - Use new aspire sdk *(commit by [@alex289](https://github.com/alex289))*
+- [`8ee5bcf`](https://github.com/alex289/CleanArchitecture/commit/8ee5bcf5d3ec4ecc1669ca3e23819f7d981c0682) - Update deps *(commit by [@alex289](https://github.com/alex289))*
+- [`4c329f5`](https://github.com/alex289/CleanArchitecture/commit/4c329f5a293acd0088a94f3809e0fb4d79d06820) - Use aspire sdk *(commit by [@alex289](https://github.com/alex289))*
+- [`e8d0127`](https://github.com/alex289/CleanArchitecture/commit/e8d012785e0009942856000737a49fe2db473d00) - Remove unneeded package *(commit by [@alex289](https://github.com/alex289))*
+- [`f56a2fe`](https://github.com/alex289/CleanArchitecture/commit/f56a2fe4d4ccf5e9ed768aad290ed8b96ab797c7) - Dotnet 10 *(PR [#110](https://github.com/alex289/CleanArchitecture/pull/110) by [@alex289](https://github.com/alex289))*
+
+### :bug: Bug Fixes
+- [`16595e3`](https://github.com/alex289/CleanArchitecture/commit/16595e3db40274476db43215fb96e3c7e7e2208d) - MockQueryable BuildMock *(commit by [@alex289](https://github.com/alex289))*
+- [`a19961f`](https://github.com/alex289/CleanArchitecture/commit/a19961f70b5a3b938993b2b2736843a0bdc7ddfa) - Breaking changes *(commit by [@alex289](https://github.com/alex289))*
+
+### :wrench: Chores
+- [`7b632c7`](https://github.com/alex289/CleanArchitecture/commit/7b632c7aa88b0483e0b9786a6b453be851d8c898) - bump the dependencies group with 10 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`27c8b60`](https://github.com/alex289/CleanArchitecture/commit/27c8b6064c366a53af1dcd8c1d2a1b566f944ce2) - bump the dependencies group with 10 updates *(PR [#96](https://github.com/alex289/CleanArchitecture/pull/96) by [@alex289](https://github.com/alex289))*
+- [`e59c055`](https://github.com/alex289/CleanArchitecture/commit/e59c055bf1a661fc9c9c2663a8d1ffbcc60de813) - bump the dependencies group with 31 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`c903164`](https://github.com/alex289/CleanArchitecture/commit/c9031645335c9ecb91539fb8dbbaf1b6ad249fee) - bump the dependencies group with 31 updates *(PR [#98](https://github.com/alex289/CleanArchitecture/pull/98) by [@alex289](https://github.com/alex289))*
+- [`6822eeb`](https://github.com/alex289/CleanArchitecture/commit/6822eeb05b5441d20807dcf21d625373a8c6afc6) - Bump Aikido.Zen.DotNetCore and 32 others *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`e71f516`](https://github.com/alex289/CleanArchitecture/commit/e71f516539a68b6ca2df70d420ae313b45c5465c) - Bump Aikido.Zen.DotNetCore and 32 others *(PR [#99](https://github.com/alex289/CleanArchitecture/pull/99) by [@alex289](https://github.com/alex289))*
+- [`0132a4b`](https://github.com/alex289/CleanArchitecture/commit/0132a4ba3bab36a1a6a7648e6334f0e26ae8c869) - Bump ncipollo/release-action in the dependencies group *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`ca122aa`](https://github.com/alex289/CleanArchitecture/commit/ca122aa3cd2965b00e04ac27f9b56125e44f32dc) - Bump ncipollo/release-action from 1.16.0 to 1.18.0 in the dependencies group *(PR [#100](https://github.com/alex289/CleanArchitecture/pull/100) by [@alex289](https://github.com/alex289))*
+- [`cbb4441`](https://github.com/alex289/CleanArchitecture/commit/cbb444132849abf070e04e3ea26b0db607d287ef) - Bump the dependencies group with 31 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`05e1494`](https://github.com/alex289/CleanArchitecture/commit/05e1494d70b9f04e313b08bde26dc885e917c95a) - Bump the dependencies group with 31 updates *(PR [#101](https://github.com/alex289/CleanArchitecture/pull/101) by [@alex289](https://github.com/alex289))*
+- [`c3bd281`](https://github.com/alex289/CleanArchitecture/commit/c3bd281f6a4ed3f02d6ebbf5a11f380c2f7b928c) - Bump actions/checkout from 4 to 5 in the dependencies group *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`0511ff6`](https://github.com/alex289/CleanArchitecture/commit/0511ff62a0c4f3860c7a510228140ad5dbab62e8) - Bump the dependencies group with 37 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`74801f0`](https://github.com/alex289/CleanArchitecture/commit/74801f0679df4000920558466a3be958edfae6c3) - Bump actions/checkout from 4 to 5 in the dependencies group *(PR [#103](https://github.com/alex289/CleanArchitecture/pull/103) by [@alex289](https://github.com/alex289))*
+- [`06fe7c1`](https://github.com/alex289/CleanArchitecture/commit/06fe7c1ea0e6e7d7e9078832e89784402d2a2383) - Bump the dependencies group with 37 updates *(PR [#104](https://github.com/alex289/CleanArchitecture/pull/104) by [@alex289](https://github.com/alex289))*
+- [`b267f7d`](https://github.com/alex289/CleanArchitecture/commit/b267f7de77acfdec201e75636d971fe452223102) - Bump the dependencies group with 2 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`57bf4b7`](https://github.com/alex289/CleanArchitecture/commit/57bf4b7a743e6bb54d5487b3428c3d94896fad1c) - Bump the dependencies group with 28 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`7e6bd59`](https://github.com/alex289/CleanArchitecture/commit/7e6bd59e5e4dd0d5b66bc745fdb53898be6f2586) - Bump the dependencies group with 2 updates *(PR [#105](https://github.com/alex289/CleanArchitecture/pull/105) by [@alex289](https://github.com/alex289))*
+- [`a457bef`](https://github.com/alex289/CleanArchitecture/commit/a457beffc3b556af2a8363e5196392eeaf251914) - Bump the dependencies group with 28 updates *(PR [#106](https://github.com/alex289/CleanArchitecture/pull/106) by [@alex289](https://github.com/alex289))*
+- [`609a977`](https://github.com/alex289/CleanArchitecture/commit/609a977a5b05f3b0678366ca7d8566cc77814f56) - Bump the dependencies group with 3 updates *(commit by [@dependabot[bot]](https://github.com/apps/dependabot))*
+- [`e8d5be0`](https://github.com/alex289/CleanArchitecture/commit/e8d5be06871efb67d5f4f829425de613c40ad9b1) - Bump the dependencies group with 3 updates *(PR [#108](https://github.com/alex289/CleanArchitecture/pull/108) by [@alex289](https://github.com/alex289))*
+- [`39fbbd6`](https://github.com/alex289/CleanArchitecture/commit/39fbbd625889e61c80aab470630d553eade8cc72) - Update deps *(commit by [@alex289](https://github.com/alex289))*
+- [`c1cead5`](https://github.com/alex289/CleanArchitecture/commit/c1cead5f7dbe4d59c27f096843b814265780d8f7) - Update deps *(PR [#109](https://github.com/alex289/CleanArchitecture/pull/109) by [@alex289](https://github.com/alex289))*
+
+
 ## [v1.9.0] - 2025-03-15
 ### :sparkles: New Features
 - [`b4ba65c`](https://github.com/alex289/CleanArchitecture/commit/b4ba65c5b3e38d8241a169dafa7793aaf91aa91a) - Try out Zen firewall *(commit by [@alex289](https://github.com/alex289))*
@@ -204,3 +243,4 @@ _This is the initial release._
 [v1.7.0]: https://github.com/alex289/CleanArchitecture/compare/v1.6.0...v1.7.0
 [v1.8.0]: https://github.com/alex289/CleanArchitecture/compare/v1.7.0...v1.8.0
 [v1.9.0]: https://github.com/alex289/CleanArchitecture/compare/v1.8.0...v1.9.0
+[v1.10.0]: https://github.com/alex289/CleanArchitecture/compare/v1.9.0...v1.10.0
