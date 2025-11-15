@@ -30,7 +30,7 @@ jobs:
     - name: Install .NET Core
       uses: actions/setup-dotnet@v5
       with:
-        dotnet-version: '9.x.x'
+        dotnet-version: '10.x.x'
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v4
