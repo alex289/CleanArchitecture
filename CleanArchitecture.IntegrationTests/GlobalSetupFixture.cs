@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using Respawn;
 using Testcontainers.MsSql;
 using Testcontainers.RabbitMq;
@@ -52,27 +53,32 @@ internal class GlobalSetupFixture
 
     public static async Task RespawnDatabaseAsync()
     {
-        if (s_respawner is null)
+        await using var connection = new SqlConnection(DatabaseConnectionString);
+
+        try
         {
-            try
+            await connection.OpenAsync();
+
+            if (s_respawner is null)
             {
                 s_respawner = await Respawner.CreateAsync(
-                    DatabaseConnectionString,
+                    connection,
                     new RespawnerOptions
                     {
                         TablesToIgnore = ["__EFMigrationsHistory"]
                     });
             }
-            catch (Exception ex)
-            {
-                // Creation of the respawner can fail if the database has not been created yet
-                await TestContext.Out.WriteLineAsync($"Failed to create respawner: {ex.Message}");
-            }
-        }
 
-        if (s_respawner is not null)
+            await s_respawner.ResetAsync(connection);
+        }
+        catch (Exception ex)
         {
-            await s_respawner.ResetAsync(DatabaseConnectionString);
+            // Creation of the respawner can fail if the database has not been created yet
+            await TestContext.Out.WriteLineAsync($"Failed to respawn database: {ex.Message}");
+        }
+        finally
+        {
+            await connection.CloseAsync();
         }
     }
 }
