@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="GitHubActionsTestLogger" Version="2.4.1">
+        <PackageReference Include="GitHubActionsTestLogger" Version="3.0.1">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -22,12 +22,12 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="NUnit3TestAdapter" Version="5.2.0" />
-        <PackageReference Include="Respawn" Version="6.2.1" />
+        <PackageReference Include="Respawn" Version="7.0.0" />
         <PackageReference Include="Shouldly" Version="4.3.0" />
-        <PackageReference Include="Testcontainers" Version="4.8.1" />
-        <PackageReference Include="Testcontainers.MsSql" Version="4.8.1" />
-        <PackageReference Include="Testcontainers.RabbitMq" Version="4.8.1" />
-        <PackageReference Include="Testcontainers.Redis" Version="4.8.1" />
+        <PackageReference Include="Testcontainers" Version="4.9.0" />
+        <PackageReference Include="Testcontainers.MsSql" Version="4.9.0" />
+        <PackageReference Include="Testcontainers.RabbitMq" Version="4.9.0" />
+        <PackageReference Include="Testcontainers.Redis" Version="4.9.0" />
         <PackageReference Include="coverlet.collector" Version="6.0.4">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
