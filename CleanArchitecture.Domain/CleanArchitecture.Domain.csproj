@@ -7,9 +7,9 @@
 
     <ItemGroup>
         <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
-        <PackageReference Include="FluentValidation" Version="12.1.0" />
+        <PackageReference Include="FluentValidation" Version="12.1.1" />
         <PackageReference Include="MassTransit" Version="8.5.7" />
-        <PackageReference Include="MediatR" Version="13.1.0" />
+        <PackageReference Include="MediatR" Version="14.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
     </ItemGroup>
