@@ -10,9 +10,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Aspire.Hosting.RabbitMQ" Version="13.4.6" />
-    <PackageReference Include="Aspire.Hosting.Redis" Version="13.4.6" />
-    <PackageReference Include="Aspire.Hosting.SqlServer" Version="13.4.6" />
+    <PackageReference Include="Aspire.Hosting.RabbitMQ" Version="13.5.3" />
+    <PackageReference Include="Aspire.Hosting.Redis" Version="13.5.3" />
+    <PackageReference Include="Aspire.Hosting.SqlServer" Version="13.5.3" />
   </ItemGroup>
 
   <ItemGroup>
