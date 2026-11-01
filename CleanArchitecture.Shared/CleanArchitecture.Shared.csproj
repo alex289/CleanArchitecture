@@ -7,7 +7,7 @@
 
 
     <ItemGroup>
-        <PackageReference Include="MassTransit" Version="9.2.2" />
+        <PackageReference Include="MassTransit" Version="9.2.5" />
         <PackageReference Include="MediatR" Version="14.2.0" />
     </ItemGroup>
 
